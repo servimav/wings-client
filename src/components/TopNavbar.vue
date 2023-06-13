@@ -2,10 +2,12 @@
 import { ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { shoppingCartOutline, magnifyingGlassOutline, bellOutline } from '@/helpers/icon'
+
 const search = ref('')
 </script>
+
 <template>
-  <nav class="bg-white border-b border-gray-100">
+  <nav class="bg-white border-b border-gray-100 py-2">
     <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl py-2 px-3">
       <form>
         <label
@@ -15,13 +17,13 @@ const search = ref('')
         >
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-            <Icon v-bind="magnifyingGlassOutline" class="w-4 h-4 text-gray-400" />
+            <Icon v-bind="magnifyingGlassOutline" class="w-5 h-5 text-gray-400" />
           </div>
           <input
             v-model="search"
             type="text"
             id="search-input"
-            class="block w-full p-2 pl-8 text-sm text-gray-500 border border-gray-200 rounded-lg outline-none focus:border-gray-200 focus:ring-1 focus:ring-gray-200"
+            class="block w-full max-w-xs p-2 pl-8 text-sm text-gray-500 border border-gray-200 rounded-lg outline-none focus:border-gray-200 focus:ring-1 focus:ring-gray-200"
             placeholder="Buscar..."
             required
           />

@@ -41,7 +41,7 @@ const route = useRoute()
 </script>
 <template>
   <div class="fixed z-50 w-full h-14 max-w-lg -translate-x-1/2 bottom-3 left-1/2 px-2">
-    <div class="bg-white border border-gray-200 rounded-full py-2">
+    <div class="bg-white border border-gray-100 rounded-full py-2 shadow-md">
       <div class="grid h-full max-w-lg grid-cols-4 mx-auto">
         <RouterLink
           v-for="(btn, index) in BUTTONS"
@@ -54,7 +54,7 @@ const route = useRoute()
             v-bind="btn.icon"
             :class="[
               route.name == btn.to.name
-                ? 'h-8 w-8 text-sky-600'
+                ? 'h-8 w-8 text-sky-600 fill-sky-600 stroke-transparent'
                 : 'h-6 w-6 text-gray-500 group-hover:text-gray-600'
             ]"
           />
