@@ -1,34 +1,12 @@
 <script setup lang="ts">
-import ProductAdvanced from '@/components/widgets/ProductAdvanced.vue'
-import ProductWidget from '@/components/widgets/ProductWidget.vue'
+import { ref } from 'vue'
 import ProductSlider from '@/components/sliders/ProductSlider.vue'
-import { type Product } from '@/types'
+import CategorySlider from '@/components/sliders/CategorySlider.vue'
+import ProductAdvancedWidget from '@/components/widgets/ProductAdvancedWidget.vue'
+import ProductWidget from '@/components/widgets/ProductWidget.vue'
+import { CATEGORIES, PRODUCTS } from '@/helpers/defaults'
 
-const PRODUCT: Product = {
-  title: 'Adidas',
-  image: { src: 'products/adidas-small.png', alt: 'Adidas' },
-  price: 105
-}
-const OTHER_PRODUCT: Product = {
-  title: 'Sueter',
-  image: { src: 'products/sueter-small.png', alt: 'Sueter' },
-  price: 105
-}
-
-const PRODUCTS: Array<Product> = [
-  {
-    title: 'Sueter',
-    image: { src: 'products/sueter-small.png', alt: 'Sueter' },
-    price: 105
-  },
-  { title: 'Adidas', image: { src: 'products/adidas-small.png', alt: 'Adidas' }, price: 105 },
-  {
-    title: 'Sueter',
-    image: { src: 'products/sueter-small.png', alt: 'Sueter' },
-    price: 105
-  },
-  { title: 'Adidas', image: { src: 'products/adidas-small.png', alt: 'Adidas' }, price: 105 }
-]
+const category = ref(CATEGORIES[2])
 </script>
 
 <template>
@@ -37,17 +15,18 @@ const PRODUCTS: Array<Product> = [
       <ProductSlider :products="PRODUCTS" />
     </div>
     <div class="px-2 mb-2">
+      <CategorySlider :categories="CATEGORIES" v-model:category-active="category" class="mb-2" />
       <div class="grid grid-cols-2 gap-4">
-        <ProductWidget v-bind="PRODUCT" size="xs" />
-        <ProductWidget v-bind="OTHER_PRODUCT" size="xs" />
+        <ProductWidget v-bind="PRODUCTS[0]" size="xs" />
+        <ProductWidget v-bind="PRODUCTS[1]" size="xs" />
       </div>
     </div>
     <div class="p-2 mb-2">
       <div class="flex-col space-y-2">
-        <ProductAdvanced v-bind="PRODUCT" />
-        <ProductAdvanced v-bind="OTHER_PRODUCT" />
-        <ProductAdvanced v-bind="PRODUCT" />
-        <ProductAdvanced v-bind="OTHER_PRODUCT" />
+        <ProductAdvancedWidget v-bind="PRODUCTS[0]" />
+        <ProductAdvancedWidget v-bind="PRODUCTS[1]" />
+        <ProductAdvancedWidget v-bind="PRODUCTS[0]" />
+        <ProductAdvancedWidget v-bind="PRODUCTS[1]" />
       </div>
     </div>
   </main>

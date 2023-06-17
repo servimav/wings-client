@@ -53,7 +53,7 @@ const route = useRoute()
         >
           <Icon
             v-bind="btn.icon"
-            class="transition-colors"
+            class="transition-[color]"
             :class="[
               route.name == btn.to.name
                 ? 'h-8 w-8 text-butterfly-blue fill-butterfly-blue stroke-transparent'
