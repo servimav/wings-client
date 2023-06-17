@@ -6,8 +6,8 @@ import {
   squares2x2Outline,
   shoppingBagOutline,
   userOutline,
-  type IconSVG,
-  heartOutline
+  heartOutline,
+  type IconSVG
 } from '@/helpers/icon'
 
 interface Link {
@@ -39,6 +39,7 @@ const BUTTONS: Array<IconLabelLink> = [
 
 const route = useRoute()
 </script>
+
 <template>
   <div class="fixed z-50 w-full h-14 max-w-lg -translate-x-1/2 bottom-3 left-1/2 px-2">
     <div class="bg-white border border-gray-100 rounded-full py-2 shadow-md">
@@ -52,18 +53,21 @@ const route = useRoute()
         >
           <Icon
             v-bind="btn.icon"
+            class="transition-colors"
             :class="[
               route.name == btn.to.name
-                ? 'h-8 w-8 text-sky-600 fill-sky-600 stroke-transparent'
-                : 'h-6 w-6 text-gray-500 group-hover:text-gray-600'
+                ? 'h-8 w-8 text-butterfly-blue fill-butterfly-blue stroke-transparent'
+                : 'h-6 w-6 text-gray-600 group-hover:text-gray-800'
             ]"
           />
 
           <div
             v-if="route.name != btn.to.name"
-            class="text-xs tracking-wide"
+            class="text-xs tracking-wide transition-colors"
             :class="[
-              route.name == btn.to.name ? 'text-sky-600' : 'text-gray-500 group-hover:text-gray-600'
+              route.name == btn.to.name
+                ? 'text-butterfly-blue'
+                : 'text-gray-600 group-hover:text-gray-800'
             ]"
           >
             {{ btn.label }}

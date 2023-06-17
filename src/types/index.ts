@@ -5,6 +5,7 @@ interface Image {
 
 export interface Product {
   title: string
+  description?: string
   image: Image
   price: number
 }
