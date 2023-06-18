@@ -3,11 +3,20 @@ interface Image {
   alt: string
 }
 
-export interface Product {
-  title: string
-  description?: string
+interface OfferAttribute {
+  key: string
+  value: string | number
+}
+
+export interface Offer {
+  name: string
+  description: string
+  attributes: Array<OfferAttribute>
   image: Image
-  price: number
+  gallery: Image[]
+  sell_price: number
+  available: boolean
+  stock_qty: number
 }
 
 export interface Category {

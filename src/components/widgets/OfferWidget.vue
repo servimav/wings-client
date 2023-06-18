@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { type Product } from '@/types'
+import { type Offer } from '@/types'
 import Icon from '@/components/Icon.vue'
 import { shoppingCartOutline } from '@/helpers/icon'
 
 type breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
-interface ProductWidget extends Product {
+interface OfferWidgetProps extends Offer {
   size: breakpoint
 }
 
-const props = defineProps<ProductWidget>()
+const props = defineProps<OfferWidgetProps>()
 
-const titleClass = computed(() => {
+const nameClass = computed(() => {
   switch (props.size) {
     case 'xs':
       return 'text-sm'
@@ -49,13 +49,13 @@ const caretIconClass = computed(() => {
 <template>
   <div class="relative p-2 pt-5 w-full bg-gray-50 rounded-2xl">
     <div class="px-5 mb-2">
-      <img class="h-full max-w-full" :src="image.src" :alt="image.alt" />
+      <img class="h-full max-w-full" :src="`offers/${image.src}`" :alt="image.alt" />
     </div>
     <div class="px-1">
-      <div class="font-semibold tracking-wide text-gray-800" :class="[titleClass]">
-        {{ title }}
+      <div class="font-semibold tracking-wide text-gray-800" :class="[nameClass]">
+        {{ name }}
       </div>
-      <div class="tracking-tight text-gray-600" :class="[priceClass]">$ {{ price }}</div>
+      <div class="tracking-tight text-gray-600" :class="[priceClass]">$ {{ sell_price }}</div>
     </div>
 
     <Icon
