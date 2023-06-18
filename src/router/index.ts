@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { ROUTES } from './names'
+/* Pages */
 import HomeView from '@/views/HomeView.vue'
 import CategoriesView from '@/views/CategoriesView.vue'
 import CaretView from '@/views/CaretView.vue'
 import OrdersView from '@/views/OrdersView.vue'
+import SingleOfferView from '@/views/SingleOfferView.vue'
 import UserView from '@/views/UserView.vue'
 import TestView from '@/views/TestView.vue'
 
@@ -29,6 +31,11 @@ const router = createRouter({
       path: '/orders',
       name: ROUTES.ORDERS,
       component: OrdersView
+    },
+    {
+      path: '/offer',
+      name: ROUTES.SINGLE_OFFER,
+      component: SingleOfferView
     },
     {
       path: '/user',
