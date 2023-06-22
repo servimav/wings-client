@@ -1,9 +1,15 @@
 <script lang="ts" setup>
-import { onBeforeMount, ref } from 'vue'
+import { defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toCurrency, setDefaultImage } from '@/helpers'
 import { useServices } from '@/services'
 import type { Offer } from '@/types'
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
+const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
 
 /**
  * -----------------------------------------
@@ -60,6 +66,17 @@ onBeforeMount(async () => {
 
 <template>
   <main class="w-full container relative">
+    <!-- Share button -->
+
+    <button
+      type="button"
+      class="fixed z-20 top-5 right-5 rounded-full p-1.5 text-gray-900 bg-white shadow-lg focus:outline-none"
+    >
+      <ShareOutline class="h-5 w-5 text-gray-900" />
+
+      <span class="sr-only">Arrow left icon</span>
+    </button>
+    <!-- Share button -->
     <template v-if="offer">
       <div class="fixed h-96 w-full bg-slate-500">
         <img
