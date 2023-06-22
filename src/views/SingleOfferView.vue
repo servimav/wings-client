@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { OFFERS } from '@/helpers/defaults'
-import { shoppingCartOutline } from '@/helpers/icon'
-import Icon from '@/components/Icon.vue'
 
 const offer = ref(OFFERS[0])
 const stockQtyText = computed(() =>
@@ -54,8 +52,7 @@ const stockQtyText = computed(() =>
         type="button"
         class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-butterfly-blue transition-colors hover:bg-butterfly-blue-400 focus:ring-4 focus:outline-none focus:ring-butterfly-blue-100"
       >
-        <Icon v-bind="shoppingCartOutline" class="mr-2 w-6 h-6" />
-        Añadir al carrito
+        Contactar en WhatsApp
       </button>
     </div>
   </main>

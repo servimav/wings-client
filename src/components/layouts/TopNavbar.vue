@@ -17,13 +17,13 @@ const search = ref('')
         >
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-            <Icon v-bind="magnifyingGlassOutline" class="w-5 h-5 text-gray-400" />
+            <Icon v-bind="magnifyingGlassOutline" class="w-5 h-5 text-gray-500" />
           </div>
           <input
             v-model="search"
             type="text"
             id="top-navbar-search-input"
-            class="block w-full max-w-xs p-2 pl-8 text-sm text-gray-600 border border-gray-300 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-300"
+            class="block w-full max-w-xs p-2 pl-8 text-sm text-gray-600 border border-gray-400 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
             placeholder="Buscar..."
             required
           />

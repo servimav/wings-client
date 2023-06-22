@@ -10,9 +10,9 @@ const props = defineProps<ProductSliderProps>()
 </script>
 
 <template>
-  <div class="flex items-center overflow-x-scroll h-72 space-x-2">
-    <div v-for="(offer, index) in offers" :key="`offer-slider-${index}`" class="w-72 flex-shrink-0">
-      <OfferWidget v-bind="offer" size="md" />
+  <div class="flex items-center overflow-x-scroll no-scrollbar space-x-2 py-2">
+    <div v-for="(offer, index) in offers" :key="`offer-slider-${index}`" class="w-44 flex-shrink-0">
+      <OfferWidget v-bind="offer" />
     </div>
   </div>
 </template>

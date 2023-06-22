@@ -12,21 +12,25 @@ const category = ref(CATEGORIES[2])
 <template>
   <main class="px-2 pt-20 pb-16 w-full container">
     <div class="px-2 mb-4">
-      <OfferSlider :offers="OFFERS" />
+      <OfferSlider :offers="[...OFFERS, ...OFFERS]" />
     </div>
     <div class="px-2 mb-2">
       <CategorySlider :categories="CATEGORIES" v-model:category-active="category" class="mb-2" />
-      <div class="grid grid-cols-2 gap-4">
-        <OfferWidget v-bind="OFFERS[0]" size="xs" />
-        <OfferWidget v-bind="OFFERS[1]" size="xs" />
+      <div class="grid grid-cols-2 gap-2">
+        <OfferWidget
+          v-for="(offer, index) in [...OFFERS, ...OFFERS]"
+          :key="`home-view-offer-grid-example-${index}`"
+          v-bind="offer"
+        />
       </div>
     </div>
     <div class="p-2 mb-2">
       <div class="flex-col space-y-2">
-        <OfferAdvancedWidget v-bind="OFFERS[0]" />
-        <OfferAdvancedWidget v-bind="OFFERS[1]" />
-        <OfferAdvancedWidget v-bind="OFFERS[0]" />
-        <OfferAdvancedWidget v-bind="OFFERS[1]" />
+        <OfferAdvancedWidget
+          v-for="(offer, index) in [...OFFERS, ...OFFERS]"
+          :key="`home-view-offer-grid-example-${index}`"
+          v-bind="offer"
+        />
       </div>
     </div>
   </main>

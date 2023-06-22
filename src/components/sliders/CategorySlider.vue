@@ -13,7 +13,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex items-center overflow-x-scroll space-x-3 py-2 px-3">
+  <div class="flex items-center overflow-x-scroll no-scrollbar space-x-3 py-2 px-3">
     <div
       v-for="(category, index) in categories"
       :key="`category-slider-${index}`"
