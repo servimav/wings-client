@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onBeforeMount, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import type { ShopCategory } from '@servimav/wings-services'
 import type { Offer } from '@/types'
 import { useServices } from '@/services'
+import { ROUTES } from '@/router'
 /**
  * -----------------------------------------
  *	Components
@@ -19,6 +21,7 @@ const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/Offe
  *	Composables
  * -----------------------------------------
  */
+const $router = useRouter()
 const $service = useServices()
 
 /**
@@ -51,6 +54,25 @@ async function getOffers() {
   offers.value = resp.data
 }
 
+/**
+ * go to single offer page
+ * @param offer
+ */
+function goToOffer(offer: Offer) {
+  void $router.push({
+    name: ROUTES.SINGLE_OFFER,
+    params: {
+      offerId: offer.id
+    }
+  })
+}
+
+/**
+ * -----------------------------------------
+ *	Lifecycle
+ * -----------------------------------------
+ */
+
 onBeforeMount(async () => {
   try {
     Promise.all([getOffers(), getCategories()])
@@ -63,7 +85,7 @@ onBeforeMount(async () => {
 <template>
   <main class="px-2 pt-20 pb-16 w-full container">
     <div class="px-2 mb-4">
-      <OfferSlider :offers="offers" />
+      <OfferSlider :offers="offers" @click-on-offer="(offer) => goToOffer(offer)" />
     </div>
     <div class="px-2 mb-2">
       <CategorySlider :categories="categories" class="mb-2" />
@@ -72,6 +94,7 @@ onBeforeMount(async () => {
           v-for="(offer, index) in offers"
           :key="`home-view-offer-grid-example-${index}`"
           :offer="offer"
+          @click="() => goToOffer(offer)"
         />
       </div>
     </div>
@@ -81,6 +104,7 @@ onBeforeMount(async () => {
           v-for="(offer, index) in offers"
           :key="`home-view-offer-grid-example-${index}`"
           :offer="offer"
+          @click="() => goToOffer(offer)"
         />
       </div>
     </div>
