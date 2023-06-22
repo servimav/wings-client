@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useRoute, type RouteLocationRaw } from 'vue-router'
+import { useRoute, type RouteLocationNamedRaw } from 'vue-router'
 import { ROUTES } from '@/router/names'
 import Icon from '@/components/Icon.vue'
 import {
@@ -11,7 +11,7 @@ import {
 } from '@/helpers/icon'
 
 interface Link {
-  to: RouteLocationRaw
+  to: RouteLocationNamedRaw
 }
 
 interface LabelLink extends Link {
@@ -55,7 +55,7 @@ const route = useRoute()
             v-bind="btn.icon"
             class="transition-[color]"
             :class="[
-              route.name == btn.to.name
+              route.name == btn.to
                 ? 'h-8 w-8 text-butterfly-blue fill-butterfly-blue stroke-transparent'
                 : 'h-6 w-6 text-gray-600 group-hover:text-gray-800'
             ]"

@@ -1,7 +1,8 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import type { IconSVG } from '@/helpers/icon'
-const props = defineProps<IconSVG>()
+defineProps<IconSVG>()
 </script>
+
 <template>
   <svg v-bind="svg">
     <template v-if="Array.isArray(paths)">
