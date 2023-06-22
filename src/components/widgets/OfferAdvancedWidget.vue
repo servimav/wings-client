@@ -1,29 +1,38 @@
 <script lang="ts" setup>
 import { type Offer } from '@/types'
 import Icon from '@/components/Icon.vue'
-import { shoppingCartSolid } from '@/helpers/icon'
+import { shoppingCartOutline } from '@/helpers/icon'
 
-const props = defineProps<Offer>()
+interface OfferAdvancedWidgetProps extends Offer {}
+
+const props = defineProps<OfferAdvancedWidgetProps>()
 </script>
 
 <template>
-  <div class="relative py-3 w-full bg-gray-50 rounded-xl">
-    <div class="absolute top-3.5 left-3.5">
-      <h3 class="text-xl font-bold text-gray-800 w-36">{{ name }}</h3>
-      <div class="-mt-1 text-gray-600 font-light tracking-tight">$ {{ sell_price }}</div>
+  <div
+    class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
+  >
+    <div class="mb-2">
+      <img
+        class="h-64 w-full rounded-lg object-cover object-center"
+        :src="`offers/${image.src}`"
+        :alt="image.alt"
+      />
     </div>
-    <div class="relative py-2 px-4 pl-14 mb-2">
-      <img class="h-auto w-44 mx-auto" :src="`offers/${image.src}`" :alt="image.alt" />
+    <div
+      class="relative -top-6 px-3 py-1 max-w-fit bg-white border border-gray-300 rounded-full text-center font-medium text-gray-800 tracking-wide"
+    >
+      {{ name }}
     </div>
 
-    <div class="text-center">
-      <button
-        type="button"
-        class="px-3 py-1.5 text-sm font-medium text-center rounded-full inline-flex items-center text-white bg-butterfly-blue transition-colors hover:bg-butterfly-blue-400 focus:ring-4 focus:outline-none focus:ring-butterfly-blue-100"
-      >
-        Añadir
-        <Icon v-bind="shoppingCartSolid" class="ml-2 w-4 h-4" />
-      </button>
+    <div class="absolute top-3 left-3 px-2 bg-white rounded-full">
+      <span class="text-sm font-medium text-gray-800">${{ sell_price }}</span>
+    </div>
+
+    <div
+      class="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow-lg cursor-pointer hover:shadow-xl"
+    >
+      <Icon v-bind="shoppingCartOutline" class="w-5 h-5 text-gray-800" />
     </div>
   </div>
 </template>

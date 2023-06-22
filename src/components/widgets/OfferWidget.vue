@@ -1,67 +1,29 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { type Offer } from '@/types'
 import Icon from '@/components/Icon.vue'
 import { shoppingCartOutline } from '@/helpers/icon'
 
-type breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
-interface OfferWidgetProps extends Offer {
-  size: breakpoint
-}
+interface OfferWidgetProps extends Offer {}
 
 const props = defineProps<OfferWidgetProps>()
-
-const nameClass = computed(() => {
-  switch (props.size) {
-    case 'xs':
-      return 'text-sm'
-    case 'md':
-      return 'text-lg'
-    default:
-      return 'text-lg'
-  }
-})
-
-const priceClass = computed(() => {
-  switch (props.size) {
-    case 'xs':
-      return 'text-xs'
-    case 'md':
-      return 'text-base'
-    default:
-      return 'text-base'
-  }
-})
-
-const caretIconClass = computed(() => {
-  switch (props.size) {
-    case 'xs':
-      return 'w-3.5 h-3.5 top-2 right-2'
-    case 'md':
-      return 'w-5 h-5 top-4 right-4'
-    default:
-      return 'w-5 h-5 top-4 right-4'
-  }
-})
 </script>
 
 <template>
-  <div class="relative p-2 pt-5 w-full bg-gray-50 rounded-2xl">
-    <div class="px-5 mb-2">
-      <img class="h-full max-w-full" :src="`offers/${image.src}`" :alt="image.alt" />
+  <div
+    class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
+  >
+    <div class="mb-2">
+      <img class="h-full max-w-full rounded-lg" :src="`offers/${image.src}`" :alt="image.alt" />
     </div>
     <div class="px-1">
-      <div class="font-semibold tracking-wide text-gray-800" :class="[nameClass]">
+      <div class="text-sm font-semibold tracking-wide text-gray-800">
         {{ name }}
       </div>
-      <div class="tracking-tight text-gray-600" :class="[priceClass]">$ {{ sell_price }}</div>
+      <div class="text-sm tracking-tight text-gray-600">${{ sell_price }}</div>
     </div>
 
-    <Icon
-      v-bind="shoppingCartOutline"
-      class="absolute text-gray-600 cursor-pointer hover:text-gray-800"
-      :class="[caretIconClass]"
-    />
+    <div class="absolute top-3 right-3 bg-white p-1 rounded-full cursor-pointer">
+      <Icon v-bind="shoppingCartOutline" class="w-3.5 h-3.5 text-gray-800" />
+    </div>
   </div>
 </template>
