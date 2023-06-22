@@ -1,15 +1,27 @@
 <script lang="ts" setup>
+import { defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
-import TopNavbar from '@/components/layouts/TopNavbar.vue'
-import BottomNavbar from '@/components/layouts/BottomNavbar.vue'
-import FloatingBackBtn from '@/components/FloatingBackBtn.vue'
 import { ROUTES } from '@/router/names'
-const route = useRoute()
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
+const TopNavbar = defineAsyncComponent(() => import('@/components/layouts/TopNavbar.vue'))
+const BottomNavbar = defineAsyncComponent(() => import('@/components/layouts/BottomNavbar.vue'))
+const FloatingBackBtn = defineAsyncComponent(() => import('@/components/FloatingBackBtn.vue'))
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+
+const $route = useRoute()
 </script>
 
 <template>
-  <FloatingBackBtn v-if="route.name != ROUTES.HOME" />
+  <FloatingBackBtn v-if="$route.name != ROUTES.HOME" />
   <TopNavbar v-else />
   <RouterView />
-  <BottomNavbar v-if="route.name == ROUTES.HOME" />
+  <BottomNavbar v-if="$route.name == ROUTES.HOME" />
 </template>
