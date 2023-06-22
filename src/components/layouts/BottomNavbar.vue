@@ -1,14 +1,27 @@
 <script lang="ts" setup>
+import { defineAsyncComponent } from 'vue'
 import { useRoute, type RouteLocationNamedRaw } from 'vue-router'
 import { ROUTES } from '@/router/names'
-import Icon from '@/components/Icon.vue'
-import {
-  squares2x2Outline,
-  shoppingBagOutline,
-  userOutline,
-  heartOutline,
-  type IconSVG
-} from '@/helpers/icon'
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
+
+const HeartOutline = defineAsyncComponent(() => import('@/components/icons/HeartOutline.vue'))
+const SquaresOutline = defineAsyncComponent(
+  () => import('@/components/icons/Squqres2x2Outline.vue')
+)
+const ShoppingBagOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingBagOutline.vue')
+)
+const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
+
+/**
+ * -----------------------------------------
+ *	Types
+ * -----------------------------------------
+ */
 
 interface Link {
   to: RouteLocationNamedRaw
@@ -19,22 +32,27 @@ interface LabelLink extends Link {
 }
 
 interface IconLabelLink extends LabelLink {
-  icon: IconSVG
+  icon: typeof HeartOutline
 }
+/**
+ * -----------------------------------------
+ *	Data
+ * -----------------------------------------
+ */
 
 const BUTTONS: Array<IconLabelLink> = [
-  { icon: heartOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
+  { icon: HeartOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
   {
-    icon: squares2x2Outline,
+    icon: SquaresOutline,
     label: 'Categorías',
     to: { name: ROUTES.CATEGORIES }
   },
   {
-    icon: shoppingBagOutline,
+    icon: ShoppingBagOutline,
     label: 'Pedidos',
     to: { name: ROUTES.ORDERS }
   },
-  { icon: userOutline, label: 'Cuenta', to: { name: ROUTES.USER } }
+  { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.USER } }
 ]
 
 const route = useRoute()
@@ -51,8 +69,8 @@ const route = useRoute()
           type="button"
           class="inline-flex flex-col items-center justify-center px-5 group"
         >
-          <Icon
-            v-bind="btn.icon"
+          <component
+            :is="btn.icon"
             class="transition-[color]"
             :class="[
               route.name == btn.to

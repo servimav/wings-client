@@ -1,11 +1,14 @@
 <script lang="ts" setup>
+import { defineAsyncComponent } from 'vue'
 import { type Offer } from '@/types'
-import Icon from '@/components/Icon.vue'
-import { shoppingCartOutline } from '@/helpers/icon'
 
-interface OfferWidgetProps extends Offer {}
+export type OfferWidgetProps = Offer
 
-const props = defineProps<OfferWidgetProps>()
+const ShoppingCartOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingCartOutline.vue')
+)
+
+defineProps<OfferWidgetProps>()
 </script>
 
 <template>
@@ -23,7 +26,7 @@ const props = defineProps<OfferWidgetProps>()
     </div>
 
     <div class="absolute top-3 right-3 bg-white p-1 rounded-full cursor-pointer">
-      <Icon v-bind="shoppingCartOutline" class="w-3.5 h-3.5 text-gray-800" />
+      <ShoppingCartOutline class="w-3.5 h-3.5 text-gray-800" />
     </div>
   </div>
 </template>

@@ -1,7 +1,15 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import Icon from '@/components/Icon.vue'
-import { shoppingCartOutline, magnifyingGlassOutline, bellOutline } from '@/helpers/icon'
+import { defineAsyncComponent, ref } from 'vue'
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
+const BellOutline = defineAsyncComponent(() => import('@/components/icons/BellOutline.vue'))
+const MangifyGlass = defineAsyncComponent(() => import('@/components/icons/MangifyGlass.vue'))
+const ShoppingCartOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingCartOutline.vue')
+)
 
 const search = ref('')
 </script>
@@ -17,7 +25,7 @@ const search = ref('')
         >
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-            <Icon v-bind="magnifyingGlassOutline" class="w-5 h-5 text-gray-500" />
+            <MangifyGlass class="w-5 h-5 text-gray-500" />
           </div>
           <input
             v-model="search"
@@ -31,12 +39,10 @@ const search = ref('')
       </form>
 
       <div class="flex items-center space-x-3">
-        <Icon
-          v-bind="shoppingCartOutline"
+        <ShoppingCartOutline
           class="w-5 h-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
-        <Icon
-          v-bind="bellOutline"
+        <BellOutline
           class="w-5 h-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
       </div>
