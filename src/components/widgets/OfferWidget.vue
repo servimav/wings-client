@@ -1,14 +1,41 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { type Offer } from '@/types'
+import { toCurrency, setDefaultImage } from '@/helpers'
+/**
+ * -----------------------------------------
+ *	Types
+ * -----------------------------------------
+ */
 
-export type OfferWidgetProps = Offer
+export interface Props {
+  offer: Offer
+}
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
 
 const ShoppingCartOutline = defineAsyncComponent(
   () => import('@/components/icons/ShoppingCartOutline.vue')
 )
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
 
-defineProps<OfferWidgetProps>()
+const $props = defineProps<Props>()
+
+/**
+ * -----------------------------------------
+ *	Data
+ * -----------------------------------------
+ */
+const displayPrice = computed(() =>
+  $props.offer.discount_price ? $props.offer.discount_price : $props.offer.sell_price
+)
 </script>
 
 <template>
@@ -16,13 +43,19 @@ defineProps<OfferWidgetProps>()
     class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
   >
     <div class="mb-2">
-      <img class="h-full max-w-full rounded-lg" :src="`offers/${image.src}`" :alt="image.alt" />
+      <img
+        class="h-full max-w-full rounded-lg"
+        :src="offer.image"
+        :alt="offer.name"
+        :title="offer.name"
+        @error="setDefaultImage"
+      />
     </div>
     <div class="px-1">
       <div class="text-sm font-semibold tracking-wide text-gray-800">
-        {{ name }}
+        {{ offer.name }}
       </div>
-      <div class="text-sm tracking-tight text-gray-600">${{ sell_price }}</div>
+      <div class="text-sm tracking-tight text-gray-600">{{ toCurrency(displayPrice) }}</div>
     </div>
 
     <div class="absolute top-3 right-3 bg-white p-1 rounded-full cursor-pointer">
