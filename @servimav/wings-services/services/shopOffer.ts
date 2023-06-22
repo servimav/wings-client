@@ -15,10 +15,12 @@ export default function init(api: AxiosInstance) {
 
   return {
     ...crud,
+    filter: (params: ShopOfferFilter) =>
+      api.get<PaginatedData<ShopOffer>>(`${baseUrl}/filter`, { params }),
     show: (id: number, params: { currency: string }) =>
       api.get<ShopOffer>(`${baseUrl}/${id}`, { params }),
-    filter: (params: ShopOfferFilter) =>
-      api.get<PaginatedData<ShopOffer>>(`${baseUrl}/filter`, { params })
+    showClient: (id: number, params: { currency: string }) =>
+      api.get<ShopOffer>(`${baseUrl}/show-client/${id}`, { params })
   }
 }
 
