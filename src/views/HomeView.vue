@@ -33,9 +33,9 @@ const $shop = useShopStore()
 const categories = computed(() => $shop.categories)
 const offers = computed(() => $shop.offers)
 
-const offersNew = computed(() => offers.value.slice(0, 6))
+const offersTrending = computed(() => offers.value.slice(0, 6))
 const offersPromo = computed(() => offers.value.slice(6, 12))
-const offersTrending = computed(() => offers.value.slice(10, 13))
+const offersAny = computed(() => offers.value.slice(10, 13))
 const offersExtra = computed(() => offers.value.slice(13, 21))
 const offerRemain = computed(() => offers.value.slice(21, offers.value.length))
 /**
@@ -71,10 +71,10 @@ onMounted(() => {
 <template>
   <main class="p-2 pt-[4.8rem] pb-16 w-full container">
     <div class="space-y-2 mb-2">
-      <div class="px-2" v-if="offersNew.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Ofertas Nuevas</div>
+      <div class="px-2" v-if="offersTrending.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
         <OfferSlider
-          :offers="offersNew"
+          :offers="offersTrending"
           @click-on-offer="(offer) => goToOffer(offer)"
           class="mt-2"
         />
@@ -100,12 +100,12 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="px-2" v-if="offersTrending.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
+      <div class="px-2" v-if="offersAny.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Para ti</div>
 
         <div class="flex-col space-y-2 mt-2">
           <OfferAdvancedWidget
-            v-for="(offer, index) in offersTrending"
+            v-for="(offer, index) in offersAny"
             :key="`home-view-offer-grid-example-${index}`"
             :offer="offer"
             @click="() => goToOffer(offer)"
