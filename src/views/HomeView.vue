@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import type { ShopCategory } from '@servimav/wings-services'
+import { useTitle } from '@vueuse/core'
 import type { Offer } from '@/types'
-import { useServices } from '@/services'
+import { useShopStore } from '@/stores'
 import { ROUTES } from '@/router'
 /**
  * -----------------------------------------
@@ -22,7 +22,7 @@ const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/Offe
  * -----------------------------------------
  */
 const $router = useRouter()
-const $service = useServices()
+const $shop = useShopStore()
 
 /**
  * -----------------------------------------
@@ -30,8 +30,8 @@ const $service = useServices()
  * -----------------------------------------
  */
 
-const categories = ref<ShopCategory[]>([])
-const offers = ref<Offer[]>([])
+const categories = computed(() => $shop.categories)
+const offers = computed(() => $shop.offers)
 
 const offersNew = computed(() => offers.value.slice(0, 6))
 const offersPromo = computed(() => offers.value.slice(6, 12))
@@ -42,23 +42,6 @@ const offersExtra = computed(() => offers.value.slice(13, 21))
  *	Methods
  * -----------------------------------------
  */
-
-/**
- * getCategories
- */
-async function getCategories() {
-  const resp = (await $service.shop.category.list()).data
-  categories.value = resp
-}
-
-/**
- * getOffers
- */
-async function getOffers() {
-  const resp = (await $service.shop.offer.filter({ currency: 'CUP' })).data
-  offers.value = resp.data
-}
-
 /**
  * go to single offer page
  * @param offer
@@ -78,12 +61,9 @@ function goToOffer(offer: Offer) {
  * -----------------------------------------
  */
 
-onBeforeMount(async () => {
-  try {
-    Promise.all([getOffers(), getCategories()])
-  } catch (error) {
-    console.log({ error })
-  }
+onMounted(() => {
+  // set default title
+  useTitle('Compras y Envíos | Wings')
 })
 </script>
 

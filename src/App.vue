@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 import { ROUTES } from '@/router/names'
+import { useShopStore } from './stores'
+import { useServices } from './services'
 /**
  * -----------------------------------------
  *	Components
@@ -17,6 +19,37 @@ const FloatingBackBtn = defineAsyncComponent(() => import('@/components/Floating
  */
 
 const $route = useRoute()
+const $service = useServices()
+const $shop = useShopStore()
+/**
+ * -----------------------------------------
+ *	Methods
+ * -----------------------------------------
+ */
+
+/**
+ * getCategories
+ */
+async function getCategories() {
+  const resp = (await $service.shop.category.list()).data
+  $shop.categories = resp
+}
+
+/**
+ * getOffers
+ */
+async function getOffers() {
+  const resp = (await $service.shop.offer.filter({ currency: 'CUP' })).data
+  $shop.offers = resp.data
+}
+
+onBeforeMount(async () => {
+  try {
+    await Promise.all([getOffers(), getCategories()])
+  } catch (error) {
+    console.log({ error })
+  }
+})
 </script>
 
 <template>
