@@ -33,11 +33,10 @@ const $shop = useShopStore()
 const categories = computed(() => $shop.categories)
 const offers = computed(() => $shop.offers)
 
-const offersTrending = computed(() => offers.value.slice(0, 6))
-const offersPromo = computed(() => offers.value.slice(6, 12))
-const offersAny = computed(() => offers.value.slice(10, 13))
-const offersExtra = computed(() => offers.value.slice(13, 21))
-const offerRemain = computed(() => offers.value.slice(21, offers.value.length))
+const offersLv1 = computed(() => offers.value.slice(0, 5))
+const offersLv2 = computed(() => offers.value.slice(5, 15))
+const offersLv3 = computed(() => offers.value.slice(15, 20))
+const offerRemain = computed(() => offers.value.slice(20, offers.value.length))
 /**
  * -----------------------------------------
  *	Methods
@@ -69,16 +68,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="p-2 pt-[4.8rem] pb-16 w-full container">
+  <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
     <div class="space-y-2 mb-2">
-      <div class="px-2" v-if="offersTrending.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
-        <OfferSlider
-          :offers="offersTrending"
-          @click-on-offer="(offer) => goToOffer(offer)"
-          class="mt-2"
-        />
+      <!-- Lv1 -->
+      <div class="px-2" v-if="offersLv1.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">TOP 5</div>
+
+        <div class="flex-col space-y-2 mt-2">
+          <OfferAdvancedWidget
+            v-for="(offer, index) in offersLv1"
+            :key="`home-view-offer-grid-example-${index}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+        </div>
       </div>
+      <!-- / Lv1 -->
 
       <div class="px-2" v-if="categories.length">
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">
@@ -87,25 +92,30 @@ onMounted(() => {
         <CategorySlider :categories="categories" />
       </div>
 
-      <div class="px-2" v-if="offersPromo.length">
+      <!-- Lv2 -->
+      <div class="px-2" v-if="offersLv2.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
+        <OfferSlider
+          :offers="offersLv2"
+          @click-on-offer="(offer) => goToOffer(offer)"
+          class="mt-2"
+        />
+      </div>
+      <!-- / Lv2 -->
+
+      <div class="px-2" v-if="categories.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">
+          Descubre nuestras Categorías
+        </div>
+        <CategorySlider :categories="categories" />
+      </div>
+
+      <div class="px-2" v-if="offersLv3.length">
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">Promociones de Hoy</div>
 
         <div class="grid grid-cols-2 gap-2 mt-2">
           <OfferWidget
-            v-for="(offer, index) in offersPromo"
-            :key="`home-view-offer-grid-example-${index}`"
-            :offer="offer"
-            @click="() => goToOffer(offer)"
-          />
-        </div>
-      </div>
-
-      <div class="px-2" v-if="offersAny.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Para ti</div>
-
-        <div class="flex-col space-y-2 mt-2">
-          <OfferAdvancedWidget
-            v-for="(offer, index) in offersAny"
+            v-for="(offer, index) in offersLv3"
             :key="`home-view-offer-grid-example-${index}`"
             :offer="offer"
             @click="() => goToOffer(offer)"
@@ -117,7 +127,7 @@ onMounted(() => {
         <CategorySlider :categories="categories" />
       </div>
 
-      <div class="px-2" v-if="offersExtra.length">
+      <div class="px-2" v-if="offerRemain.length">
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">Ofertas</div>
 
         <div class="grid grid-cols-2 gap-2 mt-2">

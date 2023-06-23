@@ -138,7 +138,7 @@ onBeforeRouteUpdate(async (to) => {
 </script>
 
 <template>
-  <main class="w-full container relative">
+  <main class="w-full container relative select-none">
     <!-- Share button -->
     <button
       type="button"

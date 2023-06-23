@@ -33,7 +33,7 @@ const displayPrice = computed(() =>
 
 <template>
   <div
-    class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
+    class="cursor-pointer relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
   >
     <div class="mb-2">
       <img

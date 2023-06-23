@@ -40,7 +40,7 @@ const displayPrice = computed(() =>
 
 <template>
   <div
-    class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
+    class="relative p-1 w-full bg-white cursor-pointer border border-gray-100 rounded-lg transition-shadow hover:shadow"
   >
     <div class="mb-2 min-h-[12rem] flex items-center">
       <img
