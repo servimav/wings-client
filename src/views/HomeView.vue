@@ -37,6 +37,7 @@ const offersNew = computed(() => offers.value.slice(0, 6))
 const offersPromo = computed(() => offers.value.slice(6, 12))
 const offersTrending = computed(() => offers.value.slice(10, 13))
 const offersExtra = computed(() => offers.value.slice(13, 21))
+const offerRemain = computed(() => offers.value.slice(21, offers.value.length))
 /**
  * -----------------------------------------
  *	Methods
@@ -121,7 +122,7 @@ onMounted(() => {
 
         <div class="grid grid-cols-2 gap-2 mt-2">
           <OfferWidget
-            v-for="(offer, index) in offersExtra"
+            v-for="(offer, index) in offerRemain"
             :key="`home-view-offer-grid-example-${index}`"
             :offer="offer"
             @click="() => goToOffer(offer)"
