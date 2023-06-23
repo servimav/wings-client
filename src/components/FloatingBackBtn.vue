@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ROUTES } from '@/router'
 import { defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 /**
@@ -7,14 +8,20 @@ import { useRouter } from 'vue-router'
  * -----------------------------------------
  */
 const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
-const router = useRouter()
+const $router = useRouter()
+
+function goHome() {
+  $router.push({
+    name: ROUTES.HOME
+  })
+}
 </script>
 
 <template>
   <button
     type="button"
     class="fixed z-20 top-5 left-5 rounded-full p-1.5 text-gray-900 bg-white shadow-lg focus:outline-none"
-    @click="router.back()"
+    @click="goHome"
   >
     <ArrowLeft class="h-5 w-5 text-gray-900" />
 
