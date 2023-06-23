@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeMount, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ShopCategory } from '@servimav/wings-services'
 import type { Offer } from '@/types'
@@ -32,6 +32,11 @@ const $service = useServices()
 
 const categories = ref<ShopCategory[]>([])
 const offers = ref<Offer[]>([])
+
+const offersNew = computed(() => offers.value.slice(0, 6))
+const offersPromo = computed(() => offers.value.slice(6, 12))
+const offersTrending = computed(() => offers.value.slice(10, 13))
+const offersExtra = computed(() => offers.value.slice(13, 21))
 /**
  * -----------------------------------------
  *	Methods
@@ -83,29 +88,65 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <main class="px-2 pt-20 pb-16 w-full container">
-    <div class="px-2 mb-4">
-      <OfferSlider :offers="offers" @click-on-offer="(offer) => goToOffer(offer)" />
-    </div>
-    <div class="px-2 mb-2">
-      <CategorySlider :categories="categories" class="mb-2" />
-      <div class="grid grid-cols-2 gap-2">
-        <OfferWidget
-          v-for="(offer, index) in offers"
-          :key="`home-view-offer-grid-example-${index}`"
-          :offer="offer"
-          @click="() => goToOffer(offer)"
+  <main class="p-2 pt-[4.8rem] pb-16 w-full container">
+    <div class="space-y-2 mb-2">
+      <div class="px-2" v-if="offersNew.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Ofertas Nuevas</div>
+        <OfferSlider
+          :offers="offersNew"
+          @click-on-offer="(offer) => goToOffer(offer)"
+          class="mt-2"
         />
       </div>
-    </div>
-    <div class="p-2 mb-2">
-      <div class="flex-col space-y-2">
-        <OfferAdvancedWidget
-          v-for="(offer, index) in offers"
-          :key="`home-view-offer-grid-example-${index}`"
-          :offer="offer"
-          @click="() => goToOffer(offer)"
-        />
+
+      <div class="px-2" v-if="categories.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">
+          Descubre nuestras Categorías
+        </div>
+        <CategorySlider :categories="categories" />
+      </div>
+
+      <div class="px-2" v-if="offersPromo.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Promociones de Hoy</div>
+
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <OfferWidget
+            v-for="(offer, index) in offersPromo"
+            :key="`home-view-offer-grid-example-${index}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+        </div>
+      </div>
+
+      <div class="px-2" v-if="offersTrending.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
+
+        <div class="flex-col space-y-2 mt-2">
+          <OfferAdvancedWidget
+            v-for="(offer, index) in offersTrending"
+            :key="`home-view-offer-grid-example-${index}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+        </div>
+      </div>
+
+      <div class="px-2" v-if="categories.length">
+        <CategorySlider :categories="categories" />
+      </div>
+
+      <div class="px-2" v-if="offersExtra.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Ofertas</div>
+
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <OfferWidget
+            v-for="(offer, index) in offersExtra"
+            :key="`home-view-offer-grid-example-${index}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+        </div>
       </div>
     </div>
   </main>

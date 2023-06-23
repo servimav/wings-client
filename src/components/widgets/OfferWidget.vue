@@ -42,16 +42,16 @@ const displayPrice = computed(() =>
   <div
     class="relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
   >
-    <div class="mb-2">
+    <div class="mb-2 min-h-[12rem] flex items-center">
       <img
-        class="h-full max-w-full rounded-lg"
+        class="max-w-full rounded-lg"
         :src="offer.image"
         :alt="offer.name"
         :title="offer.name"
         @error="setDefaultImage"
       />
     </div>
-    <div class="px-1">
+    <div class="mt-2 px-1">
       <div class="text-sm font-semibold tracking-wide text-gray-800">
         {{ offer.name }}
       </div>
