@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, onBeforeMount, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useShare, useTitle } from '@vueuse/core'
-import { toCurrency, setDefaultImage } from '@/helpers'
+import { toCurrency, setDefaultImage, scrollTop } from '@/helpers'
 import { useServices } from '@/services'
 import type { Offer } from '@/types'
+import { ROUTES } from '@/router'
 /**
  * -----------------------------------------
  *	Components
  * -----------------------------------------
  */
+const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
 
 /**
@@ -26,8 +28,9 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
-const loading = ref(false)
 const offer = ref<Offer>()
+const offersSimilar = ref<Offer[]>([])
+const showFullImage = ref(false)
 /**
  * -----------------------------------------
  *	Methods
@@ -37,21 +40,50 @@ const offer = ref<Offer>()
 /**
  * getOffer from route params
  */
-async function getOffer() {
-  // check if param "offerId" exists on url
-  if ($route.params.offerId) {
-    // Cast offerId as Number
-    const offerId = Number($route.params.offerId)
-    loading.value = true
-    // make request
-    try {
-      // get offer
-      const resp = await $service.shop.offer.showClient(offerId, { currency: 'CUP' })
-      offer.value = resp.data
-    } catch (error) {
-      console.log({ error })
+async function getOffer(offerId: number) {
+  // get offer
+  const resp = await $service.shop.offer.showClient(offerId, { currency: 'CUP' })
+  offer.value = resp.data
+}
+/**
+ * getOfferSimilar
+ * @param offerId
+ */
+async function getOfferSimilar(offerId: number) {
+  offersSimilar.value = []
+  offersSimilar.value = (
+    await $service.shop.offer.showSimilar(offerId, {
+      currency: 'CUP'
+    })
+  ).data
+}
+
+/**
+ * goToOffer
+ * @param offer
+ */
+function goToOffer(offer: Offer) {
+  $router.push({
+    name: ROUTES.SINGLE_OFFER,
+    params: {
+      offerId: offer.id
     }
-    loading.value = false
+  })
+}
+/**
+ * loadData
+ */
+async function loadData(offerId: number) {
+  try {
+    // get the offer
+    await getOffer(offerId)
+    // get similar offers and put title
+    if (offer.value) {
+      useTitle(`${offer.value?.name} | Wings`)
+      await getOfferSimilar(offerId)
+    }
+  } catch (error) {
+    console.log({ error })
   }
 }
 /**
@@ -83,9 +115,25 @@ function onClickShare() {
  */
 
 onBeforeMount(async () => {
-  await getOffer()
+  // check if param "offerId" exists on url
+  if ($route.params.offerId) {
+    // Cast offerId as Number
+    const offerId = Number($route.params.offerId)
+    await loadData(offerId)
+  }
+})
 
-  if (offer.value) useTitle(`${offer.value?.name} | Wings`)
+/**
+ * react to route url change
+ */
+onBeforeRouteUpdate(async (to) => {
+  // check if param "offerId" exists on url
+  if (to.params.offerId) {
+    // Cast offerId as Number
+    const offerId = Number(to.params.offerId)
+    await loadData(offerId)
+    scrollTop()
+  }
 })
 </script>
 
@@ -104,18 +152,19 @@ onBeforeMount(async () => {
     <!-- Share button -->
 
     <template v-if="offer">
-      <div class="fixed h-96 w-full bg-slate-500">
+      <div class="fixed h-96 w-full bg-white">
         <img
           :src="offer.image"
           :alt="offer.name"
           :title="offer.name"
-          class="w-full h-full"
+          class="w-full"
           @error="setDefaultImage"
+          @click="() => (showFullImage = true)"
         />
       </div>
 
       <!-- Content -->
-      <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-36 pt-8">
+      <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-28 pt-8">
         <div class="flex gap-2 items-center justify-between">
           <!-- Title -->
           <h4 class="text-xl mb-1 font-semibold tracking-tight text-gray-800">
@@ -141,7 +190,14 @@ onBeforeMount(async () => {
         <!-- Stock -->
         <div class="mb-2">
           <span
-            v-if="offer.stock_type === 'LIMITED'"
+            v-if="!offer.available"
+            class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 rounded"
+          >
+            No hay Disponibles</span
+          >
+
+          <span
+            v-else-if="offer.stock_type === 'LIMITED'"
             class="bg-butterfly-blue-50 text-butterfly-blue-600 font-medium px-2.5 py-0.5 rounded"
           >
             {{ offer.stock_qty }} Disponibles</span
@@ -174,14 +230,19 @@ onBeforeMount(async () => {
             :key="`single-offer-attribute-${index}`"
             class="flex gap-2"
           >
-            <h6 class="text-gray-600 font-medium tracking-wide mb-1">
-              {{ attribute.key }}
-            </h6>
-            <div class="text-gray-800">
+            <h6 class="text-gray-600 font-medium tracking-wide mb-1">{{ attribute.key }}:</h6>
+            <div class="text-gray-900">
               {{ attribute.value }}
             </div>
           </li>
         </ul>
+
+        <!-- Similar offers -->
+        <div class="mt-4" v-if="offersSimilar.length">
+          <h5 class="text-center text-gray-800 text-xl">Ofertas Similares</h5>
+          <OfferSlider :offers="offersSimilar" class="mt-2" @click-on-offer="goToOffer" />
+        </div>
+        <!-- / Similar offers -->
       </div>
       <!-- / Content -->
 
@@ -197,4 +258,17 @@ onBeforeMount(async () => {
       <!-- / Button -->
     </template>
   </main>
+
+  <!-- Zoom Image -->
+  <div
+    class="z-20 absolute overflow-y-scroll top-0 left-0 w-screen h-full bg-black flex items-center"
+    v-if="offer"
+    v-show="showFullImage"
+  >
+    <span class="absolute top-6 right-6 text-white text-2xl" @click="() => (showFullImage = false)"
+      >&times;</span
+    >
+    <img class="m-auto block w-[80%]" :src="offer.image" />
+  </div>
+  <!-- / Zoom Image -->
 </template>

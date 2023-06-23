@@ -33,7 +33,7 @@ const search = ref('')
             v-model="search"
             type="text"
             id="top-navbar-search-input"
-            class="p-2 pl-8 text-sm text-gray-600 border border-gray-400 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
+            class="p-2 w-full pl-8 text-sm text-gray-600 border border-gray-400 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
             placeholder="Buscar..."
             required
           />
