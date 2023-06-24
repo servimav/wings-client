@@ -30,6 +30,11 @@ const router = createRouter({
       component: () => import('@/views/SingleOfferView.vue')
     },
     {
+      path: '/filter',
+      name: ROUTES.FILTER,
+      component: () => import('@/views/FilterView.vue')
+    },
+    {
       path: '/user',
       name: ROUTES.USER,
       component: () => import('@/views/UserView.vue')

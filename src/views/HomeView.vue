@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import type { Offer } from '@/types'
@@ -14,6 +14,7 @@ const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/C
 const OfferAdvancedWidget = defineAsyncComponent(
   () => import('@/components/widgets/OfferAdvancedWidget.vue')
 )
+const OfferSkeleton = defineAsyncComponent(() => import('@/components/widgets/OfferSkeleton.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
 /**
@@ -31,7 +32,7 @@ const $shop = useShopStore()
  */
 
 const categories = computed(() => $shop.categories)
-const offers = computed(() => $shop.offers)
+const offers = computed(() => $shop.homeOffers)
 
 const offersLv1 = computed(() => offers.value.slice(0, 5))
 const offersLv2 = computed(() => offers.value.slice(5, 15))
@@ -69,7 +70,8 @@ onMounted(() => {
 
 <template>
   <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
-    <div class="space-y-2 mb-2">
+    <!-- Main Content -->
+    <div class="space-y-2 mb-2" v-if="offers.length">
       <!-- Lv1 -->
       <div class="px-2" v-if="offersLv1.length">
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">TOP 5</div>
@@ -89,7 +91,7 @@ onMounted(() => {
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">
           Descubre nuestras Categorías
         </div>
-        <CategorySlider :categories="categories" />
+        <CategorySlider :categories="categories" go-to-filter />
       </div>
 
       <!-- Lv2 -->
@@ -107,7 +109,7 @@ onMounted(() => {
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">
           Descubre nuestras Categorías
         </div>
-        <CategorySlider :categories="categories" />
+        <CategorySlider :categories="categories" go-to-filter />
       </div>
 
       <div class="px-2" v-if="offersLv3.length">
@@ -124,7 +126,7 @@ onMounted(() => {
       </div>
 
       <div class="px-2" v-if="categories.length">
-        <CategorySlider :categories="categories" />
+        <CategorySlider :categories="categories" go-to-filter />
       </div>
 
       <div class="px-2" v-if="offerRemain.length">
@@ -140,5 +142,12 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <!-- / Main Content -->
+
+    <!-- Loading -->
+    <div v-else class="grid grid-cols-2 gap-2">
+      <OfferSkeleton :repeat="8" />
+    </div>
+    <!-- / Loading -->
   </main>
 </template>

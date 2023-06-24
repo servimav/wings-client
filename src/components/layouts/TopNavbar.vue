@@ -1,5 +1,17 @@
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import type { ShopOfferFilter } from '@servimav/wings-services'
+import { ROUTES } from '@/router'
+/**
+ * -----------------------------------------
+ *	Types
+ * -----------------------------------------
+ */
+
+export interface Prop {
+  search?: string
+}
 /**
  * -----------------------------------------
  *	Components
@@ -10,8 +22,42 @@ const MangifyGlass = defineAsyncComponent(() => import('@/components/icons/Mangi
 const ShoppingCartOutline = defineAsyncComponent(
   () => import('@/components/icons/ShoppingCartOutline.vue')
 )
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+const $router = useRouter()
+/**
+ * -----------------------------------------
+ *	Data
+ * -----------------------------------------
+ */
 
-const search = ref('')
+const search = ref<ShopOfferFilter>({
+  currency: 'CUP',
+  search: '',
+  sort: 'views'
+})
+
+/**
+ * onInputChange
+ * @param event
+ */
+function onInputChange(event: Event) {
+  const value = (event.target as HTMLInputElement).value
+  search.value.search = value
+}
+
+/**
+ * onSubmit
+ */
+function onSubmit() {
+  $router.push({
+    name: ROUTES.FILTER,
+    query: search.value
+  })
+}
 </script>
 
 <template>
@@ -19,7 +65,7 @@ const search = ref('')
     <div
       class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl py-2 px-3 gap-2"
     >
-      <form class="flex-1">
+      <form class="flex-1" @submit.prevent="onSubmit">
         <label
           for="top-navbar-search-input"
           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -30,12 +76,12 @@ const search = ref('')
             <MangifyGlass class="w-5 h-5 text-gray-500" />
           </div>
           <input
-            v-model="search"
+            :value="search.search"
+            @change.prevent="onInputChange"
             type="text"
             id="top-navbar-search-input"
             class="p-2 w-full pl-8 text-sm text-gray-600 border border-gray-400 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
             placeholder="Buscar..."
-            required
           />
         </div>
       </form>

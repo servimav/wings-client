@@ -1,15 +1,46 @@
 <script lang="ts" setup>
+import { ROUTES } from '@/router'
 import { type Category } from '@/types'
+import type { ShopOfferFilter } from '@servimav/wings-services'
+import { useRouter, type LocationQueryRaw } from 'vue-router'
 
 interface CategorySliderProps {
   categories: Category[]
   categoryActive?: Category
+  goToFilter?: boolean
 }
-
-defineProps<CategorySliderProps>()
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+const $props = defineProps<CategorySliderProps>()
 const $emit = defineEmits<{
   (e: 'update:categoryActive', value: Category): void
 }>()
+const $router = useRouter()
+
+/**
+ * -----------------------------------------
+ *	methods
+ * -----------------------------------------
+ */
+
+function onCategoryClick(category: Category) {
+  if ($props.goToFilter) {
+    const query: ShopOfferFilter = {
+      category_id: category.id,
+      currency: 'CUP',
+      sort: 'views'
+    }
+    $router.push({
+      name: ROUTES.FILTER,
+      query: query as LocationQueryRaw
+    })
+  } else {
+    $emit('update:categoryActive', category)
+  }
+}
 </script>
 
 <template>
@@ -23,7 +54,7 @@ const $emit = defineEmits<{
           ? 'bg-butterfly-blue-500 text-white hover:bg-butterfly-blue-400'
           : 'text-gray-800 bg-white border border-gray-300 hover:bg-gray-100'
       ]"
-      @click="() => $emit('update:categoryActive', category)"
+      @click="() => onCategoryClick(category)"
     >
       {{ category.name }}
     </div>
