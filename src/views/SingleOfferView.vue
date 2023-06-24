@@ -29,7 +29,7 @@ const { isSupported, share } = useShare()
  * -----------------------------------------
  */
 const offer = ref<Offer>()
-const offersSimilar = ref<Offer[]>([])
+const offersSimilar = ref<Array<Offer[]>>([])
 const showFullImage = ref(false)
 /**
  * -----------------------------------------
@@ -51,11 +51,22 @@ async function getOffer(offerId: number) {
  */
 async function getOfferSimilar(offerId: number) {
   offersSimilar.value = []
-  offersSimilar.value = (
+  const firstLevel = (
     await $service.shop.offer.showSimilar(offerId, {
-      currency: 'CUP'
+      currency: 'CUP',
+      level: 0
     })
   ).data
+  offersSimilar.value.push(firstLevel)
+
+  const secondLevel = (
+    await $service.shop.offer.showSimilar(offerId, {
+      currency: 'CUP',
+      level: 1
+    })
+  ).data
+
+  offersSimilar.value.push(secondLevel)
 }
 
 /**
@@ -238,10 +249,18 @@ onBeforeRouteUpdate(async (to) => {
         </ul>
 
         <!-- Similar offers -->
-        <div class="mt-4" v-if="offersSimilar.length">
-          <h5 class="text-center text-gray-800 text-xl">Ofertas Similares</h5>
-          <OfferSlider :offers="offersSimilar" class="mt-2" @click-on-offer="goToOffer" />
-        </div>
+        <template v-if="offersSimilar.length">
+          <div
+            class="mt-4"
+            v-for="(similar, similarKey) in offersSimilar"
+            :key="`similar-${similarKey}`"
+          >
+            <h5 class="text-center text-gray-800 text-xl">
+              {{ similarKey === 0 ? 'Ofertas Similares' : 'Recomendaciones' }}
+            </h5>
+            <OfferSlider :offers="similar" class="mt-2" @click-on-offer="goToOffer" />
+          </div>
+        </template>
         <!-- / Similar offers -->
       </div>
       <!-- / Content -->
