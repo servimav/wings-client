@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onBeforeMount, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useShare, useTitle } from '@vueuse/core'
 import { toCurrency, setDefaultImage, scrollTop } from '@/helpers'
@@ -28,6 +28,19 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
+const contactUrl = computed(() => {
+  const url = location.href
+  if (offer.value) {
+    const store = offer.value.store
+    const phone = store && store.contact_phone ? store.contact_phone : '5355190107'
+    const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
+    const message = `Hola, le escribo porque me interesa el producto:\n${
+      offer.value.name
+    } \nPrecio: ${toCurrency(price)}\nEnlace: ${url}`
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+  }
+  return '#'
+})
 const offer = ref<Offer>()
 const offersSimilar = ref<Array<Offer[]>>([])
 const showFullImage = ref(false)
@@ -267,12 +280,13 @@ onBeforeRouteUpdate(async (to) => {
 
       <!-- Button -->
       <div class="fixed py-4 px-2 bottom-0 w-full bg-white text-center">
-        <button
-          type="button"
-          class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-butterfly-blue transition-colors hover:bg-butterfly-blue-400 focus:ring-4 focus:outline-none focus:ring-butterfly-blue-100"
+        <a
+          :href="contactUrl"
+          role="button"
+          class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-primary-500 transition-colors hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-100"
         >
-          Contactar en WhatsApp
-        </button>
+          Contactar Vendedor
+        </a>
       </div>
       <!-- / Button -->
     </template>
