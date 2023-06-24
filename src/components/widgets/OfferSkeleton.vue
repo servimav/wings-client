@@ -7,11 +7,11 @@ defineProps<{ repeat: number }>()
     v-for="i in repeat"
     :key="`skeleton-${i}`"
     role="status"
-    class="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6 dark:border-gray-700"
+    class="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6"
   >
-    <div class="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700">
+    <div class="flex items-center justify-center mb-4 bg-gray-300 rounded">
       <svg
-        class="w-32 text-gray-200 dark:text-gray-600"
+        class="w-32 text-gray-200"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         fill="currentColor"
@@ -22,8 +22,8 @@ defineProps<{ repeat: number }>()
         />
       </svg>
     </div>
-    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2"></div>
-    <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+    <div class="h-2 bg-gray-200 rounded-full w-full mb-2"></div>
+    <div class="h-2 bg-gray-200 rounded-full"></div>
     <span class="sr-only">Loading...</span>
   </div>
 </template>
