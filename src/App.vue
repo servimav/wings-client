@@ -40,7 +40,7 @@ async function getCategories() {
  */
 async function getOffers() {
   const resp = (await $service.shop.offer.filter({ currency: 'CUP' })).data
-  $shop.offers = resp.data
+  $shop.homeOffers = resp.data
 }
 
 onBeforeMount(async () => {
@@ -53,8 +53,11 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <FloatingBackBtn v-if="$route.name != ROUTES.HOME" />
-  <TopNavbar v-else />
+  <template v-if="$route.name !== ROUTES.SINGLE_OFFER">
+    <TopNavbar />
+    <BottomNavbar />
+  </template>
+  <FloatingBackBtn v-else />
+
   <RouterView />
-  <BottomNavbar v-if="$route.name == ROUTES.HOME" />
 </template>
