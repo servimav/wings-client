@@ -5,6 +5,6 @@ export enum ROUTES {
   HOME = 'home',
   ORDERS = 'orders',
   SINGLE_OFFER = 'single-offer',
-  TEST = 'test',
+  UNDER_CONSTRUCTION = 'under-construction',
   USER = 'user'
 }

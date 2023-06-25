@@ -35,16 +35,14 @@ const router = createRouter({
       component: () => import('@/views/FilterView.vue')
     },
     {
+      path: '/under-construction',
+      name: ROUTES.UNDER_CONSTRUCTION,
+      component: () => import('@/views/UnderConstruction.vue')
+    },
+    {
       path: '/user',
       name: ROUTES.USER,
       component: () => import('@/views/UserView.vue')
-    },
-
-    // Test View
-    {
-      path: '/test',
-      name: ROUTES.TEST,
-      component: () => import('@/views/TestView.vue')
     }
   ]
 })

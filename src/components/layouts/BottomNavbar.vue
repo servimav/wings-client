@@ -45,14 +45,14 @@ const BUTTONS: Array<IconLabelLink> = [
   {
     icon: SquaresOutline,
     label: 'Categorías',
-    to: { name: ROUTES.CATEGORIES }
+    to: { name: ROUTES.UNDER_CONSTRUCTION }
   },
   {
     icon: ShoppingBagOutline,
     label: 'Pedidos',
-    to: { name: ROUTES.ORDERS }
+    to: { name: ROUTES.UNDER_CONSTRUCTION }
   },
-  { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.USER } }
+  { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.UNDER_CONSTRUCTION } }
 ]
 
 const route = useRoute()
