@@ -11,6 +11,8 @@ import { ROUTES } from '@/router'
  *	Components
  * -----------------------------------------
  */
+const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
+const NoOrdersModal = defineAsyncComponent(() => import('@/components/modals/NoOrdersModal.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
 
@@ -28,6 +30,9 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
+const categories = computed(() =>
+  offer.value && offer.value.categories ? offer.value && offer.value.categories : []
+)
 const contactUrl = computed(() => {
   const url = location.href
   if (offer.value) {
@@ -44,6 +49,7 @@ const contactUrl = computed(() => {
 const offer = ref<Offer>()
 const offersSimilar = ref<Array<Offer[]>>([])
 const showFullImage = ref(false)
+const showNoOrderModal = ref(false)
 /**
  * -----------------------------------------
  *	Methods
@@ -181,11 +187,12 @@ onBeforeRouteUpdate(async (to) => {
     <button
       type="button"
       @click="onClickShare"
+      v-if="isSupported"
       class="fixed z-20 top-5 right-5 rounded-full p-1.5 text-gray-900 bg-white shadow-lg focus:outline-none"
     >
       <ShareOutline class="h-5 w-5 text-gray-900" />
 
-      <span class="sr-only">Arrow left icon</span>
+      <span class="sr-only">Share icon</span>
     </button>
     <!-- Share button -->
 
@@ -226,7 +233,7 @@ onBeforeRouteUpdate(async (to) => {
         </div>
 
         <!-- Stock -->
-        <div class="mb-2">
+        <div class="mb-2 flex gap-2 justify-between">
           <span
             v-if="!offer.available"
             class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 rounded"
@@ -245,22 +252,38 @@ onBeforeRouteUpdate(async (to) => {
             v-else-if="offer.stock_type === 'INFINITY'"
             class="bg-butterfly-blue-50 text-butterfly-blue-600 font-medium px-2.5 py-0.5 rounded"
           >
-            Muchos Disponibles</span
+            Excelente Disponibilidad</span
           >
 
           <span v-else class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 rounded">
             No hay Disponibles</span
           >
+
+          <div
+            v-if="offer.available && offer.stock_type !== 'OUT' && offer.min_delivery_days"
+            class="px-2 bg-green-200 rounded-full text-gray-900"
+          >
+            Entrega en {{ offer.min_delivery_days }} días
+          </div>
         </div>
         <!-- / Stock -->
 
+        <!-- Store Details -->
+        <span class="px-2 mt-4 text-sm text-thin bg-gray-200 rounded-full" v-if="offer.store">
+          Proveedor: {{ offer.store.name }}
+        </span>
+        <!-- Store Details -->
+
+        <!-- Description -->
         <div class="mb-2.5">
           <h6 class="text-gray-800 font-medium tracking-wide mb-1">Descripción</h6>
           <p class="text-gray-500">
             {{ offer.description }}
           </p>
         </div>
+        <!-- / Description -->
 
+        <!-- Attributes -->
         <ul class="space-y-2.5 list-none p-2" v-if="offer.attributes?.length">
           <li class="text-gray-800 font-medium tracking-wide mb-1">Detalles</li>
           <li
@@ -274,6 +297,13 @@ onBeforeRouteUpdate(async (to) => {
             </div>
           </li>
         </ul>
+        <!-- /Attributes -->
+
+        <!-- categories -->
+        <template v-if="categories.length">
+          <CategorySlider :categories="categories" go-to-filter />
+        </template>
+        <!-- / categories -->
 
         <!-- Similar offers -->
         <template v-if="offersSimilar.length">
@@ -293,9 +323,12 @@ onBeforeRouteUpdate(async (to) => {
       <!-- / Content -->
 
       <!-- Button -->
-      <div class="fixed py-4 px-2 bottom-0 w-full bg-white text-center">
+      <div
+        class="fixed py-4 px-2 bottom-0 w-full bg-white text-center"
+        @click="() => (showNoOrderModal = true)"
+      >
         <a
-          :href="contactUrl"
+          href="#"
           role="button"
           class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-primary-500 transition-colors hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-100"
         >
@@ -308,7 +341,7 @@ onBeforeRouteUpdate(async (to) => {
 
   <!-- Zoom Image -->
   <div
-    class="z-20 absolute overflow-y-scroll top-0 left-0 w-screen h-full bg-black flex items-center"
+    class="z-20 fixed overflow-y-scroll top-0 left-0 w-screen h-full bg-black flex items-center"
     v-if="offer"
     v-show="showFullImage"
   >
@@ -318,4 +351,8 @@ onBeforeRouteUpdate(async (to) => {
     <img class="m-auto block w-[80%]" :src="offer.image" />
   </div>
   <!-- / Zoom Image -->
+
+  <!-- No Order Modal -->
+  <NoOrdersModal v-if="showNoOrderModal" @close="() => (showNoOrderModal = false)" />
+  <!-- / NoOrdersModal -->
 </template>
