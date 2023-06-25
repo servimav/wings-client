@@ -72,9 +72,9 @@ function onSubmit() {
           >Buscar</label
         >
         <div class="relative">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+          <button type="submit" class="absolute inset-y-0 left-0 flex items-center pl-2">
             <MangifyGlass class="w-5 h-5 text-gray-500" />
-          </div>
+          </button>
           <input
             :value="search.search"
             @change.prevent="onInputChange"
