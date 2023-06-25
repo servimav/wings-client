@@ -118,14 +118,13 @@ async function onClickShare() {
     // Get image file from url
     let files: File[] = []
     try {
-      const response = await fetch(offer.value.image ?? '/images/default.png')
+      const response = await fetch(offer.value.image as string)
       const blob = await response.blob()
-      const filename = offer.value.name
-      const imageFile = new File([blob], filename, { type: blob.type })
+      const imageName = `${offer.value.name}.png`
+      const imageFile = new File([blob], imageName, { type: blob.type })
       files.push(imageFile)
     } catch (error) {
       console.log({ error })
-      alert(error)
     }
 
     // set offer price
