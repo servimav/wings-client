@@ -114,7 +114,7 @@ async function loadData(offerId: number) {
  * handle on share button click event
  */
 async function onClickShare() {
-  if (offer.value && isSupported.value) {
+  if (offer.value) {
     // Get image file from url
     let files: File[] = []
     try {
@@ -125,6 +125,7 @@ async function onClickShare() {
       files.push(imageFile)
     } catch (error) {
       console.log({ error })
+      alert(error)
     }
 
     // set offer price
