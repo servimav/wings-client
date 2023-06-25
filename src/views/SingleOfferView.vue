@@ -153,10 +153,10 @@ onBeforeMount(async () => {
 onBeforeRouteUpdate(async (to) => {
   // check if param "offerId" exists on url
   if (to.params.offerId) {
+    scrollTop()
     // Cast offerId as Number
     const offerId = Number(to.params.offerId)
     await loadData(offerId)
-    scrollTop()
   }
 })
 </script>
