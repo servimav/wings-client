@@ -113,11 +113,24 @@ async function loadData(offerId: number) {
 /**
  * handle on share button click event
  */
-function onClickShare() {
+async function onClickShare() {
   if (offer.value && isSupported.value) {
-    const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
+    // Get image file from url
+    let files: File[] = []
+    try {
+      const response = await fetch(offer.value.image ?? '/images/default.png')
+      const blob = await response.blob()
+      const filename = offer.value.name
+      const imageFile = new File([blob], filename, { type: blob.type })
+      files.push(imageFile)
+    } catch (error) {
+      console.log({ error })
+    }
 
-    let text = `${offer.value.name} por solo ${toCurrency(price)}!!!\n`
+    // set offer price
+    const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
+    // Share message
+    let text = `${offer.value.name}\n\nPrecio: ${toCurrency(price)}\n\n`
 
     if (offer.value.stock_type === 'LIMITED')
       text += `Apúrate, solamente quedan ${offer.value.stock_qty}!!!`
@@ -127,7 +140,8 @@ function onClickShare() {
     share({
       title: offer.value.name,
       url: location.href,
-      text
+      text,
+      files
     })
   }
 }
