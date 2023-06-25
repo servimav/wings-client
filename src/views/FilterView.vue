@@ -6,6 +6,7 @@ import type { Offer } from '@/types'
 import { useShopStore } from '@/stores'
 import { ROUTES } from '@/router'
 import type { ShopOfferFilter } from '@servimav/wings-services'
+import { scrollTop } from '@/helpers'
 /**
  * -----------------------------------------
  *	Components
@@ -78,11 +79,13 @@ function goToOffer(offer: Offer) {
 
 onBeforeMount(() => {
   const urlFilter = $route.query as ShopOfferFilter
+  scrollTop()
   filterOffers(urlFilter)
 })
 
 onBeforeRouteUpdate((to) => {
   const urlFilter = to.query as ShopOfferFilter
+  scrollTop()
   filterOffers(urlFilter)
 })
 
@@ -95,6 +98,11 @@ onMounted(() => {
 <template>
   <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
     <div class="space-y-2 mb-2">
+      <div class="px-2" v-if="categories.length">
+        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Categorías</div>
+        <CategorySlider :categories="categories" go-to-filter />
+      </div>
+
       <!-- Data -->
       <div class="px-2" v-if="offers.length">
         <h2 class="text-gray-800 text-lg text-center shadow-sm bg-white p-2">
