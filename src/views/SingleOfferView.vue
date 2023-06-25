@@ -140,8 +140,8 @@ async function onClickShare() {
     share({
       title: offer.value.name,
       url: location.href,
-      text,
-      files
+      text
+      // files
     })
   }
 }
