@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
-import type { Offer } from '@/types'
-import { useShopStore } from '@/stores'
 import { ROUTES } from '@/router'
+import { useServices } from '@/services'
+import { useShopStore } from '@/stores'
+import type { Offer } from '@/types'
 /**
  * -----------------------------------------
  *	Components
  * -----------------------------------------
  */
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
-const OfferAdvancedWidget = defineAsyncComponent(
-  () => import('@/components/widgets/OfferAdvancedWidget.vue')
-)
 const OfferSkeleton = defineAsyncComponent(() => import('@/components/widgets/OfferSkeleton.vue'))
-const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
 /**
  * -----------------------------------------
@@ -23,6 +20,7 @@ const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/Offe
  * -----------------------------------------
  */
 const $router = useRouter()
+const $service = useServices()
 const $shop = useShopStore()
 
 /**
@@ -30,14 +28,19 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
-
 const categories = computed(() => $shop.categories)
-const offers = computed(() => $shop.homeOffers)
 
-const offersLv1 = computed(() => offers.value.slice(0, 5))
-const offersLv2 = computed(() => offers.value.slice(5, 15))
-const offersLv3 = computed(() => offers.value.slice(15, 20))
-const offerRemain = computed(() => offers.value.slice(20, offers.value.length))
+const eventHandler = () => {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight
+  const scrolled = window.scrollY
+  if (scrollable - scrolled === 0) {
+    getOffers()
+  }
+}
+
+const loading = ref(false)
+const offers = computed(() => $shop.homeOffers)
+const offerCurrentPage = computed(() => $shop.homeOffersCurrentPage)
 /**
  * -----------------------------------------
  *	Methods
@@ -57,6 +60,36 @@ function goToOffer(offer: Offer) {
 }
 
 /**
+ * getOffers
+ */
+async function getOffers() {
+  if (loading.value) return
+
+  loading.value = true
+  try {
+    const resp = (
+      await $service.shop.offer.filter({
+        page: offerCurrentPage.value ? offerCurrentPage.value + 1 : undefined,
+        currency: 'CUP',
+        sort: 'views'
+      })
+    ).data
+    // if server return data
+    if (resp.data.length) {
+      $shop.homeOffers.push(...resp.data)
+      $shop.homeOffersCurrentPage = resp.meta.current_page
+    } else {
+      // if no more data stop event
+      window.removeEventListener('scroll', eventHandler)
+    }
+  } catch (error) {
+    console.log({ error })
+    // stop event
+    window.removeEventListener('scroll', eventHandler)
+  }
+  loading.value = false
+}
+/**
  * -----------------------------------------
  *	Lifecycle
  * -----------------------------------------
@@ -65,81 +98,33 @@ function goToOffer(offer: Offer) {
 onMounted(() => {
   // set default title
   useTitle('Compras y Envíos | Wings')
+  // start listening event
+  window.addEventListener('scroll', eventHandler)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', eventHandler)
 })
 </script>
 
 <template>
   <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
     <!-- Main Content -->
-    <div class="space-y-2 mb-2" v-if="offers.length">
-      <!-- Lv1 -->
-      <div class="px-2" v-if="offersLv1.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">TOP 5</div>
-
-        <div class="flex-col space-y-2 mt-2">
-          <OfferAdvancedWidget
-            v-for="(offer, index) in offersLv1"
-            :key="`home-view-offer-grid-example-${index}`"
-            :offer="offer"
-            @click="() => goToOffer(offer)"
-          />
-        </div>
-      </div>
-      <!-- / Lv1 -->
-
-      <div class="px-2" v-if="categories.length">
+    <div class="mb-2 px-2" v-if="offers.length">
+      <template v-if="categories.length">
         <div class="text-gray-800 text-center shadow-sm bg-white p-2">
           Descubre nuestras Categorías
         </div>
         <CategorySlider :categories="categories" go-to-filter />
-      </div>
-
-      <!-- Lv2 -->
-      <div class="px-2" v-if="offersLv2.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">En Tendencia</div>
-        <OfferSlider
-          :offers="offersLv2"
-          @click-on-offer="(offer) => goToOffer(offer)"
-          class="mt-2"
+      </template>
+      <div class="grid grid-cols-2 gap-2 mt-2">
+        <OfferWidget
+          v-for="(offer, index) in offers"
+          :key="`home-view-offer-grid-${index}`"
+          :offer="offer"
+          @click="() => goToOffer(offer)"
         />
-      </div>
-      <!-- / Lv2 -->
-
-      <div class="px-2" v-if="categories.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">
-          Descubre nuestras Categorías
-        </div>
-        <CategorySlider :categories="categories" go-to-filter />
-      </div>
-
-      <div class="px-2" v-if="offersLv3.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Promociones de Hoy</div>
-
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <OfferWidget
-            v-for="(offer, index) in offersLv3"
-            :key="`home-view-offer-grid-example-${index}`"
-            :offer="offer"
-            @click="() => goToOffer(offer)"
-          />
-        </div>
-      </div>
-
-      <div class="px-2" v-if="categories.length">
-        <CategorySlider :categories="categories" go-to-filter />
-      </div>
-
-      <div class="px-2" v-if="offerRemain.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Ofertas</div>
-
-        <div class="grid grid-cols-2 gap-2 mt-2">
-          <OfferWidget
-            v-for="(offer, index) in offerRemain"
-            :key="`home-view-offer-grid-example-${index}`"
-            :offer="offer"
-            @click="() => goToOffer(offer)"
-          />
-        </div>
+        <OfferSkeleton :repeat="4" v-if="loading" />
       </div>
     </div>
     <!-- / Main Content -->

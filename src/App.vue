@@ -41,6 +41,7 @@ async function getCategories() {
 async function getOffers() {
   const resp = (await $service.shop.offer.filter({ currency: 'CUP' })).data
   $shop.homeOffers = resp.data
+  $shop.homeOffersCurrentPage = resp.meta.current_page
 }
 
 onBeforeMount(async () => {

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeMount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
-import type { Offer } from '@/types'
-import { useShopStore } from '@/stores'
-import { ROUTES } from '@/router'
-import type { ShopOfferFilter } from '@servimav/wings-services'
+import type { ShopOffer, ShopOfferFilter } from '@servimav/wings-services'
 import { scrollTop } from '@/helpers'
+import { ROUTES } from '@/router'
+import { useServices } from '@/services'
+import { useShopStore } from '@/stores'
+import type { Offer } from '@/types'
 /**
  * -----------------------------------------
  *	Components
@@ -23,6 +24,7 @@ const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline
  */
 const $route = useRoute()
 const $router = useRouter()
+const $service = useServices()
 const $shop = useShopStore()
 
 /**
@@ -30,10 +32,20 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
-
 const categories = computed(() => $shop.categories)
-const loading = ref(true)
-const offers = computed(() => $shop.filterOffers)
+const loading = ref(false)
+const offers = ref<ShopOffer[]>([])
+const offersCurrentPage = ref<number>()
+
+const scrollEventHandler = () => {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight
+  const scrolled = window.scrollY
+  if (scrollable - scrolled === 0) {
+    const urlFilter = $route.query as ShopOfferFilter
+    filterOffers(urlFilter)
+  }
+}
+
 const title = ref<string>()
 
 /**
@@ -49,11 +61,22 @@ const title = ref<string>()
 async function filterOffers(filter: ShopOfferFilter) {
   title.value = filter.search ? `de "${filter.search?.toLocaleUpperCase()}"` : ''
   loading.value = true
-  $shop.filterOffers = []
   try {
-    await $shop.getFilterOffers(filter)
+    const resp = (
+      await $service.shop.offer.filter({
+        ...filter,
+        page: offersCurrentPage.value ? offersCurrentPage.value + 1 : undefined
+      })
+    ).data
+    if (resp.data.length) {
+      offers.value.push(...resp.data)
+      offersCurrentPage.value = resp.meta.current_page
+    } else {
+      window.removeEventListener('scroll', scrollEventHandler)
+    }
   } catch (error) {
     console.log({ error })
+    window.removeEventListener('scroll', scrollEventHandler)
   }
   loading.value = false
 }
@@ -78,20 +101,32 @@ function goToOffer(offer: Offer) {
  */
 
 onBeforeMount(() => {
-  const urlFilter = $route.query as ShopOfferFilter
   scrollTop()
+  const urlFilter = $route.query as ShopOfferFilter
   filterOffers(urlFilter)
 })
 
 onBeforeRouteUpdate((to) => {
-  const urlFilter = to.query as ShopOfferFilter
   scrollTop()
+  const urlFilter = to.query as ShopOfferFilter
+  // init offers and pagination
+  offers.value = []
+  offersCurrentPage.value = undefined
   filterOffers(urlFilter)
 })
 
 onMounted(() => {
   // set default title
   useTitle('Compras y Envíos | Wings')
+  // init offers and pagination
+  offers.value = []
+  offersCurrentPage.value = undefined
+  // init scroll event
+  window.addEventListener('scroll', scrollEventHandler)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', scrollEventHandler)
 })
 </script>
 
@@ -116,6 +151,12 @@ onMounted(() => {
             :offer="offer"
             @click="() => goToOffer(offer)"
           />
+
+          <OfferSkeleton :repeat="8" v-if="loading" />
+        </div>
+
+        <div class="mt-2" v-if="categories.length">
+          <CategorySlider :categories="categories" go-to-filter />
         </div>
       </div>
       <!-- / Data -->
