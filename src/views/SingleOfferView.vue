@@ -327,13 +327,12 @@ onBeforeRouteUpdate(async (to) => {
         class="fixed py-4 px-2 bottom-0 w-full bg-white text-center"
         @click="() => (showNoOrderModal = true)"
       >
-        <a
-          href="#"
+        <div
           role="button"
           class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-primary-500 transition-colors hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-100"
         >
           Contactar Vendedor
-        </a>
+        </div>
       </div>
       <!-- / Button -->
     </template>
