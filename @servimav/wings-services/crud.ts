@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios'
-import type { PaginatedData } from './types'
+import type { PaginatedData, PaginationParams } from './types'
 
 /**
  * generateCrud
@@ -8,7 +8,7 @@ import type { PaginatedData } from './types'
  */
 function generateCrud<T, C = Omit<T, 'id'>, U = Partial<C>>({ api, baseUrl }: GenerateCrudParams) {
   return {
-    list: () => api.get<PaginatedData<T>>(baseUrl),
+    list: (params?: PaginationParams) => api.get<PaginatedData<T>>(baseUrl, { params }),
     show: (id: number) => api.get<T>(`${baseUrl}/${id}`),
     create: (params: C) => api.post<T>(`${baseUrl}`, params),
     update: (id: number, params: U) => api.patch<T>(`${baseUrl}/${id}`, params),

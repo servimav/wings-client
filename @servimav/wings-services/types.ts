@@ -33,3 +33,7 @@ export interface KeyValue {
   key: string
   value: string | number
 }
+
+export interface PaginationParams {
+  page?: number
+}
