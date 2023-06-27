@@ -40,7 +40,7 @@ const offersCurrentPage = ref<number>()
 const scrollEventHandler = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
   const scrolled = window.scrollY
-  if (scrollable - scrolled === 0) {
+  if (scrollable - scrolled <= 1) {
     const urlFilter = $route.query as ShopOfferFilter
     filterOffers(urlFilter)
   }
