@@ -35,18 +35,9 @@ async function getCategories() {
   $shop.categories = resp
 }
 
-/**
- * getOffers
- */
-async function getOffers() {
-  const resp = (await $service.shop.offer.filter({ currency: 'CUP' })).data
-  $shop.homeOffers = resp.data
-  $shop.homeOffersCurrentPage = resp.meta.current_page
-}
-
 onBeforeMount(async () => {
   try {
-    await Promise.all([getOffers(), getCategories()])
+    await getCategories()
   } catch (error) {
     console.log({ error })
   }

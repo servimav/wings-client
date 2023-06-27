@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+import type { ShopOffer } from '@servimav/wings-services'
+import { scrollTop } from '@/helpers'
 /**
  * -----------------------------------------
  *	Components
@@ -37,10 +39,9 @@ const eventHandler = () => {
     getOffers()
   }
 }
-
 const loading = ref(false)
-const offers = computed(() => $shop.homeOffers)
-const offerCurrentPage = computed(() => $shop.homeOffersCurrentPage)
+const offers = ref<ShopOffer[]>([])
+const currentPage = ref<number>()
 /**
  * -----------------------------------------
  *	Methods
@@ -69,15 +70,15 @@ async function getOffers() {
   try {
     const resp = (
       await $service.shop.offer.filter({
-        page: offerCurrentPage.value ? offerCurrentPage.value + 1 : undefined,
+        page: currentPage.value ? currentPage.value + 1 : undefined,
         currency: 'CUP',
         sort: 'views'
       })
     ).data
+    currentPage.value = resp.meta.current_page
     // if server return data
     if (resp.data.length) {
-      $shop.homeOffers.push(...resp.data)
-      $shop.homeOffersCurrentPage = resp.meta.current_page
+      offers.value.push(...resp.data)
     } else {
       // if no more data stop event
       window.removeEventListener('scroll', eventHandler)
@@ -95,9 +96,15 @@ async function getOffers() {
  * -----------------------------------------
  */
 
-onMounted(() => {
+onBeforeMount(async () => {
   // set default title
   useTitle('Compras y Envíos | Wings')
+  scrollTop()
+  // init Data
+  offers.value = []
+  currentPage.value = undefined
+  // start get offer
+  await getOffers()
   // start listening event
   window.addEventListener('scroll', eventHandler)
 })
@@ -127,6 +134,7 @@ onBeforeUnmount(() => {
         <OfferSkeleton :repeat="4" v-if="loading" />
       </div>
     </div>
+
     <!-- / Main Content -->
 
     <!-- Loading -->
