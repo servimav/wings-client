@@ -35,7 +35,7 @@ const categories = computed(() => $shop.categories)
 const eventHandler = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
   const scrolled = window.scrollY
-  if (scrollable - scrolled <= 1) {
+  if (scrollable - scrolled <= 10) {
     getOffers()
   }
 }
