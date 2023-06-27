@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import type { ShopOffer, ShopOfferFilter } from '@servimav/wings-services'
@@ -100,12 +100,6 @@ function goToOffer(offer: Offer) {
  * -----------------------------------------
  */
 
-onBeforeMount(() => {
-  scrollTop()
-  const urlFilter = $route.query as ShopOfferFilter
-  filterOffers(urlFilter)
-})
-
 onBeforeRouteUpdate((to) => {
   scrollTop()
   const urlFilter = to.query as ShopOfferFilter
@@ -115,12 +109,16 @@ onBeforeRouteUpdate((to) => {
   filterOffers(urlFilter)
 })
 
-onMounted(() => {
+onMounted(async () => {
   // set default title
   useTitle('Compras y Envíos | Wings')
   // init offers and pagination
+  scrollTop()
   offers.value = []
   offersCurrentPage.value = undefined
+  // start filter
+  const urlFilter = $route.query as ShopOfferFilter
+  await filterOffers(urlFilter)
   // init scroll event
   window.addEventListener('scroll', scrollEventHandler)
 })
