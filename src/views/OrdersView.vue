@@ -2,6 +2,6 @@
 
 <template>
   <main>
-    <div class="text-xl text-center">Orders View</div>
+    <div class="text-center text-xl">Orders View</div>
   </main>
 </template>

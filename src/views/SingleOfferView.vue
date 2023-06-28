@@ -182,13 +182,13 @@ onBeforeRouteUpdate(async (to) => {
 </script>
 
 <template>
-  <main class="w-full container relative select-none">
+  <main class="container relative w-full select-none">
     <!-- Share button -->
     <button
       type="button"
       @click="onClickShare"
       v-if="isSupported"
-      class="fixed z-20 top-5 right-5 rounded-full p-1.5 text-gray-900 bg-white shadow-lg focus:outline-none"
+      class="fixed right-5 top-5 z-20 rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
     >
       <ShareOutline class="h-5 w-5 text-gray-900" />
 
@@ -210,58 +210,58 @@ onBeforeRouteUpdate(async (to) => {
 
       <!-- Content -->
       <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-28 pt-8">
-        <div class="flex gap-2 items-center justify-between">
+        <div class="flex items-center justify-between gap-2">
           <!-- Title -->
-          <h4 class="text-xl mb-1 font-semibold tracking-tight text-gray-800">
+          <h4 class="mb-1 text-xl font-semibold tracking-tight text-gray-800">
             {{ offer.name }}
           </h4>
           <!-- / title -->
           <!-- Prices -->
           <div v-if="offer.discount_price" class="text-right">
-            <h4 class="font-semibold text-gray-800 text-xl">
+            <h4 class="text-xl font-semibold text-gray-800">
               {{ toCurrency(offer.discount_price) }}
             </h4>
-            <h5 class="line-through text-gray-500 text-sm">
+            <h5 class="text-sm text-gray-500 line-through">
               {{ toCurrency(offer.sell_price) }}
             </h5>
           </div>
 
-          <h4 v-else class="text-gray-800 text-xl">
+          <h4 v-else class="text-xl text-gray-800">
             {{ toCurrency(offer.sell_price) }}
           </h4>
           <!-- / Prices -->
         </div>
 
         <!-- Stock -->
-        <div class="mb-2 flex gap-2 justify-between">
+        <div class="mb-2 flex justify-between gap-2">
           <span
             v-if="!offer.available"
-            class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 rounded"
+            class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
           >
             No hay Disponibles</span
           >
 
           <span
             v-else-if="offer.stock_type === 'LIMITED'"
-            class="bg-butterfly-blue-50 text-butterfly-blue-600 font-medium px-2.5 py-0.5 rounded"
+            class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
           >
             {{ offer.stock_qty }} Disponibles</span
           >
 
           <span
             v-else-if="offer.stock_type === 'INFINITY'"
-            class="bg-butterfly-blue-50 text-butterfly-blue-600 font-medium px-2.5 py-0.5 rounded"
+            class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
           >
             Excelente Disponibilidad</span
           >
 
-          <span v-else class="bg-red-100 text-red-600 font-medium px-2.5 py-0.5 rounded">
+          <span v-else class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600">
             No hay Disponibles</span
           >
 
           <div
             v-if="offer.available && offer.stock_type !== 'OUT' && offer.min_delivery_days"
-            class="px-2 bg-green-200 rounded-full text-gray-900"
+            class="rounded-full bg-green-200 px-2 text-gray-900"
           >
             Entrega en {{ offer.min_delivery_days }} días
           </div>
@@ -269,14 +269,14 @@ onBeforeRouteUpdate(async (to) => {
         <!-- / Stock -->
 
         <!-- Store Details -->
-        <span class="px-2 mt-4 text-sm text-thin bg-gray-200 rounded-full" v-if="offer.store">
-          Proveedor: {{ offer.store.name }}
+        <span class="text-thin mt-4 rounded-full bg-gray-200 px-2 text-sm" v-if="offer.store">
+          {{ offer.store.name }}: PID-{{ offer.id }}
         </span>
         <!-- Store Details -->
 
         <!-- Description -->
         <div class="mb-2.5">
-          <h6 class="text-gray-800 font-medium tracking-wide mb-1">Descripción</h6>
+          <h6 class="mb-1 font-medium tracking-wide text-gray-800">Descripción</h6>
           <p class="text-gray-500">
             {{ offer.description }}
           </p>
@@ -284,14 +284,14 @@ onBeforeRouteUpdate(async (to) => {
         <!-- / Description -->
 
         <!-- Attributes -->
-        <ul class="space-y-2.5 list-none p-2" v-if="offer.attributes?.length">
-          <li class="text-gray-800 font-medium tracking-wide mb-1">Detalles</li>
+        <ul class="list-none space-y-2.5 p-2" v-if="offer.attributes?.length">
+          <li class="mb-1 font-medium tracking-wide text-gray-800">Detalles</li>
           <li
             v-for="(attribute, index) in offer.attributes"
             :key="`single-offer-attribute-${index}`"
             class="flex gap-2"
           >
-            <h6 class="text-gray-600 font-medium tracking-wide mb-1">{{ attribute.key }}:</h6>
+            <h6 class="mb-1 font-medium tracking-wide text-gray-600">{{ attribute.key }}:</h6>
             <div class="text-gray-900">
               {{ attribute.value }}
             </div>
@@ -312,7 +312,7 @@ onBeforeRouteUpdate(async (to) => {
             v-for="(similar, similarKey) in offersSimilar"
             :key="`similar-${similarKey}`"
           >
-            <h5 class="text-center text-gray-800 text-xl">
+            <h5 class="text-center text-xl text-gray-800">
               {{ similarKey === 0 ? 'Ofertas Similares' : 'Recomendaciones' }}
             </h5>
             <OfferSlider :offers="similar" class="mt-2" @click-on-offer="goToOffer" />
@@ -324,12 +324,12 @@ onBeforeRouteUpdate(async (to) => {
 
       <!-- Button -->
       <div
-        class="fixed py-4 px-2 bottom-0 w-full bg-white text-center"
+        class="fixed bottom-0 w-full bg-white px-2 py-4 text-center"
         @click="() => (showNoOrderModal = true)"
       >
         <div
           role="button"
-          class="w-full max-w-xs font-medium px-5 py-2.5 rounded-lg inline-flex justify-center items-center text-white bg-primary-500 transition-colors hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-100"
+          class="inline-flex w-full max-w-xs items-center justify-center rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
           Contactar Vendedor
         </div>
@@ -340,11 +340,11 @@ onBeforeRouteUpdate(async (to) => {
 
   <!-- Zoom Image -->
   <div
-    class="z-20 fixed overflow-y-scroll top-0 left-0 w-screen h-full bg-black flex items-center"
+    class="fixed left-0 top-0 z-20 flex h-full w-screen items-center overflow-y-scroll bg-black"
     v-if="offer"
     v-show="showFullImage"
   >
-    <span class="absolute top-6 right-6 text-white text-2xl" @click="() => (showFullImage = false)"
+    <span class="absolute right-6 top-6 text-2xl text-white" @click="() => (showFullImage = false)"
       >&times;</span
     >
     <img class="m-auto block w-[80%]" :src="offer.image" />

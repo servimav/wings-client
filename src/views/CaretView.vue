@@ -35,7 +35,7 @@ const OFFERS: Array<Offer> = [
 </script>
 
 <template>
-  <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
+  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
     <div class="flex flex-col items-center space-y-3 py-2">
       <CaretOfferWidget :offer="OFFERS[0]" />
       <CaretOfferWidget :offer="OFFERS[0]" />

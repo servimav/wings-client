@@ -7,9 +7,9 @@ defineProps<{ repeat: number }>()
     v-for="i in repeat"
     :key="`skeleton-${i}`"
     role="status"
-    class="max-w-sm p-4 border border-gray-200 rounded shadow animate-pulse md:p-6"
+    class="max-w-sm animate-pulse rounded border border-gray-200 p-4 shadow md:p-6"
   >
-    <div class="flex items-center justify-center mb-4 bg-gray-300 rounded">
+    <div class="mb-4 flex items-center justify-center rounded bg-gray-300">
       <svg
         class="w-32 text-gray-200"
         xmlns="http://www.w3.org/2000/svg"
@@ -22,8 +22,8 @@ defineProps<{ repeat: number }>()
         />
       </svg>
     </div>
-    <div class="h-2 bg-gray-200 rounded-full w-full mb-2"></div>
-    <div class="h-2 bg-gray-200 rounded-full"></div>
+    <div class="mb-2 h-2 w-full rounded-full bg-gray-200"></div>
+    <div class="h-2 rounded-full bg-gray-200"></div>
     <span class="sr-only">Loading...</span>
   </div>
 </template>

@@ -14,15 +14,15 @@ const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24))
 <template>
   <div
     @click="() => $emit('close')"
-    class="h-screen w-screen z-30 overflow-auto fixed top-0 flex items-center p-4 justify-center"
+    class="fixed top-0 z-30 flex h-screen w-screen items-center justify-center overflow-auto p-4"
   >
-    <div class="absolute top-0 w-screen h-screen z-20 bg-black opacity-80"></div>
+    <div class="absolute top-0 z-20 h-screen w-screen bg-black opacity-80"></div>
 
-    <div class="bg-white p-2 z-40 rounded-lg">
-      <div class="p-2 border border-gray-200 rounded-lg">
-        <h1 class="text-xl text-center text-gray-900">Pedidos en Espera</h1>
-        <p class="text-gray-900 mt-2">Estamos optimizando nuestros servicios.</p>
-        <p class="text-gray-900 mt-2">
+    <div class="z-40 rounded-lg bg-white p-2">
+      <div class="rounded-lg border border-gray-200 p-2">
+        <h1 class="text-center text-xl text-gray-900">Pedidos en Espera</h1>
+        <p class="mt-2 text-gray-900">Estamos optimizando nuestros servicios.</p>
+        <p class="mt-2 text-gray-900">
           Comenzaremos a procesar los pedidos dentro de <b>{{ diffDays }} días</b>
         </p>
       </div>

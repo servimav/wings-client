@@ -40,9 +40,9 @@ const displayPrice = computed(() =>
 
 <template>
   <div
-    class="relative p-1 w-full bg-white cursor-pointer border border-gray-100 rounded-lg transition-shadow hover:shadow"
+    class="relative w-full cursor-pointer rounded-lg border border-gray-100 bg-white p-1 transition-shadow hover:shadow"
   >
-    <div class="mb-2 min-h-[12rem] flex items-center">
+    <div class="mb-2 flex min-h-[12rem] items-center">
       <img
         class="max-w-full rounded-lg"
         :src="offer.image"
@@ -58,8 +58,8 @@ const displayPrice = computed(() =>
       <div class="text-sm tracking-tight text-gray-600">{{ toCurrency(displayPrice) }}</div>
     </div>
 
-    <div class="absolute top-3 right-3 bg-white p-1 rounded-full cursor-pointer">
-      <ShoppingCartOutline class="w-3.5 h-3.5 text-gray-800" />
+    <div class="absolute right-3 top-3 cursor-pointer rounded-full bg-white p-1">
+      <ShoppingCartOutline class="h-3.5 w-3.5 text-gray-800" />
     </div>
   </div>
 </template>

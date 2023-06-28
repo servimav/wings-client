@@ -115,16 +115,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
+  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
     <!-- Main Content -->
     <div class="mb-2 px-2" v-if="offers.length">
       <template v-if="categories.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">
+        <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
           Descubre nuestras Categorías
         </div>
         <CategorySlider :categories="categories" go-to-filter />
       </template>
-      <div class="grid grid-cols-2 gap-2 mt-2">
+      <div class="mt-2 grid grid-cols-2 gap-2">
         <OfferWidget
           v-for="(offer, index) in offers"
           :key="`home-view-offer-grid-${index}`"

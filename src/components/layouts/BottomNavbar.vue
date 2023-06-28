@@ -59,22 +59,22 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="fixed z-50 w-full h-14 max-w-lg -translate-x-1/2 bottom-3 left-1/2 px-2">
-    <div class="bg-white border border-gray-100 rounded-full py-2 shadow-md">
-      <div class="grid h-full max-w-lg grid-cols-4 mx-auto">
+  <div class="fixed bottom-3 left-1/2 z-50 h-14 w-full max-w-lg -translate-x-1/2 px-2">
+    <div class="rounded-full border border-gray-100 bg-white py-2 shadow-md">
+      <div class="mx-auto grid h-full max-w-lg grid-cols-4">
         <RouterLink
           v-for="(btn, index) in BUTTONS"
           :key="`bottom-navbar-button-${index}`"
           :to="btn.to"
           type="button"
-          class="inline-flex flex-col items-center justify-center px-5 group"
+          class="group inline-flex flex-col items-center justify-center px-5"
         >
           <component
             :is="btn.icon"
             class="transition-[color]"
             :class="[
               route.name == btn.to
-                ? 'h-8 w-8 text-butterfly-blue fill-butterfly-blue stroke-transparent'
+                ? 'h-8 w-8 fill-butterfly-blue stroke-transparent text-butterfly-blue'
                 : 'h-6 w-6 text-gray-600 group-hover:text-gray-800'
             ]"
           />

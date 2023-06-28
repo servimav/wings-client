@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="text-xl text-center h-screen flex items-center justify-center">
+    <div class="flex h-screen items-center justify-center text-center text-xl">
       <div>
         <img
           src="/images/under-construction.svg"

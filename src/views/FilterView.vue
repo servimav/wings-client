@@ -129,20 +129,20 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="p-2 pt-[4.8rem] pb-16 w-full container select-none">
-    <div class="space-y-2 mb-2">
+  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
+    <div class="mb-2 space-y-2">
       <div class="px-2" v-if="categories.length">
-        <div class="text-gray-800 text-center shadow-sm bg-white p-2">Categorías</div>
+        <div class="bg-white p-2 text-center text-gray-800 shadow-sm">Categorías</div>
         <CategorySlider :categories="categories" go-to-filter />
       </div>
 
       <!-- Data -->
       <div class="px-2" v-if="offers.length">
-        <h2 class="text-gray-800 text-lg text-center shadow-sm bg-white p-2">
+        <h2 class="bg-white p-2 text-center text-lg text-gray-800 shadow-sm">
           Resultados {{ title }}
         </h2>
 
-        <div class="grid grid-cols-2 gap-2 mt-2">
+        <div class="mt-2 grid grid-cols-2 gap-2">
           <OfferWidget
             v-for="(offer, index) in offers"
             :key="`home-view-offer-grid-example-${index}`"
@@ -161,20 +161,20 @@ onBeforeUnmount(() => {
 
       <!-- Loading -->
       <template v-else-if="loading">
-        <h2 class="text-gray-800 text-lg text-center shadow-sm bg-white p-2">
+        <h2 class="bg-white p-2 text-center text-lg text-gray-800 shadow-sm">
           Buscando {{ title }}
         </h2>
-        <div class="grid grid-cols-2 gap-2 mt-2">
+        <div class="mt-2 grid grid-cols-2 gap-2">
           <OfferSkeleton :repeat="8" />
         </div>
       </template>
       <!-- / Loading -->
 
       <!-- No content -->
-      <div v-else class="min-h-[30rem] flex items-center justify-center">
+      <div v-else class="flex min-h-[30rem] items-center justify-center">
         <div class="px-4">
-          <SadIcon class="w-28 h-28 mx-auto text-gray-500" />
-          <p class="text-center text-gray-600 text-lg">
+          <SadIcon class="mx-auto h-28 w-28 text-gray-500" />
+          <p class="text-center text-lg text-gray-600">
             No encontramos ninguna coincidencia en la búsueda {{ title }}
           </p>
         </div>

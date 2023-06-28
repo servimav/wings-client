@@ -2,6 +2,6 @@
 
 <template>
   <main>
-    <div class="text-xl text-center">Categories View</div>
+    <div class="text-center text-xl">Categories View</div>
   </main>
 </template>

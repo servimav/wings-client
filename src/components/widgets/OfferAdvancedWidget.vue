@@ -33,7 +33,7 @@ const displayPrice = computed(() =>
 
 <template>
   <div
-    class="cursor-pointer relative p-1 w-full bg-white border border-gray-100 rounded-lg transition-shadow hover:shadow"
+    class="relative w-full cursor-pointer rounded-lg border border-gray-100 bg-white p-1 transition-shadow hover:shadow"
   >
     <div class="mb-2">
       <img
@@ -45,19 +45,19 @@ const displayPrice = computed(() =>
       />
     </div>
     <div
-      class="relative -top-6 px-3 py-1 max-w-fit bg-white border border-gray-300 rounded-full text-center font-medium text-gray-800 tracking-wide"
+      class="relative -top-6 max-w-fit rounded-full border border-gray-300 bg-white px-3 py-1 text-center font-medium tracking-wide text-gray-800"
     >
       {{ offer.name }}
     </div>
 
-    <div class="absolute top-3 left-3 px-2 bg-white rounded-full">
+    <div class="absolute left-3 top-3 rounded-full bg-white px-2">
       <span class="text-sm font-medium text-gray-800">{{ toCurrency(displayPrice) }}</span>
     </div>
 
     <div
-      class="absolute top-3 right-3 bg-white p-1.5 rounded-full shadow-lg cursor-pointer hover:shadow-xl"
+      class="absolute right-3 top-3 cursor-pointer rounded-full bg-white p-1.5 shadow-lg hover:shadow-xl"
     >
-      <ShoppingCartOutline class="w-5 h-5 text-gray-800" />
+      <ShoppingCartOutline class="h-5 w-5 text-gray-800" />
     </div>
   </div>
 </template>

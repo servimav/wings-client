@@ -74,7 +74,7 @@ function onScroll(event: Event) {
     <button
       v-if="scrollPosition > 0"
       type="button"
-      class="absolute left-2 top-1/2 -translate-y-1/2 z-10 rounded-full p-1 text-gray-900 bg-white shadow focus:outline-none"
+      class="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 text-gray-900 shadow focus:outline-none"
       @click="scrollToLeft"
     >
       <ArrowLeft class="h-5 w-5 text-gray-900" />
@@ -86,7 +86,7 @@ function onScroll(event: Event) {
     <button
       v-if="!isScrollToEnd"
       type="button"
-      class="absolute right-2 top-1/2 -translate-y-1/2 z-10 rounded-full p-1 text-gray-900 bg-white shadow focus:outline-none"
+      class="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 text-gray-900 shadow focus:outline-none"
       @click="scrollToRight"
     >
       <ArrowRight class="h-5 w-5 text-gray-900" />
@@ -97,7 +97,7 @@ function onScroll(event: Event) {
     <!-- Slider -->
     <div
       ref="container"
-      class="flex items-center overflow-x-scroll no-scrollbar scroll-smooth space-x-2"
+      class="no-scrollbar flex items-center space-x-2 overflow-x-scroll scroll-smooth"
       @scroll="onScroll"
     >
       <div

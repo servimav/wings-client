@@ -61,26 +61,26 @@ function onSubmit() {
 </script>
 
 <template>
-  <nav class="fixed z-10 w-full bg-white border-b border-gray-100 py-2">
+  <nav class="fixed z-10 w-full border-b border-gray-100 bg-white py-2">
     <div
-      class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl py-2 px-3 gap-2"
+      class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-2 px-3 py-2"
     >
       <form class="flex-1" @submit.prevent="onSubmit">
         <label
           for="top-navbar-search-input"
-          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >Buscar</label
         >
         <div class="relative">
           <button type="submit" class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <MangifyGlass class="w-5 h-5 text-gray-500" />
+            <MangifyGlass class="h-5 w-5 text-gray-500" />
           </button>
           <input
             :value="search.search"
             @change.prevent="onInputChange"
             type="text"
             id="top-navbar-search-input"
-            class="p-2 w-full pl-8 text-sm text-gray-600 border border-gray-400 rounded-lg outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
+            class="w-full rounded-lg border border-gray-400 p-2 pl-8 text-sm text-gray-600 outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
             placeholder="Buscar..."
           />
         </div>
@@ -88,10 +88,10 @@ function onSubmit() {
 
       <div class="flex items-center space-x-3">
         <ShoppingCartOutline
-          class="w-5 h-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
+          class="h-5 w-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
         <BellOutline
-          class="w-5 h-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
+          class="h-5 w-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
       </div>
     </div>
