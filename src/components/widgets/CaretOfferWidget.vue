@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import { setDefaultImage, toCurrency } from '@/helpers'
-import { type Offer } from '@/types'
+import type { OrderOffer } from '@servimav/wings-services'
 
 /**
  * -----------------------------------------
  *	Types
  * -----------------------------------------
  */
+interface Emit {
+  (e: 'decrease'): void
+  (e: 'increase'): void
+  (e: 'clickImage'): void
+}
+
 interface Props {
-  offer: Offer
+  offerCart: OrderOffer
 }
 
 /**
@@ -18,14 +24,15 @@ interface Props {
  * -----------------------------------------
  */
 
-const Plus = defineAsyncComponent(() => import('@/components/icons/Plus.vue'))
-const Minus = defineAsyncComponent(() => import('@/components/icons/Minus.vue'))
+const PlusIcon = defineAsyncComponent(() => import('@/components/icons/PlusIcon.vue'))
+const MinusIcon = defineAsyncComponent(() => import('@/components/icons/MinusIcon.vue'))
 
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+const $emit = defineEmits<Emit>()
 const $props = defineProps<Props>()
 
 /**
@@ -33,29 +40,35 @@ const $props = defineProps<Props>()
  *	Data
  * -----------------------------------------
  */
+
 const displayPrice = computed(() =>
-  $props.offer.discount_price ? $props.offer.discount_price : $props.offer.sell_price
+  $props.offerCart.offer.discount_price
+    ? $props.offerCart.offer.discount_price
+    : $props.offerCart.offer.sell_price
 )
 </script>
 
 <template>
-  <div class="flex max-w-fit items-center justify-between rounded-lg bg-white p-2">
+  <div
+    class="flex w-full items-center justify-between rounded-lg border border-slate-100 bg-white p-2 shadow-sm"
+  >
     <img
-      class="h-[5.5rem] w-[5.5rem] shrink-0 rounded-lg"
-      :src="offer.image ?? '/images/default.png'"
-      :alt="offer.name"
+      class="w-[5.5rem] shrink-0 rounded-lg"
+      :src="offerCart.offer.image ?? '/images/default.png'"
+      :alt="offerCart.offer.name"
       @error="setDefaultImage"
+      @click="() => $emit('clickImage')"
     />
 
     <div class="ml-2">
-      <div class="mb-1 font-medium text-gray-800">{{ offer.name }}</div>
-      <div class="text-sm text-gray-500">{{ toCurrency(displayPrice) }}</div>
+      <div class="mb-1 font-medium text-gray-800">{{ offerCart.offer.name }}</div>
+      <div class="text-sm text-gray-500">{{ toCurrency(displayPrice * offerCart.qty) }}</div>
     </div>
 
-    <div class="ml-8 mr-3 flex items-center justify-center space-x-3">
-      <Minus class="h-3 w-3 cursor-pointer text-gray-800" />
-      <div class="w-5 text-sm text-gray-800">12</div>
-      <Plus class="h-3 w-3 cursor-pointer text-gray-800" />
+    <div class="ml-8 mr-3 flex items-center justify-center gap-2">
+      <MinusIcon @click="() => $emit('decrease')" class="h-3 w-3 cursor-pointer text-gray-800" />
+      <div class="w-5 text-center text-sm text-gray-800">{{ offerCart.qty }}</div>
+      <PlusIcon @click="() => $emit('increase')" class="h-3 w-3 cursor-pointer text-gray-800" />
     </div>
   </div>
 </template>

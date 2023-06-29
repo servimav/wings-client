@@ -3,16 +3,16 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useShare, useTitle } from '@vueuse/core'
 import { toCurrency, setDefaultImage, scrollTop } from '@/helpers'
-import { useServices } from '@/services'
-import type { Offer } from '@/types'
 import { ROUTES } from '@/router'
+import { useServices } from '@/services'
+import { useAppStore, useShopStore } from '@/stores'
+import type { Offer } from '@/types'
 /**
  * -----------------------------------------
  *	Components
  * -----------------------------------------
  */
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
-const NoOrdersModal = defineAsyncComponent(() => import('@/components/modals/NoOrdersModal.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
 
@@ -21,9 +21,11 @@ const ShareOutline = defineAsyncComponent(() => import('@/components/icons/Share
  *	Composables
  * -----------------------------------------
  */
+const $app = useAppStore()
 const $route = useRoute()
 const $router = useRouter()
 const $service = useServices()
+const $shop = useShopStore()
 const { isSupported, share } = useShare()
 /**
  * -----------------------------------------
@@ -49,12 +51,24 @@ const contactUrl = computed(() => {
 const offer = ref<Offer>()
 const offersSimilar = ref<Array<Offer[]>>([])
 const showFullImage = ref(false)
-const showNoOrderModal = ref(false)
 /**
  * -----------------------------------------
  *	Methods
  * -----------------------------------------
  */
+
+/**
+ * addOfferToCart
+ */
+function addOfferToCart() {
+  if (offer.value) {
+    $shop.addCartOffer({
+      offer: offer.value,
+      qty: 1
+    })
+    $router.push({ name: ROUTES.HOME })
+  }
+}
 
 /**
  * getOffer from route params
@@ -319,16 +333,13 @@ onBeforeRouteUpdate(async (to) => {
       <!-- / Content -->
 
       <!-- Button -->
-      <div
-        class="fixed bottom-0 w-full bg-white px-2 py-4 text-center"
-        @click="() => (showNoOrderModal = true)"
-      >
-        <div
-          role="button"
+      <div class="fixed bottom-0 w-full bg-white px-2 py-4 text-center">
+        <button
+          @click="addOfferToCart"
           class="inline-flex w-full max-w-xs items-center justify-center rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
-          Contactar Vendedor
-        </div>
+          Añadir
+        </button>
       </div>
       <!-- / Button -->
     </template>
@@ -346,8 +357,4 @@ onBeforeRouteUpdate(async (to) => {
     <img class="m-auto block w-[80%]" :src="offer.image ?? '/images/default.png'" />
   </div>
   <!-- / Zoom Image -->
-
-  <!-- No Order Modal -->
-  <NoOrdersModal v-if="showNoOrderModal" @close="() => (showNoOrderModal = false)" />
-  <!-- / NoOrdersModal -->
 </template>
