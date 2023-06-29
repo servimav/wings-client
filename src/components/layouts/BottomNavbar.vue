@@ -49,7 +49,13 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
-const cartCounter = computed(() => $shop.cart.length)
+const cartCounter = computed(() => {
+  let counter = 0
+  $shop.cart.forEach((offerCart) => {
+    counter += offerCart.qty
+  })
+  return counter
+})
 
 const navButtons = computed<IconLabelLink[]>(() => {
   return [

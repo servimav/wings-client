@@ -35,7 +35,13 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
-const cartCounter = computed(() => $shop.cart.length)
+const cartCounter = computed(() => {
+  let counter = 0
+  $shop.cart.forEach((offerCart) => {
+    counter += offerCart.qty
+  })
+  return counter
+})
 
 const categories = computed(() =>
   offer.value && offer.value.categories ? offer.value && offer.value.categories : []
@@ -70,12 +76,14 @@ const showFullImage = ref(false)
  * addOfferToCart
  */
 function addOfferToCart() {
-  if (offer.value) {
+  if (
+    offer.value &&
     $shop.addCartOffer({
       offer: offer.value,
       qty: 1
     })
-    $router.push({ name: ROUTES.HOME })
+  ) {
+    $app.success(`Añadido ${offer.value.name}`)
   }
 }
 
@@ -356,9 +364,10 @@ onBeforeRouteUpdate(async (to) => {
           @click="addOfferToCart"
           class="flex-1 rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
-          Añadir
+          Añadir al Carrito
         </button>
         <div
+          v-if="cartCounter"
           @click="goToCart"
           role="button"
           class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"

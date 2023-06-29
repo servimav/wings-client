@@ -58,5 +58,5 @@ onBeforeMount(async () => {
 
   <RouterView />
 
-  <NotificationContainer class="fixed bottom-0 right-0 z-50" />
+  <NotificationContainer class="fixed right-0 top-0 z-50" />
 </template>
