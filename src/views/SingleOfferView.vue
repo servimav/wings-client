@@ -238,7 +238,7 @@ onBeforeRouteUpdate(async (to) => {
             v-if="!offer.available"
             class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
           >
-            No hay Disponibles</span
+            Inventario Vacío</span
           >
 
           <span
@@ -249,13 +249,9 @@ onBeforeRouteUpdate(async (to) => {
           >
 
           <span
-            v-else-if="offer.stock_type === 'INFINITY'"
-            class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
+            v-else-if="offer.stock_type === 'OUT'"
+            class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
           >
-            Excelente Disponibilidad</span
-          >
-
-          <span v-else class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600">
             No hay Disponibles</span
           >
 
