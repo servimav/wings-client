@@ -1,21 +1,8 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { useRoute, type RouteLocationNamedRaw } from 'vue-router'
 import { ROUTES } from '@/router/names'
-/**
- * -----------------------------------------
- *	Components
- * -----------------------------------------
- */
-
-const HeartOutline = defineAsyncComponent(() => import('@/components/icons/HeartOutline.vue'))
-const SquaresOutline = defineAsyncComponent(
-  () => import('@/components/icons/Squqres2x2Outline.vue')
-)
-const ShoppingBagOutline = defineAsyncComponent(
-  () => import('@/components/icons/ShoppingBagOutline.vue')
-)
-const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
+import { useShopStore } from '@/stores'
 
 /**
  * -----------------------------------------
@@ -33,27 +20,54 @@ interface LabelLink extends Link {
 
 interface IconLabelLink extends LabelLink {
   icon: typeof HeartOutline
+  badge?: number
 }
+
+/**
+ * -----------------------------------------
+ *	Components
+ * -----------------------------------------
+ */
+
+const HeartOutline = defineAsyncComponent(() => import('@/components/icons/HeartOutline.vue'))
+const SquaresOutline = defineAsyncComponent(
+  () => import('@/components/icons/Squqres2x2Outline.vue')
+)
+const ShoppingBagOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingBagOutline.vue')
+)
+const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+
+const $shop = useShopStore()
 /**
  * -----------------------------------------
  *	Data
  * -----------------------------------------
  */
+const cartCounter = computed(() => $shop.cart.length)
 
-const BUTTONS: Array<IconLabelLink> = [
-  { icon: HeartOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
-  {
-    icon: SquaresOutline,
-    label: 'Categorías',
-    to: { name: ROUTES.UNDER_CONSTRUCTION }
-  },
-  {
-    icon: ShoppingBagOutline,
-    label: 'Pedidos',
-    to: { name: ROUTES.UNDER_CONSTRUCTION }
-  },
-  { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.UNDER_CONSTRUCTION } }
-]
+const navButtons = computed<IconLabelLink[]>(() => {
+  return [
+    { icon: HeartOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
+    {
+      icon: SquaresOutline,
+      label: 'Categorías',
+      to: { name: ROUTES.UNDER_CONSTRUCTION }
+    },
+    {
+      icon: ShoppingBagOutline,
+      label: 'Carrito',
+      to: { name: ROUTES.CARET },
+      badge: cartCounter.value
+    },
+    { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.UNDER_CONSTRUCTION } }
+  ]
+})
 
 const route = useRoute()
 </script>
@@ -63,11 +77,11 @@ const route = useRoute()
     <div class="rounded-full border border-gray-100 bg-white py-2 shadow-md">
       <div class="mx-auto grid h-full max-w-lg grid-cols-4">
         <RouterLink
-          v-for="(btn, index) in BUTTONS"
+          v-for="(btn, index) in navButtons"
           :key="`bottom-navbar-button-${index}`"
           :to="btn.to"
           type="button"
-          class="group inline-flex flex-col items-center justify-center px-5"
+          class="group relative inline-flex flex-col items-center justify-center px-5"
         >
           <component
             :is="btn.icon"
@@ -89,6 +103,13 @@ const route = useRoute()
             ]"
           >
             {{ btn.label }}
+          </div>
+
+          <div
+            v-if="btn.badge"
+            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
+          >
+            {{ btn.badge }}
           </div>
         </RouterLink>
       </div>
