@@ -107,7 +107,7 @@ const route = useRoute()
 
           <div
             v-if="btn.badge"
-            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
+            class="absolute -top-2 right-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
           >
             {{ btn.badge }}
           </div>
