@@ -199,7 +199,7 @@ onBeforeRouteUpdate(async (to) => {
     <template v-if="offer">
       <div class="fixed h-96 w-full bg-white">
         <img
-          :src="offer.image"
+          :src="offer.image ?? '/images/default.png'"
           :alt="offer.name"
           :title="offer.name"
           class="w-full"
@@ -347,7 +347,7 @@ onBeforeRouteUpdate(async (to) => {
     <span class="absolute right-6 top-6 text-2xl text-white" @click="() => (showFullImage = false)"
       >&times;</span
     >
-    <img class="m-auto block w-[80%]" :src="offer.image" />
+    <img class="m-auto block w-[80%]" :src="offer.image ?? '/images/default.png'" />
   </div>
   <!-- / Zoom Image -->
 

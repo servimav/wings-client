@@ -38,7 +38,7 @@ const displayPrice = computed(() =>
     <div class="mb-2">
       <img
         class="h-64 w-full rounded-lg object-cover object-center"
-        :src="offer.image"
+        :src="offer.image ?? '/images/default.png'"
         :alt="offer.name"
         :title="offer.name"
         @error="setDefaultImage"

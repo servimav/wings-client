@@ -45,7 +45,7 @@ const displayPrice = computed(() =>
     <div class="mb-2 flex min-h-[12rem] items-center">
       <img
         class="max-w-full rounded-lg"
-        :src="offer.image"
+        :src="offer.image ?? '/images/default.png'"
         :alt="offer.name"
         :title="offer.name"
         @error="setDefaultImage"
