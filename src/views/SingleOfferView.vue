@@ -15,6 +15,9 @@ import type { Offer } from '@/types'
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
+const ShoppingBagOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingBagOutline.vue')
+)
 
 /**
  * -----------------------------------------
@@ -32,9 +35,12 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
+const cartCounter = computed(() => $shop.cart.length)
+
 const categories = computed(() =>
   offer.value && offer.value.categories ? offer.value && offer.value.categories : []
 )
+
 const contactUrl = computed(() => {
   const url = location.href
   if (offer.value) {
@@ -48,8 +54,11 @@ const contactUrl = computed(() => {
   }
   return '#'
 })
+
 const offer = ref<Offer>()
+
 const offersSimilar = ref<Array<Offer[]>>([])
+
 const showFullImage = ref(false)
 /**
  * -----------------------------------------
@@ -103,6 +112,15 @@ async function getOfferSimilar(offerId: number) {
 }
 
 /**
+ * goToCart
+ */
+function goToCart() {
+  void $router.push({
+    name: ROUTES.CARET
+  })
+}
+
+/**
  * goToOffer
  * @param offer
  */
@@ -127,7 +145,7 @@ async function loadData(offerId: number) {
       await getOfferSimilar(offerId)
     }
   } catch (error) {
-    console.log({ error })
+    $app.axiosError(error)
   }
 }
 /**
@@ -144,7 +162,7 @@ async function onClickShare() {
       const imageFile = new File([blob], imageName, { type: blob.type })
       files.push(imageFile)
     } catch (error) {
-      console.log({ error })
+      $app.axiosError(error)
     }
 
     // set offer price
@@ -333,13 +351,25 @@ onBeforeRouteUpdate(async (to) => {
       <!-- / Content -->
 
       <!-- Button -->
-      <div class="fixed bottom-0 w-full bg-white px-2 py-4 text-center">
+      <div class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center">
         <button
           @click="addOfferToCart"
-          class="inline-flex w-full max-w-xs items-center justify-center rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
+          class="flex-1 rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
           Añadir
         </button>
+        <div
+          @click="goToCart"
+          role="button"
+          class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"
+        >
+          <ShoppingBagOutline class="h-6 w-6" />
+          <div
+            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
+          >
+            {{ cartCounter }}
+          </div>
+        </div>
       </div>
       <!-- / Button -->
     </template>
