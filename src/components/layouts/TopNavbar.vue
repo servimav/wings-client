@@ -19,9 +19,7 @@ export interface Prop {
  */
 const BellOutline = defineAsyncComponent(() => import('@/components/icons/BellOutline.vue'))
 const MangifyGlass = defineAsyncComponent(() => import('@/components/icons/MangifyGlass.vue'))
-const ShoppingCartOutline = defineAsyncComponent(
-  () => import('@/components/icons/ShoppingCartOutline.vue')
-)
+
 /**
  * -----------------------------------------
  *	Composables
@@ -33,12 +31,16 @@ const $router = useRouter()
  *	Data
  * -----------------------------------------
  */
-
 const search = ref<ShopOfferFilter>({
   currency: 'CUP',
   search: '',
   sort: 'views'
 })
+/**
+ * -----------------------------------------
+ *	Methods
+ * -----------------------------------------
+ */
 
 /**
  * onInputChange
@@ -73,7 +75,7 @@ function onSubmit() {
         >
         <div class="relative">
           <button type="submit" class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <MangifyGlass class="h-5 w-5 text-gray-500" />
+            <MangifyGlass class="h-6 w-6 cursor-pointer text-gray-500" />
           </button>
           <input
             :value="search.search"
@@ -87,11 +89,9 @@ function onSubmit() {
       </form>
 
       <div class="flex items-center space-x-3">
-        <ShoppingCartOutline
-          class="h-5 w-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
-        />
+        <!-- <ShoppingCartOutline class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800" /> -->
         <BellOutline
-          class="h-5 w-5 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
+          class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
       </div>
     </div>
