@@ -1,6 +1,7 @@
 export enum ROUTES {
   CARET = 'caret',
   CATEGORIES = 'categories',
+  CHECKOUT = 'checkout',
   FILTER = 'filter',
   HOME = 'home',
   ORDERS = 'orders',
