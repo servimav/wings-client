@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ROUTES } from '@/router'
 import { computed, defineAsyncComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ROUTES } from '@/router'
+import { useAppStore, useUserStore } from '@/stores'
+import type { UserLogin } from '@servimav/wings-services'
 /**
  * --------------------------------------------
  * Components
@@ -8,19 +11,43 @@ import { computed, defineAsyncComponent, ref } from 'vue'
  */
 const EyeOutline = defineAsyncComponent(() => import('@/components/icons/EyeOutline.vue'))
 const EyeSlashOutline = defineAsyncComponent(() => import('@/components/icons/EyeSlashOutline.vue'))
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+const $app = useAppStore()
+const $router = useRouter()
+const $user = useUserStore()
 
 /**
  * --------------------------------------------
  * Data
  * --------------------------------------------
  */
+const form = ref<UserLogin>({
+  password: '',
+  phone: ''
+})
 const showPassword = ref(false)
 const passwordIcon = computed(() => (showPassword.value ? EyeSlashOutline : EyeOutline))
 const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
-const form = ref({ phoneNumber: '', password: '' })
+/**
+ * -----------------------------------------
+ *	Methods
+ * -----------------------------------------
+ */
 
-function submit() {
-  console.log('Submit form')
+async function submit() {
+  try {
+    const resp = await $user.authLogin(form.value)
+    $app.success(`Bienvenido ${resp.user.name}`)
+    void $router.push({
+      name: ROUTES.HOME
+    })
+  } catch (error) {
+    $app.axiosError(error)
+  }
 }
 </script>
 
@@ -40,7 +67,7 @@ function submit() {
             class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-400"
             placeholder="Móvil"
             required
-            v-model="form.phoneNumber"
+            v-model="form.phone"
           />
         </div>
         <!-- / Phone number -->
@@ -73,7 +100,8 @@ function submit() {
           <RouterLink
             :to="{ name: ROUTES.HOME }"
             class="text-sm text-gray-500 transition-colors hover:text-gray-700"
-            >Olvidaste tu contraseña?</RouterLink
+          >
+            Olvidaste tu contraseña?</RouterLink
           >
         </div>
         <button
