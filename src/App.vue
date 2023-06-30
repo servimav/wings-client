@@ -45,7 +45,13 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <template v-if="$route.name !== ROUTES.SINGLE_OFFER">
+  <template
+    v-if="
+      $route.name !== ROUTES.SINGLE_OFFER &&
+      $route.name !== ROUTES.LOGIN &&
+      $route.name !== ROUTES.REGISTER
+    "
+  >
     <TopNavbar />
     <BottomNavbar />
   </template>
