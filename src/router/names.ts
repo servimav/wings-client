@@ -6,5 +6,8 @@ export enum ROUTES {
   ORDERS = 'orders',
   SINGLE_OFFER = 'single-offer',
   UNDER_CONSTRUCTION = 'under-construction',
-  USER = 'user'
+  USER = 'user',
+  /* authentication */
+  LOGIN = 'login',
+  REGISTER = 'register'
 }

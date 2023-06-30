@@ -2,8 +2,8 @@
 import { defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 import { ROUTES } from '@/router/names'
-import { useShopStore } from './stores'
-import { useServices } from './services'
+import { useServices } from '@/services'
+import { useShopStore } from '@/stores'
 /**
  * -----------------------------------------
  *	Components
