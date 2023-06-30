@@ -24,11 +24,11 @@ const subtitle = computed(() =>
 
 <template>
   <div
-    class="w-full h-screen container bg-cover bg-center"
+    class="container h-screen w-full bg-cover bg-center"
     style="background-image: url('images/auth.jpg')"
   >
-    <div class="flex flex-col h-full">
-      <div class="flex items-center flex-grow px-4 py-3">
+    <div class="flex h-full flex-col">
+      <div class="flex flex-grow items-center px-4 py-3">
         <div class="w-72">
           <h5 class="mb-2 text-3xl font-medium tracking-tight text-gray-800">
             Compras y Envíos Wings.

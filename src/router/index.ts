@@ -46,15 +46,15 @@ const router = createRouter({
     },
     /* Authentication */
     {
-      path: '/login',
-      component: () => import('@/components/layouts/AuthLayout.vue'),
-      children: [{ path: '', name: ROUTES.LOGIN, component: () => import('@/views/LoginView.vue') }]
-    },
-    {
-      path: '/register',
+      path: '/auth',
       component: () => import('@/components/layouts/AuthLayout.vue'),
       children: [
-        { path: '', name: ROUTES.REGISTER, component: () => import('@/views/RegisterView.vue') }
+        { path: 'login', name: ROUTES.LOGIN, component: () => import('@/views/LoginView.vue') },
+        {
+          path: 'register',
+          name: ROUTES.REGISTER,
+          component: () => import('@/views/RegisterView.vue')
+        }
       ]
     }
   ]
