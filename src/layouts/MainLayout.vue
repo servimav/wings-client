@@ -3,7 +3,7 @@ import { defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 import { ROUTES } from '@/router/names'
 import { useServices } from '@/services'
-import { useShopStore } from '@/stores'
+import { useShopStore, useUserStore } from '@/stores'
 /**
  * -----------------------------------------
  *	Components
@@ -21,6 +21,7 @@ const FloatingBackBtn = defineAsyncComponent(() => import('@/components/Floating
 const $route = useRoute()
 const $service = useServices()
 const $shop = useShopStore()
+const $user = useUserStore()
 /**
  * -----------------------------------------
  *	Methods
@@ -36,8 +37,11 @@ async function getCategories() {
 }
 
 onBeforeMount(async () => {
+  $user.loadFromStorage()
+
   try {
     await getCategories()
+    await $user.geMe()
   } catch (error) {
     console.log({ error })
   }

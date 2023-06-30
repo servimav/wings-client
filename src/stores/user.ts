@@ -1,21 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type {
-  User,
-  UserLogin,
-  UserRegister,
-  UserRole,
-  UserAuthResponse
-} from '@servimav/wings-services'
+import type { User, UserLogin, UserRegister, UserRole } from '@servimav/wings-services'
 import { useStorage } from '@/helpers'
 import { useServices } from '@/services'
 
 const STORE_NAME = 'useUserStore'
 
-const $service = useServices()
-const $storage = useStorage<StorageType>(STORE_NAME)
+const $storage = useStorage<string | undefined>(STORE_NAME)
 
 export const useUserStore = defineStore(STORE_NAME, () => {
+  const $service = useServices()
+
   const auth_token = ref<string>()
   const roles = ref<UserRole[]>()
   const user = ref<User>()
@@ -34,7 +29,7 @@ export const useUserStore = defineStore(STORE_NAME, () => {
   async function authLogin(params: UserLogin) {
     const resp = (await $service.user.login(params)).data
     auth_token.value = resp.auth_token
-    user.value = resp.user
+    user.value = resp.data
     saveOnStorage()
     return resp
   }
@@ -47,7 +42,7 @@ export const useUserStore = defineStore(STORE_NAME, () => {
   async function authRegister(params: UserRegister) {
     const resp = (await $service.user.register(params)).data
     auth_token.value = resp.auth_token
-    user.value = resp.user
+    user.value = resp.data
     saveOnStorage()
     return resp
   }
@@ -56,7 +51,7 @@ export const useUserStore = defineStore(STORE_NAME, () => {
    * geMe
    */
   async function geMe() {
-    user.value = (await $service.user.me()).data
+    if (auth_token.value) user.value = (await $service.user.me()).data
   }
 
   /**
@@ -72,21 +67,14 @@ export const useUserStore = defineStore(STORE_NAME, () => {
    * loadFromStorage
    */
   function loadFromStorage() {
-    const load = $storage.get()
-    if (load) {
-      auth_token.value = load.auth_token
-      user.value = load.user
-    }
+    auth_token.value = $storage.get() ?? undefined
   }
 
   /**
    * saveOnStorage
    */
   function saveOnStorage() {
-    $storage.set({
-      auth_token: auth_token.value,
-      user: user.value
-    })
+    $storage.set(auth_token.value)
   }
 
   return {
@@ -104,5 +92,4 @@ export const useUserStore = defineStore(STORE_NAME, () => {
   }
 })
 
-type StorageType = Partial<UserAuthResponse>
 export const _userStorage = $storage

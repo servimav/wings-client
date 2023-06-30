@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ROUTES } from '@/router'
 import { computed, defineAsyncComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ROUTES } from '@/router'
+import { useAppStore, useUserStore } from '@/stores'
+import type { UserRegister } from '@servimav/wings-services'
 /**
  * --------------------------------------------
  * Components
@@ -8,14 +11,27 @@ import { computed, defineAsyncComponent, ref } from 'vue'
  */
 const EyeOutline = defineAsyncComponent(() => import('@/components/icons/EyeOutline.vue'))
 const EyeSlashOutline = defineAsyncComponent(() => import('@/components/icons/EyeSlashOutline.vue'))
+/**
+ * -----------------------------------------
+ *	Composables
+ * -----------------------------------------
+ */
+
+const $app = useAppStore()
+const $router = useRouter()
+const $user = useUserStore()
 
 /**
  * --------------------------------------------
  * Data
  * --------------------------------------------
  */
-const showPassword = ref(false)
-const showPasswordConfirm = ref(false)
+const form = ref<UserRegister>({
+  name: '',
+  password: '',
+  password_confirmation: '',
+  phone: ''
+})
 
 const passwordIcon = computed(() => (showPassword.value ? EyeSlashOutline : EyeOutline))
 const passwordConfirmIcon = computed(() =>
@@ -23,10 +39,29 @@ const passwordConfirmIcon = computed(() =>
 )
 const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
 const passwordConfirmType = computed(() => (showPasswordConfirm.value ? 'text' : 'password'))
-const form = ref({ name: '', phoneNumber: '', password: '', passwordConfirm: '' })
 
-function submit() {
-  console.log('Submit form')
+const showPassword = ref(false)
+const showPasswordConfirm = ref(false)
+/**
+ * -----------------------------------------
+ *	Methods
+ * -----------------------------------------
+ */
+/**
+ * submit
+ */
+async function submit() {
+  $app.toggleLoading(true)
+  try {
+    const resp = await $user.authRegister(form.value)
+    $app.success(`Bienvenido ${resp.data.name}`)
+    $router.push({
+      name: ROUTES.HOME
+    })
+  } catch (error) {
+    $app.axiosError(error)
+  }
+  $app.toggleLoading(false)
 }
 </script>
 <template>
@@ -34,7 +69,7 @@ function submit() {
     <div class="mx-auto h-full max-w-sm px-6 py-3">
       <h1 class="mb-4 text-xl font-semibold text-gray-800">Crea tu cuenta</h1>
 
-      <form class="space-y-4" @submit="submit">
+      <form class="space-y-4" @submit.prevent="submit">
         <!-- Name -->
         <div>
           <label for="name" class="sr-only mb-2 block text-sm text-gray-800">Nombre</label>
@@ -60,7 +95,7 @@ function submit() {
             class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-400"
             placeholder="Móvil"
             required
-            v-model="form.phoneNumber"
+            v-model="form.phone"
           />
         </div>
         <!-- / Phone number -->
@@ -109,7 +144,7 @@ function submit() {
               placeholder="Confirmar Contraseña"
               class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
               required
-              v-model="form.passwordConfirm"
+              v-model="form.password_confirmation"
             />
           </div>
         </div>

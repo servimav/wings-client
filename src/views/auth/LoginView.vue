@@ -37,11 +37,13 @@ const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
  *	Methods
  * -----------------------------------------
  */
-
+/**
+ * submit
+ */
 async function submit() {
   try {
     const resp = await $user.authLogin(form.value)
-    $app.success(`Bienvenido ${resp.user.name}`)
+    $app.success(`Bienvenido ${resp.data.name}`)
     void $router.push({
       name: ROUTES.HOME
     })
@@ -56,7 +58,7 @@ async function submit() {
     <div class="mx-auto h-full max-w-sm px-6 py-3">
       <h1 class="mb-4 text-xl font-semibold text-gray-800">Inicia sesión</h1>
       <!-- Form -->
-      <form class="space-y-4" @submit="submit">
+      <form class="space-y-4" @submit.prevent="submit">
         <!-- Phone number -->
         <div>
           <label for="phone-number" class="sr-only mb-2 block text-sm text-gray-800">Móvil</label>
