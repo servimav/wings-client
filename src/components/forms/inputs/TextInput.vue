@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-
-export interface Props {
+/**
+ *******************************************
+ *	Data
+ *******************************************
+ */
+export interface TextInputProps {
   modelValue?: string | number
   type: 'text' | 'number' | 'email' | 'tel' | 'password' | 'textarea' | 'currency' | 'search'
   required?: boolean
@@ -15,15 +19,21 @@ export interface Props {
   noAutocomplete?: boolean
 }
 
-const $props = defineProps<Props>()
-const $emit = defineEmits<{ (e: 'update:modelValue', v: string | number): void }>()
-
+const $props = defineProps<TextInputProps>()
+const $emit = defineEmits<{ (e: 'update:modelValue', value: string | number): void }>()
 const realType = computed(() => ($props.type === 'currency' ? 'number' : $props.type))
+
+/**
+ *******************************************
+ *	Methods
+ *******************************************
+ */
+
 /**
  * validate
- * @param val
+ * @param value
  */
-function validate(val: string | number) {
+function validate(value: string | number) {
   return true
 }
 
@@ -33,47 +43,48 @@ function validate(val: string | number) {
  */
 function onChange(event: Event) {
   let value = (event.target as HTMLInputElement).value
-  if ($props.type === 'currency') value = Number(value).toFixed(2)
-  if (validate(value)) $emit('update:modelValue', value)
+  if ($props.type === 'currency') {
+    value = Number(value).toFixed(2)
+  }
+  if (validate(value)) {
+    $emit('update:modelValue', value)
+  }
 }
 </script>
 
 <template>
   <div>
-    <label
-      :for="id"
-      class="mb-2 block text-sm font-medium text-gray-700 dark:text-white"
-      v-if="label"
-      >{{ label }}</label
-    >
+    <label v-if="label" :for="id" class="mb-2 block text-sm font-medium text-gray-800">{{
+      label
+    }}</label>
 
     <textarea
       v-if="type === 'textarea'"
-      @change="onChange"
       :value="modelValue"
       :name="id"
       :id="id"
       :placeholder="placeholder"
-      :rows="rows"
       :required="required"
+      :rows="rows"
       autocomplete="on"
-      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+      class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      @change="onChange"
     ></textarea>
 
     <input
       v-else
-      @change="onChange"
       :value="modelValue"
       :type="realType"
       :name="id"
       :id="id"
       :placeholder="placeholder"
-      autocomplete="on"
-      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
       :required="required"
       :min="min"
       :max="max"
       :step="type === 'currency' ? '0.01' : step"
+      autocomplete="on"
+      class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      @change="onChange"
     />
   </div>
 </template>

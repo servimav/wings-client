@@ -1,15 +1,15 @@
 <script setup lang="ts">
-export interface Props {
+interface SelectInputProps {
   modelValue?: string | number
   required?: boolean
   id: string
   label?: string
   options: Array<{ label: string; value: string | number }>
-  placeholder?: string
 }
 
-defineProps<Props>()
-const $emit = defineEmits<{ (e: 'update:modelValue', v: string | number): void }>()
+defineProps<SelectInputProps>()
+
+const $emit = defineEmits<{ (e: 'update:modelValue', value: string | number): void }>()
 
 function onChange(event: Event) {
   const value = (event.target as HTMLSelectElement).value
@@ -18,22 +18,19 @@ function onChange(event: Event) {
 </script>
 
 <template>
-  <div>
-    <label :for="id" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">{{
-      label
-    }}</label>
-    <select
-      :id="id"
-      @change="onChange"
-      :value="modelValue"
-      :name="id"
-      :required="required"
-      :placeholder="placeholder"
-      class="dark:border-primary-600 block w-full rounded-lg border border-primary-300 bg-gray-50 p-2.5 text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-    >
-      <option v-for="(option, key) in options" :key="`option-${key}`" :value="option.value">
-        {{ option.label }}
-      </option>
-    </select>
-  </div>
+  <label v-if="label" :for="id" class="mb-2 block text-sm font-medium text-gray-800">{{
+    label
+  }}</label>
+  <select
+    :id="id"
+    :value="modelValue"
+    :name="id"
+    :required="required"
+    class="w-full rounded-lg bg-white border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+    @change="onChange"
+  >
+    <option v-for="(option, key) in options" :key="`option-${key}`" :value="option.value">
+      {{ option.label }}
+    </option>
+  </select>
 </template>
