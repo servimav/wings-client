@@ -115,7 +115,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
+  <main class="container w-full bg-gray-50 select-none p-2 pb-16 pt-[4.8rem]">
     <!-- Main Content -->
     <div class="mb-2 px-2" v-if="offers.length">
       <template v-if="categories.length">
