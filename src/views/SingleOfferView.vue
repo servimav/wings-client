@@ -7,6 +7,7 @@ import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+import { STOCK_TYPE } from '@servimav/wings-services'
 /**
  * -----------------------------------------
  *	Components
@@ -35,6 +36,24 @@ const { isSupported, share } = useShare()
  *	Data
  * -----------------------------------------
  */
+const canAdd = computed(() => {
+  // Check offer
+  if (offer.value) {
+    // Stock
+    if (offer.value.stock_type === STOCK_TYPE.OUT) return false
+    if (offer.value.stock_type === STOCK_TYPE.LIMITED && !offer.value.stock_qty) return false
+    // Check cart
+    const cartIndex = $shop.cart.findIndex((o) => o.offer.id === offer.value?.id)
+    if (cartIndex >= 0) {
+      const qty = $shop.cart[cartIndex].qty
+      if (offer.value.stock_type === STOCK_TYPE.LIMITED && (offer.value.stock_qty as number) < qty)
+        return false
+    }
+    return true
+  }
+  return false
+})
+
 const cartCounter = computed(() => {
   let counter = 0
   $shop.cart.forEach((offerCart) => {
@@ -64,6 +83,21 @@ const contactUrl = computed(() => {
 const offer = ref<Offer>()
 
 const offersSimilar = ref<Array<Offer[]>>([])
+
+const realStockQty = computed(() => {
+  if (offer.value) {
+    if (offer.value.stock_type === STOCK_TYPE.LIMITED) {
+      // Check cart
+      const cartIndex = $shop.cart.findIndex((o) => o.offer.id === offer.value?.id)
+      if (cartIndex >= 0) {
+        const qty = $shop.cart[cartIndex].qty
+        return Number(offer.value.stock_qty) - qty
+      }
+    }
+    return offer.value.stock_qty
+  }
+  return 0
+})
 
 const showFullImage = ref(false)
 /**
@@ -285,7 +319,7 @@ onBeforeRouteUpdate(async (to) => {
             v-else-if="offer.stock_type === 'LIMITED'"
             class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
           >
-            {{ offer.stock_qty }} Disponibles</span
+            {{ realStockQty }} Disponibles</span
           >
 
           <span
@@ -362,6 +396,7 @@ onBeforeRouteUpdate(async (to) => {
       <div class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center">
         <button
           @click="addOfferToCart"
+          v-if="canAdd"
           class="flex-1 rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
           Añadir al Carrito
