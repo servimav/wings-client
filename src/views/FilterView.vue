@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
         <div class="px-4">
           <SadIcon class="mx-auto h-28 w-28 text-gray-500" />
           <p class="text-center text-lg text-gray-600">
-            No encontramos ninguna coincidencia en la búsueda {{ title }}
+            No encontramos ninguna coincidencia en la búsqueda {{ title }}
           </p>
         </div>
       </div>
