@@ -5,22 +5,45 @@ const routes: RouteRecordRaw[] = [
   {
     path: '',
     name: ROUTES.HOME,
-    component: () => import('@/views/HomeView.vue')
+    components: {
+      default: () => import('@/views/HomeView.vue'),
+      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   },
   {
     path: 'categories',
     name: ROUTES.CATEGORIES,
-    component: () => import('@/views/CategoriesView.vue')
+    components: {
+      default: () => import('@/views/CategoriesView.vue'),
+      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   },
   {
     path: 'caret',
     name: ROUTES.CARET,
-    component: () => import('@/views/CaretView.vue')
+    components: {
+      default: () => import('@/views/CaretView.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   },
   {
     path: 'orders',
     name: ROUTES.ORDERS,
-    component: () => import('@/views/OrdersView.vue')
+    components: {
+      default: () => import('@/views/OrdersView.vue'),
+      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
+  },
+  {
+    path: 'checkout',
+    name: ROUTES.CHECKOUT,
+    components: {
+      default: () => import('@/views/CheckoutView.vue'),
+      top: () => import('@/components/layouts/NavBar.vue')
+    }
   },
   {
     path: 'offer/:offerId',
