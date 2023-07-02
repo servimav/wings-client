@@ -5,12 +5,12 @@ import vue from '@vitejs/plugin-vue'
 
 import { VitePWA } from "vite-plugin-pwa"
 import viteCompression from "vite-plugin-compression"
-import basicSsl from '@vitejs/plugin-basic-ssl'
+// import basicSsl from '@vitejs/plugin-basic-ssl'
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		vue(),
-		basicSsl(),
+		// basicSsl(),
 		viteCompression(),
 		VitePWA({
 			registerType: "autoUpdate",
