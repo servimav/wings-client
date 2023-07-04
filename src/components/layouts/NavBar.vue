@@ -46,13 +46,13 @@ function goHome() {
 
 <template>
   <nav class="fixed top-0 left-0 z-10 w-full border-b border-b-gray-100 bg-white">
-    <div class="flex flex-wrap items-center px-2 py-3">
+    <div class="flex flex-wrap items-center px-5 py-3">
       <div class="grow flex items-center">
         <button type="button" class="focus:outline-none" @click="goHome">
-          <ArrowLeft class="h-5 w-5 text-gray-500" />
+          <ArrowLeft class="h-5 w-5 text-gray-800" />
         </button>
       </div>
-      <h4 class="grow text-xl text-gray-500 font-normal">{{ title }}</h4>
+      <h4 class="grow text-xl text-gray-800">{{ title }}</h4>
     </div>
   </nav>
 </template>
