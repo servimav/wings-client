@@ -42,7 +42,7 @@ defineProps<StepperInlineProps>()
           {{ index + 1 }}
         </template>
       </div>
-      <div :class="[index <= active ? 'text-gray-800' : 'text-gray-500']">
+      <div class="text-sm" :class="[index <= active ? 'text-gray-800' : 'text-gray-500']">
         {{ label }}
       </div>
     </li>

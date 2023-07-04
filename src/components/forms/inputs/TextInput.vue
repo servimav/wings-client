@@ -54,9 +54,7 @@ function onChange(event: Event) {
 
 <template>
   <div>
-    <label v-if="label" :for="id" class="mb-2 block text-sm font-medium text-gray-800">{{
-      label
-    }}</label>
+    <label v-if="label" :for="id" class="mb-2 block font-medium text-gray-800">{{ label }}</label>
 
     <textarea
       v-if="type === 'textarea'"
@@ -67,7 +65,7 @@ function onChange(event: Event) {
       :required="required"
       :rows="rows"
       autocomplete="on"
-      class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      class="w-full rounded-lg border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
       @change="onChange"
     ></textarea>
 
@@ -83,7 +81,7 @@ function onChange(event: Event) {
       :max="max"
       :step="type === 'currency' ? '0.01' : step"
       autocomplete="on"
-      class="w-full rounded-lg border border-gray-200 p-2 text-sm text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      class="w-full rounded-lg border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
       @change="onChange"
     />
   </div>
