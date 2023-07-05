@@ -362,7 +362,6 @@ onBeforeRouteUpdate(async (to) => {
       <!-- Button -->
       <a
         :href="contactUrl"
-        target="_blank"
         v-if="contactUrl"
         class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
       >
