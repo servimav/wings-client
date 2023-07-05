@@ -50,8 +50,9 @@ const categories = computed(() =>
 const contactUrl = computed(() => {
   const url = location.href
   if (offer.value) {
-    const store = offer.value.store
-    const phone = store && store.contact_phone ? store.contact_phone : '173772811360'
+    // const store = offer.value.store
+    // const phone = store && store.contact_phone ? store.contact_phone : '173772811360'
+    const phone = '173772811360'
     const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
     const message = `Hola, le escribo porque me interesa el producto:\n${
       offer.value.name
