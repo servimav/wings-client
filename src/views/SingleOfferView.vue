@@ -163,16 +163,16 @@ async function loadData(offerId: number) {
 async function onClickShare() {
   if (offer.value) {
     // Get image file from url
-    let files: File[] = []
-    try {
-      const response = await fetch(offer.value.image as string)
-      const blob = await response.blob()
-      const imageName = `${offer.value.name}.png`
-      const imageFile = new File([blob], imageName, { type: blob.type })
-      files.push(imageFile)
-    } catch (error) {
-      $app.axiosError(error)
-    }
+    // let files: File[] = []
+    // try {
+    //   const response = await fetch(offer.value.image as string)
+    //   const blob = await response.blob()
+    //   const imageName = `${offer.value.name}.png`
+    //   const imageFile = new File([blob], imageName, { type: blob.type })
+    //   files.push(imageFile)
+    // } catch (error) {
+    //   $app.axiosError(error)
+    // }
 
     // set offer price
     const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
