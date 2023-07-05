@@ -17,6 +17,10 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   // cart
   const cart = ref<OrderOffer[]>([])
 
+  // Home offers
+  const homeOffers = ref<ShopOffer[]>([])
+  const homePagination = ref<number>()
+
   /**
    * -----------------------------------------
    *	Methods
@@ -100,6 +104,8 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   return {
     categories,
     cart,
+    homeOffers,
+    homePagination,
     // Methods
     addCartOffer,
     canAddOffer,
