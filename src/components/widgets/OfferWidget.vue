@@ -34,7 +34,9 @@ const $props = defineProps<Props>()
  * -----------------------------------------
  */
 const displayPrice = computed(() =>
-  $props.offer.discount_price ? $props.offer.discount_price : $props.offer.sell_price
+  $props.offer.discount_price && $props.offer.discount_price > 0
+    ? $props.offer.discount_price
+    : $props.offer.sell_price
 )
 </script>
 
