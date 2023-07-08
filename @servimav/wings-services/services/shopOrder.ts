@@ -41,6 +41,7 @@ export interface ShopOrder {
   offers_price: number
   service_price: number
   items: OrderItem[]
+  payment_type: PaymentType
 }
 
 /**
@@ -51,6 +52,7 @@ export interface ShopOrderCreate {
   delivery_details: DeliveryDetails
   currency?: CurrencyCode
   message?: string
+  payment_type: PaymentType
 }
 
 /**
@@ -94,3 +96,5 @@ export interface DeliveryDetails {
   coords?: GeoCoords
   location_id: number
 }
+
+export type PaymentType = 'CASH_TOTAL' | 'TRANSFER_PARTIAL' | 'TRANSFER_TOTAL'
