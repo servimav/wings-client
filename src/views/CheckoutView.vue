@@ -11,6 +11,7 @@ import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
 import { ROUTES } from '@/router'
 import { useRouter } from 'vue-router'
+import { useTitle } from '@vueuse/core'
 
 /**
  *******************************************
@@ -102,13 +103,18 @@ const user = computed(() => $user.user)
 async function onSubmit() {
   $app.toggleLoading(true)
   try {
-    const resp = await $service.shop.order.create(form.value)
-    console.log({ resp })
-    order.value = resp.data
+    const { data } = await $service.shop.order.create(form.value)
+    order.value = data
     // remove cart
     $shop.cart = []
     $shop.saveCartOnStorage()
-    stepActive.value++
+    $router.push({
+      name: ROUTES.ORDER,
+      params: {
+        orderId: data.id
+      }
+    })
+    $app.success('Pedido creado correctamente')
   } catch (error) {
     $app.axiosError(error)
   }
@@ -184,6 +190,7 @@ async function loadLocations() {
 }
 
 onBeforeMount(async () => {
+  useTitle('Compras y Envíos | Wings')
   if (!cart.value.length) $router.push({ name: ROUTES.HOME })
   form.value.items = cart.value
   getSavedDeliveryDetails()
@@ -389,14 +396,6 @@ onBeforeMount(async () => {
             class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-1"
           >
             {{ stepActive === 2 ? 'Finalizar' : 'Confirmar y continuar' }}
-          </div>
-          <div
-            @click="() => $router.push({ name: ROUTES.HOME })"
-            v-else
-            role="button"
-            class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-1"
-          >
-            Ir al Inicio
           </div>
         </div>
       </form>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import type { OrderItem } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
 import { useShopStore } from '@/stores'
 import { ROUTES } from '@/router'
+import { useTitle } from '@vueuse/core'
 
 /**
  * -----------------------------------------
@@ -73,6 +74,10 @@ function goToOffer(item: OrderItem) {
 function removeOfferQty(item: OrderItem) {
   $shop.removeCartOffer(item)
 }
+
+onBeforeMount(() => {
+  useTitle('Compras y Envíos | Wings')
+})
 </script>
 
 <template>

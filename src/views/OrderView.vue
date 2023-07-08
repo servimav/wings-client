@@ -4,6 +4,7 @@ import { onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { ShopOrder } from '@servimav/wings-services'
 import { useAppStore } from '@/stores'
+import { useTitle } from '@vueuse/core'
 
 /**
  * ------------------------------------------
@@ -41,12 +42,14 @@ async function getOrder() {
 }
 
 onBeforeMount(() => {
+  useTitle('Compras y Envíos | Wings')
+
   getOrder()
 })
 </script>
 
 <template>
-  <div>
+  <main class="container w-full select-none p-2 pb-16 pt-14">
     {{ order }}
-  </div>
+  </main>
 </template>

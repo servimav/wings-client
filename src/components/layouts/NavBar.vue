@@ -17,10 +17,14 @@ const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLef
  */
 const title = computed(() => {
   switch ($route.name) {
-    case ROUTES.CHECKOUT:
-      return 'Envío'
     case ROUTES.CARET:
       return 'Carrito'
+    case ROUTES.CATEGORIES:
+      return 'Categorías'
+    case ROUTES.CHECKOUT:
+      return 'Envío'
+    case ROUTES.ORDER:
+      return 'Detalles de Pedido'
     default:
       return null
   }
@@ -48,7 +52,7 @@ function goBack() {
 </script>
 
 <template>
-  <nav class="fixed left-0 top-0 z-10 w-full border-b border-b-gray-100 bg-white">
+  <nav class="fixed left-0 top-0 z-10 w-screen border-b border-b-gray-100 bg-white">
     <div class="flex flex-wrap items-center px-5 py-3">
       <div class="flex grow items-center">
         <button type="button" class="focus:outline-none" @click="goBack">

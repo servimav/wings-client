@@ -43,7 +43,7 @@ const canAdd = computed(() => {
     if (offer.value.stock_type === STOCK_TYPE.OUT) return false
     if (offer.value.stock_type === STOCK_TYPE.LIMITED && !offer.value.stock_qty) return false
     // Check cart
-    const cartIndex = $shop.cart.findIndex((o) => o.offer.id === offer.value?.id)
+    const cartIndex = $shop.cart.findIndex((item) => item.id === offer.value?.id)
     if (cartIndex >= 0) {
       const qty = $shop.cart[cartIndex].qty
       if (offer.value.stock_type === STOCK_TYPE.LIMITED && (offer.value.stock_qty as number) < qty)
@@ -88,7 +88,7 @@ const realStockQty = computed(() => {
   if (offer.value) {
     if (offer.value.stock_type === STOCK_TYPE.LIMITED) {
       // Check cart
-      const cartIndex = $shop.cart.findIndex((o) => o.offer.id === offer.value?.id)
+      const cartIndex = $shop.cart.findIndex((item) => item.id === offer.value?.id)
       if (cartIndex >= 0) {
         const qty = $shop.cart[cartIndex].qty
         return Number(offer.value.stock_qty) - qty
