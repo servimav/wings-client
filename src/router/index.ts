@@ -18,11 +18,6 @@ const router = createRouter({
       component: MainLayout,
       children: mainRoutes
     },
-    {
-      path: '/checkout',
-      name: ROUTES.CHECKOUT,
-      component: () => import('@/views/CheckoutView.vue')
-    },
 
     /**
      * -----------------------------------------

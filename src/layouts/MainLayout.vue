@@ -1,24 +1,14 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
-import { ROUTES } from '@/router/names'
+import { onBeforeMount } from 'vue'
 import { useServices } from '@/services'
 import { useShopStore, useUserStore } from '@/stores'
-/**
- * -----------------------------------------
- *	Components
- * -----------------------------------------
- */
-const TopNavbar = defineAsyncComponent(() => import('@/components/layouts/TopNavbar.vue'))
-const BottomNavbar = defineAsyncComponent(() => import('@/components/layouts/BottomNavbar.vue'))
-const FloatingBackBtn = defineAsyncComponent(() => import('@/components/FloatingBackBtn.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
 
-const $route = useRoute()
 const $service = useServices()
 const $shop = useShopStore()
 const $user = useUserStore()
@@ -38,6 +28,7 @@ async function getCategories() {
 
 onBeforeMount(async () => {
   $user.loadFromStorage()
+  $shop.getCartFromStorage()
 
   try {
     await getCategories()
@@ -49,17 +40,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <template
-    v-if="
-      $route.name !== ROUTES.SINGLE_OFFER &&
-      $route.name !== ROUTES.LOGIN &&
-      $route.name !== ROUTES.REGISTER
-    "
-  >
-    <TopNavbar />
-    <BottomNavbar />
-  </template>
-  <FloatingBackBtn v-else />
-
+  <RouterView name="top" />
   <RouterView />
+  <RouterView name="bottom" />
 </template>
