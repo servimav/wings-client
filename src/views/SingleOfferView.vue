@@ -76,15 +76,18 @@ const showFullImage = ref(false)
  * addOfferToCart
  */
 function addOfferToCart() {
-  if (
-    offer.value &&
+  if (offer.value)
     $shop.addCartOffer({
       offer: offer.value,
-      qty: 1
+      qty: 1,
+      id: offer.value.id,
+      image: offer.value.image as string,
+      name: offer.value.name,
+      price:
+        offer.value.discount_price && offer.value.discount_price > 0
+          ? offer.value.discount_price
+          : offer.value.sell_price
     })
-  ) {
-    $app.success(`Añadido ${offer.value.name}`)
-  }
 }
 
 /**

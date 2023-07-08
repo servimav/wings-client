@@ -3,19 +3,19 @@ import { defineStore } from 'pinia'
 import {
   type ShopCategory,
   type ShopOffer,
-  type OrderOffer,
+  type OrderItem,
   STOCK_TYPE
 } from '@servimav/wings-services'
 import { useStorage } from '@/helpers'
 
 const STORE_NAME = 'useShopStore'
-const $storage = useStorage<OrderOffer[]>(STORE_NAME)
+const $storage = useStorage<OrderItem[]>(STORE_NAME)
 
 export const useShopStore = defineStore(STORE_NAME, () => {
   // store all categories
   const categories = ref<ShopCategory[]>([])
   // cart
-  const cart = ref<OrderOffer[]>([])
+  const cart = ref<OrderItem[]>([])
 
   /**
    * -----------------------------------------
@@ -24,21 +24,21 @@ export const useShopStore = defineStore(STORE_NAME, () => {
    */
 
   /**
-   * addCartOffer
-   * @param cartOffer
+   * addCartItem
+   * @param item
    * @returns boolean
    */
-  function addCartOffer(cartOffer: OrderOffer): boolean {
-    if (!canAddOffer(cartOffer)) return false
+  function addCartOffer(item: OrderItem): boolean {
+    if (!canAddOffer(item)) return false
     // check if exists
-    const existsIndex = cart.value.findIndex((c) => c.offer.id === cartOffer.offer.id)
+    const existsIndex = cart.value.findIndex((c) => c.id === item.id)
     // if exists add qty
     if (existsIndex >= 0) {
       cart.value[existsIndex].qty++
     }
     // Store
     else {
-      cart.value.push(cartOffer)
+      cart.value.push(item)
     }
     saveCartOnStorage()
     return true
@@ -46,20 +46,20 @@ export const useShopStore = defineStore(STORE_NAME, () => {
 
   /**
    * canAddOffer
-   * @param cartOffer
+   * @param item
    * @returns
    */
-  function canAddOffer(cartOffer: OrderOffer): boolean {
+  function canAddOffer(item: OrderItem): boolean {
     // check if exists
-    const existsIndex = cart.value.findIndex((c) => c.offer.id === cartOffer.offer.id)
+    const existsIndex = cart.value.findIndex((c) => c.id === item.id)
     // if exists add qty
     if (existsIndex >= 0) {
-      const stockType = cartOffer.offer.stock_type
+      const stockType = item.offer?.stock_type
       if (stockType === STOCK_TYPE.INFINITY) return true
       else if (stockType === STOCK_TYPE.OUT || stockType === STOCK_TYPE.ON_WAY) return false
-      else if (stockType === STOCK_TYPE.LIMITED && cartOffer.offer.stock_qty) {
+      else if (stockType === STOCK_TYPE.LIMITED && item.offer?.stock_qty) {
         const cartQty = cart.value[existsIndex].qty
-        return cartQty < cartOffer.offer.stock_qty
+        return cartQty < item?.offer.stock_qty
       }
       return false
     }
@@ -76,11 +76,11 @@ export const useShopStore = defineStore(STORE_NAME, () => {
 
   /**
    * removeFromCart
-   * @param cartOffer
+   * @param item
    */
-  function removeCartOffer(cartOffer: OrderOffer) {
+  function removeCartOffer(item: OrderItem) {
     // check if exists
-    const existsIndex = cart.value.findIndex((c) => c.offer.id === cartOffer.offer.id)
+    const existsIndex = cart.value.findIndex((c) => c.id === item.id)
     // if exists add qty
     if (existsIndex >= 0) {
       // if qty === 1 remove

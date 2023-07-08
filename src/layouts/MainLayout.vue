@@ -28,6 +28,7 @@ async function getCategories() {
 
 onBeforeMount(async () => {
   $user.loadFromStorage()
+  $shop.getCartFromStorage()
 
   try {
     await getCategories()

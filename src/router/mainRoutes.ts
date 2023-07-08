@@ -24,6 +24,7 @@ const routes: RouteRecordRaw[] = [
     path: 'caret',
     name: ROUTES.CARET,
     components: {
+      top: () => import('@/components/layouts/NavBar.vue'),
       default: () => import('@/views/CaretView.vue'),
       bottom: () => import('@/components/layouts/BottomNavbar.vue')
     }

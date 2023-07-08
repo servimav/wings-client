@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
-import type { OrderOffer } from '@servimav/wings-services'
-import { useShopStore } from '@/stores'
 import { useRouter } from 'vue-router'
-import { ROUTES } from '@/router'
+import type { OrderItem } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
+import { useShopStore } from '@/stores'
+import { ROUTES } from '@/router'
 
 /**
  * -----------------------------------------
@@ -31,11 +31,11 @@ const cart = computed(() => $shop.cart)
 
 const subTotal = computed(() => {
   let val = 0
-  cart.value.forEach((offerCart) => {
-    const offerPrice = offerCart.offer.discount_price
-      ? offerCart.offer.discount_price
-      : offerCart.offer.sell_price
-    val += offerCart.qty * offerPrice
+  cart.value.forEach((item) => {
+    const offerPrice = item.offer?.discount_price
+      ? item.offer.discount_price
+      : item.offer?.sell_price
+    val += item.qty * (offerPrice ?? 0)
   })
   return val
 })
@@ -47,52 +47,53 @@ const subTotal = computed(() => {
  */
 /**
  * addOfferQty
- * @param offerCart
+ * @param item
  */
-function addOfferQty(offerCart: OrderOffer) {
-  $shop.addCartOffer(offerCart)
+function addOfferQty(item: OrderItem) {
+  $shop.addCartOffer(item)
 }
 
 /**
  * goToOffer
- * @param offerCart
+ * @param item
  */
-function goToOffer(offerCart: OrderOffer) {
+function goToOffer(item: OrderItem) {
+  console.log({ item })
   $router.push({
     name: ROUTES.SINGLE_OFFER,
     params: {
-      offerId: offerCart.offer.id
+      offerId: item.id
     }
   })
 }
 /**
  * removeOfferQty
- * @param offerCart
+ * @param item
  */
-function removeOfferQty(offerCart: OrderOffer) {
-  $shop.removeCartOffer(offerCart)
+function removeOfferQty(item: OrderItem) {
+  $shop.removeCartOffer(item)
 }
 </script>
 
 <template>
-  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
+  <main class="container w-full select-none p-2 pb-16 pt-14">
     <div class="p-2" v-if="cart.length">
-      <RouterLink
+      <div
         role="button"
-        :to="{ name: ROUTES.CHECKOUT }"
-        class="w-full rounded-md border-gray-500 bg-primary-500 px-2.5 py-2 text-white"
+        @click="() => $router.push({ name: ROUTES.CHECKOUT })"
+        class="w-full rounded-md border-gray-500 bg-primary px-2.5 py-2 text-center text-white"
       >
         Configurar Envío ({{ toCurrency(subTotal) }})
-      </RouterLink>
+      </div>
 
       <div class="mt-2 space-y-2">
         <CaretOfferWidget
-          v-for="(offerCart, key) in cart"
-          :key="`offer-cart-${key}-${offerCart.offer.id}`"
-          :offer-cart="offerCart"
-          @decrease="() => removeOfferQty(offerCart)"
-          @increase="() => addOfferQty(offerCart)"
-          @click-image="() => goToOffer(offerCart)"
+          v-for="(item, key) in cart"
+          :key="`offer-cart-${key}-${item.id}`"
+          :item="item"
+          @decrease="() => removeOfferQty(item)"
+          @increase="() => addOfferQty(item)"
+          @click-image="() => goToOffer(item)"
         />
       </div>
     </div>
