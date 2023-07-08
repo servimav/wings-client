@@ -40,16 +40,17 @@ export interface ShopOrder {
   delivery_price: number
   offers_price: number
   service_price: number
-  order_offers: OrderOffer[]
+  items: OrderItem[]
 }
 
 /**
  * ShopOrderCreate
  */
 export interface ShopOrderCreate {
-  order_offers: Array<OrderOfferCreate>
+  items: Array<{ id: number; qty: number }>
   delivery_details: DeliveryDetails
   currency?: CurrencyCode
+  message?: string
 }
 
 /**
@@ -74,17 +75,13 @@ export interface ShopOrderFilter {
 /**
  * OrderOffer
  */
-export interface OrderOfferCreate {
+export interface OrderItem {
+  id: number
   qty: number
-  offer_id: number
-}
-
-/**
- * OrderOffer
- */
-export interface OrderOffer {
-  qty: number
-  offer: ShopOffer
+  name: string
+  image: string
+  price: number
+  offer?: ShopOffer
 }
 
 /**
