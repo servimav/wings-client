@@ -34,7 +34,7 @@ export function useServices() {
         _userStorage.remove()
         window.location.assign('/auth')
       }
-      return error
+      throw error
     }
   )
 

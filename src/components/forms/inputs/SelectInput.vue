@@ -24,7 +24,7 @@ function onChange(event: Event) {
     :value="modelValue"
     :name="id"
     :required="required"
-    class="w-full rounded-lg bg-white border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+    class="w-full rounded-lg border border-gray-200 bg-white p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
     @change="onChange"
   >
     <option v-for="(option, key) in options" :key="`option-${key}`" :value="option.value">

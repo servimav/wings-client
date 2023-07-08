@@ -18,31 +18,40 @@ const CheckIcon = defineAsyncComponent(() => import('@/components/icons/CheckIco
  */
 interface StepperInlineProps {
   labels: Array<string>
-  active: number
+  modelValue: number
 }
 
-defineProps<StepperInlineProps>()
+interface StepperInlineEmit {
+  (e: 'update:modelValue', v: number): void
+}
+
+const $props = defineProps<StepperInlineProps>()
+const $emit = defineEmits<StepperInlineEmit>()
+
+function onClick(index: number) {
+  if (index < $props.modelValue) $emit('update:modelValue', index)
+}
 </script>
 
 <template>
-  <ol class="flex items-center justify-between w-full">
+  <ol class="flex w-full items-center justify-between">
     <li
       v-for="(label, index) in labels"
       :key="`stepper-item-${index}`"
-      class="w-full flex flex-col items-center space-y-1"
+      class="flex w-full flex-col items-center"
     >
       <div
-        class="flex items-center justify-center w-8 h-8 text-white rounded-full"
+        class="flex h-8 w-8 items-center justify-center rounded-full text-white"
         :class="[
-          index === active ? 'bg-gray-800' : index < active ? 'bg-butterfly-blue' : 'bg-gray-500'
+          index === modelValue ? 'bg-primary' : index < modelValue ? 'bg-green-400' : 'bg-gray-500'
         ]"
       >
-        <CheckIcon v-if="index < active" class="w-6 h-6 text-butterfly-blue" />
+        <CheckIcon v-if="index < modelValue" class="h-4 w-4 text-black" />
         <template v-else>
           {{ index + 1 }}
         </template>
       </div>
-      <div class="text-sm" :class="[index <= active ? 'text-gray-800' : 'text-gray-500']">
+      <div class="text-sm" :class="[index <= modelValue ? 'text-gray-800' : 'text-gray-500']">
         {{ label }}
       </div>
     </li>
