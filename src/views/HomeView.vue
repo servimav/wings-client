@@ -40,8 +40,8 @@ const eventHandler = () => {
   }
 }
 const loading = ref(false)
-const offers = ref<ShopOffer[]>([])
-const currentPage = ref<number>()
+const offers = computed<ShopOffer[]>(() => $shop.homeOffers)
+const currentPage = computed<number | undefined>(() => $shop.homePagination)
 /**
  * -----------------------------------------
  *	Methods
@@ -75,10 +75,10 @@ async function getOffers() {
         sort: 'views'
       })
     ).data
-    currentPage.value = resp.meta.current_page
+    $shop.homePagination = resp.meta.current_page
     // if server return data
     if (resp.data.length) {
-      offers.value.push(...resp.data)
+      $shop.homeOffers.push(...resp.data)
     } else {
       // if no more data stop event
       window.removeEventListener('scroll', eventHandler)
@@ -101,8 +101,10 @@ onBeforeMount(async () => {
   useTitle('Compras y Envíos | Wings')
   scrollTop()
   // init Data
-  offers.value = []
-  currentPage.value = undefined
+  if (!$shop.homeOffers.length) {
+    $shop.homeOffers = []
+    $shop.homePagination = undefined
+  }
   // start get offer
   await getOffers()
   // start listening event

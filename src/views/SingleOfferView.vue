@@ -69,8 +69,9 @@ const categories = computed(() =>
 const contactUrl = computed(() => {
   const url = location.href
   if (offer.value) {
-    const store = offer.value.store
-    const phone = store && store.contact_phone ? store.contact_phone : '5355190107'
+    // const store = offer.value.store
+    // const phone = store && store.contact_phone ? store.contact_phone : '173772811360'
+    const phone = '17372811360'
     const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
     const message = `Hola, le escribo porque me interesa el producto:\n${
       offer.value.name
@@ -199,16 +200,16 @@ async function loadData(offerId: number) {
 async function onClickShare() {
   if (offer.value) {
     // Get image file from url
-    let files: File[] = []
-    try {
-      const response = await fetch(offer.value.image as string)
-      const blob = await response.blob()
-      const imageName = `${offer.value.name}.png`
-      const imageFile = new File([blob], imageName, { type: blob.type })
-      files.push(imageFile)
-    } catch (error) {
-      $app.axiosError(error)
-    }
+    // let files: File[] = []
+    // try {
+    //   const response = await fetch(offer.value.image as string)
+    //   const blob = await response.blob()
+    //   const imageName = `${offer.value.name}.png`
+    //   const imageFile = new File([blob], imageName, { type: blob.type })
+    //   files.push(imageFile)
+    // } catch (error) {
+    //   $app.axiosError(error)
+    // }
 
     // set offer price
     const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
@@ -396,7 +397,18 @@ onBeforeRouteUpdate(async (to) => {
       <!-- / Content -->
 
       <!-- Button -->
-      <div class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center">
+      <a
+        :href="contactUrl"
+        v-if="contactUrl"
+        class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
+      >
+        <button
+          class="w-full rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
+        >
+          Contactar al Vendedor
+        </button>
+      </a>
+      <div v-else class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center">
         <button
           @click="addOfferToCart"
           v-if="canAdd"

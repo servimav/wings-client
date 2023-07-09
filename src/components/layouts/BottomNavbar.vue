@@ -19,7 +19,7 @@ interface LabelLink extends Link {
 }
 
 interface IconLabelLink extends LabelLink {
-  icon: typeof HeartOutline
+  icon: typeof HomeOutline
   badge?: number
 }
 
@@ -29,7 +29,7 @@ interface IconLabelLink extends LabelLink {
  * -----------------------------------------
  */
 
-const HeartOutline = defineAsyncComponent(() => import('@/components/icons/HeartOutline.vue'))
+const HomeOutline = defineAsyncComponent(() => import('@/components/icons/HomeOutline.vue'))
 const SquaresOutline = defineAsyncComponent(
   () => import('@/components/icons/Squqres2x2Outline.vue')
 )
@@ -59,7 +59,7 @@ const cartCounter = computed(() => {
 
 const navButtons = computed<IconLabelLink[]>(() => {
   return [
-    { icon: HeartOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
+    { icon: HomeOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
     {
       icon: SquaresOutline,
       label: 'Categorías',
@@ -68,8 +68,7 @@ const navButtons = computed<IconLabelLink[]>(() => {
     {
       icon: ShoppingBagOutline,
       label: 'Carrito',
-      to: { name: ROUTES.CARET },
-      badge: cartCounter.value
+      to: { name: ROUTES.UNDER_CONSTRUCTION }
     },
     { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.UNDER_CONSTRUCTION } }
   ]
