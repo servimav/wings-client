@@ -16,6 +16,8 @@ export default function init(api: AxiosInstance) {
 
   return {
     ...crud,
+    show: (id: number, params: { currency: string }) =>
+      api.get<ShopOrder>(`${baseUrl}/${id}`, { params }),
     filter: (params: ShopOrderFilter) =>
       api.get<PaginatedData<ShopOrder>>(`${baseUrl}/filter`, { params }),
     mine: (params: Omit<ShopOrderFilter, 'customer_id' | 'location_id'>) =>
@@ -38,6 +40,7 @@ export interface ShopOrder {
   delivery_status: STATUS
   delivery_details: DeliveryDetails
   delivery_price: number
+  delivery_date?: string
   offers_price: number
   service_price: number
   items: OrderItem[]
