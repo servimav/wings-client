@@ -40,6 +40,10 @@ onBeforeMount(async () => {
 
 <template>
   <RouterView name="top" />
-  <RouterView />
+  <RouterView v-slot="{ Component }">
+    <KeepAlive :include="['HomeView']">
+      <component :is="Component" />
+    </KeepAlive>
+  </RouterView>
   <RouterView name="bottom" />
 </template>

@@ -2,11 +2,11 @@
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
+import type { ShopOffer } from '@servimav/wings-services'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
-import type { ShopOffer } from '@servimav/wings-services'
 import { scrollTop } from '@/helpers'
 /**
  * -----------------------------------------
@@ -24,6 +24,10 @@ const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/Offe
 const $router = useRouter()
 const $service = useServices()
 const $shop = useShopStore()
+
+defineOptions({
+  name: 'HomeView'
+})
 
 /**
  * -----------------------------------------

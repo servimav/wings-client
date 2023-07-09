@@ -239,6 +239,7 @@ async function onClickShare() {
 onBeforeMount(async () => {
   // check if param "offerId" exists on url
   if ($route.params.offerId) {
+    scrollTop()
     // Cast offerId as Number
     const offerId = Number($route.params.offerId)
     await loadData(offerId)
@@ -421,6 +422,7 @@ onBeforeRouteUpdate(async (to) => {
           @click="goToCart"
           role="button"
           class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"
+          :class="{ 'flex-1': !canAdd }"
         >
           <ShoppingBagOutline class="h-6 w-6" />
           <div

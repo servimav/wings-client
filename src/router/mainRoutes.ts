@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { ROUTES } from './names'
+import { authGuard } from './guards'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -32,6 +33,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: 'orders',
     name: ROUTES.ORDERS,
+    beforeEnter: authGuard,
     components: {
       default: () => import('@/views/OrdersView.vue'),
       top: () => import('@/components/layouts/SearchNavbar.vue'),
@@ -40,6 +42,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: 'orders/:orderId',
+    beforeEnter: authGuard,
     name: ROUTES.ORDER,
     components: {
       default: () => import('@/views/OrderView.vue'),
@@ -50,6 +53,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: 'checkout',
     name: ROUTES.CHECKOUT,
+    beforeEnter: authGuard,
     components: {
       default: () => import('@/views/CheckoutView.vue'),
       top: () => import('@/components/layouts/NavBar.vue')
@@ -73,6 +77,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: 'user',
     name: ROUTES.USER,
+    beforeEnter: authGuard,
     component: () => import('@/views/UserView.vue')
   }
 ]
