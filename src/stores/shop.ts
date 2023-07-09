@@ -4,18 +4,24 @@ import {
   type ShopCategory,
   type ShopOffer,
   type OrderItem,
-  STOCK_TYPE
+  STOCK_TYPE,
+  type Currency
 } from '@servimav/wings-services'
+import { useServices } from '@/services'
 import { useStorage } from '@/helpers'
 
 const STORE_NAME = 'useShopStore'
 const $storage = useStorage<OrderItem[]>(STORE_NAME)
 
 export const useShopStore = defineStore(STORE_NAME, () => {
+  const $service = useServices()
+
   // store all categories
   const categories = ref<ShopCategory[]>([])
   // cart
   const cart = ref<OrderItem[]>([])
+
+  const currencies = ref<Currency[]>([])
 
   // Home offers
   const homeOffers = ref<ShopOffer[]>([])
@@ -79,6 +85,13 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   }
 
   /**
+   * getCurrencies
+   */
+  async function getCurrencies() {
+    currencies.value = (await $service.currency.list()).data
+  }
+
+  /**
    * removeFromCart
    * @param item
    */
@@ -104,12 +117,14 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   return {
     categories,
     cart,
+    currencies,
     homeOffers,
     homePagination,
     // Methods
     addCartOffer,
     canAddOffer,
     getCartFromStorage,
+    getCurrencies,
     removeCartOffer,
     saveCartOnStorage
   }

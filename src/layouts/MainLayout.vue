@@ -31,8 +31,7 @@ onBeforeMount(async () => {
   $shop.getCartFromStorage()
 
   try {
-    await getCategories()
-    await $user.geMe()
+    Promise.all([getCategories(), $user.geMe(), $shop.getCurrencies()])
   } catch (error) {
     console.log({ error })
   }
