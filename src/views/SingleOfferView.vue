@@ -13,6 +13,7 @@ import { STOCK_TYPE } from '@servimav/wings-services'
  *	Components
  * -----------------------------------------
  */
+const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
@@ -167,6 +168,16 @@ function goToCart() {
 }
 
 /**
+ * goBack
+ */
+function goBack() {
+  const previousRoute = $router.currentRoute.value
+  $router.back()
+
+  if (previousRoute !== $router.currentRoute.value) $router.push({ name: ROUTES.HOME })
+}
+
+/**
  * goToOffer
  * @param offer
  */
@@ -261,20 +272,31 @@ onBeforeRouteUpdate(async (to) => {
 </script>
 
 <template>
+  <nav class="fixed left-0 top-0 z-10 w-screen">
+    <div class="flex items-center justify-between p-2">
+      <button
+        type="button"
+        class="rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
+        @click="goBack"
+      >
+        <ArrowLeft class="h-5 w-5 text-gray-800" />
+      </button>
+
+      <!-- Share button -->
+      <button
+        type="button"
+        @click="onClickShare"
+        v-if="isSupported"
+        class="rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
+      >
+        <ShareOutline class="h-5 w-5 text-gray-900" />
+
+        <span class="sr-only">Share icon</span>
+      </button>
+      <!-- Share button -->
+    </div>
+  </nav>
   <main class="container relative w-full select-none">
-    <!-- Share button -->
-    <button
-      type="button"
-      @click="onClickShare"
-      v-if="isSupported"
-      class="fixed right-5 top-5 z-20 rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
-    >
-      <ShareOutline class="h-5 w-5 text-gray-900" />
-
-      <span class="sr-only">Share icon</span>
-    </button>
-    <!-- Share button -->
-
     <template v-if="offer">
       <div class="fixed h-96 w-full bg-white">
         <img

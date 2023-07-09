@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ROUTES } from '@/router'
 import { computed, defineAsyncComponent } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { ROUTES } from '@/router'
 
 /**
  ******************************************
