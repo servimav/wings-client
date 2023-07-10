@@ -28,7 +28,7 @@ const ArrowRight = defineAsyncComponent(() => import('@/components/icons/ArrowRi
  *	Composables
  * -----------------------------------------
  */
-defineProps<Props>()
+const $props = defineProps<Props>()
 const $emits = defineEmits<Emit>()
 
 /**
@@ -43,7 +43,9 @@ const container = ref<HTMLDivElement>()
 const isScrollToEnd = computed(
   () =>
     container.value &&
-    container.value.offsetWidth + scrollPosition.value >= container.value.scrollWidth
+    ((scrollPosition.value > 0 &&
+      container.value.offsetWidth + scrollPosition.value == container.value.scrollWidth) ||
+      $props.offers.length == 1)
 )
 
 /**
@@ -53,7 +55,7 @@ const isScrollToEnd = computed(
  */
 function scrollToLeft() {
   if (container.value && container.value.scrollLeft != 0) {
-    container.value.scrollLeft = container.value?.scrollHeight
+    container.value.scrollLeft -= OFFER_WIDTH
   }
 }
 
