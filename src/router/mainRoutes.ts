@@ -67,7 +67,11 @@ const routes: RouteRecordRaw[] = [
   {
     path: 'filter',
     name: ROUTES.FILTER,
-    component: () => import('@/views/FilterView.vue')
+    components: {
+      default: () => import('@/views/FilterView.vue'),
+      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   },
   {
     path: 'under-construction',

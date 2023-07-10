@@ -63,7 +63,7 @@ function onSubmit() {
 </script>
 
 <template>
-  <nav class="fixed z-10 w-full border-b border-gray-100 bg-white py-2">
+  <nav class="fixed z-20 w-full border-b border-gray-100 bg-white py-2">
     <div
       class="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-2 px-3 py-2"
     >
