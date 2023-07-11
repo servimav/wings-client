@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, onBeforeMount } from 'vue'
 import { RouterView } from 'vue-router'
+import { useUserStore } from './stores'
+
+const $user = useUserStore()
 /**
  * -----------------------------------------
  *	Components
@@ -10,6 +13,10 @@ import { RouterView } from 'vue-router'
 const NotificationContainer = defineAsyncComponent(
   () => import('@/components/layouts/NotificationContainer.vue')
 )
+
+onBeforeMount(() => {
+  $user.loadFromStorage()
+})
 </script>
 
 <template>
