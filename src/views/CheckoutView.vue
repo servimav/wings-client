@@ -6,7 +6,7 @@ import type {
   ShopOrder,
   ShopOrderCreate
 } from '@servimav/wings-services'
-import { scrollTop, setDefaultImage, toCurrency, useStorage } from '@/helpers'
+import { scrollTop, toCurrency, useStorage } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
 import { ROUTES } from '@/router'
@@ -14,11 +14,18 @@ import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 
 /**
- *******************************************
+ * -----------------------------------------
  *	Components
- *******************************************
+ * -----------------------------------------
  */
+const CaretOfferWidget = defineAsyncComponent(
+  () => import('@/components/widgets/CaretOfferWidget.vue')
+)
+const CartIcon = defineAsyncComponent(() => import('@/components/icons/ShoppingCartOutline.vue'))
+const ChatIcon = defineAsyncComponent(() => import('@/components/icons/ChatOutline.vue'))
 const CheckIcon = defineAsyncComponent(() => import('@/components/icons/CheckIcon.vue'))
+const LoadingSpinner = defineAsyncComponent(() => import('@/components/widgets/LoadingSpinner.vue'))
+const RocketLaunch = defineAsyncComponent(() => import('@/components/icons/RocketLaunch.vue'))
 const StepperInline = defineAsyncComponent(() => import('@/components/StepperInline.vue'))
 const SelectInput = defineAsyncComponent(() => import('@/components/forms/inputs/SelectInput.vue'))
 const TextInput = defineAsyncComponent(() => import('@/components/forms/inputs/TextInput.vue'))
@@ -43,6 +50,16 @@ const $user = useUserStore()
  */
 
 const cart = computed(() => $shop.cart)
+
+const contactUrl = computed(() => {
+  if (order.value) {
+    const orderUrl = `https://wings.servimav.com/order/${order.value.id}`
+    const phone = '17372811360'
+    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+  }
+  return undefined
+})
 
 const deliveryPrice = computed(() =>
   locationSelected.value?.delivery_price && locationSelected.value.delivery_price > 0
@@ -108,12 +125,12 @@ async function onSubmit() {
     // remove cart
     $shop.cart = []
     $shop.saveCartOnStorage()
-    $router.push({
-      name: ROUTES.ORDER,
-      params: {
-        orderId: data.id
-      }
-    })
+    // $router.push({
+    // 	name: ROUTES.ORDER,
+    // 	params: {
+    // 		orderId: data.id
+    // 	}
+    // })
     $app.success('Pedido creado correctamente')
   } catch (error) {
     $app.axiosError(error)
@@ -149,6 +166,7 @@ async function onNext() {
       break
     case 2:
       // Submit
+      stepActive.value++
       await onSubmit()
       break
     default:
@@ -165,8 +183,12 @@ async function onNext() {
  */
 function getSavedDeliveryDetails() {
   const data = $storage.get()
-  if (data) form.value.delivery_details = data
-  else if (user.value) {
+  if (data) {
+    form.value.delivery_details = data
+    if (locationSelected.value && locationSelected.value.description) {
+      form.value.delivery_details.address = `${locationSelected.value.description}, ${locationSelected.value.name}`
+    }
+  } else if (user.value) {
     form.value.delivery_details = {
       address: '',
       contact: user.value.phone,
@@ -189,6 +211,13 @@ async function loadLocations() {
   }
 }
 
+function onSetLocation(value: string | number) {
+  form.value.delivery_details.location_id = Number(value)
+  if (locationSelected.value && locationSelected.value.description) {
+    form.value.delivery_details.address = `${locationSelected.value.description}, ${locationSelected.value.name}`
+  }
+}
+
 onBeforeMount(async () => {
   useTitle('Compras y Envíos | Wings')
   if (!cart.value.length) $router.push({ name: ROUTES.HOME })
@@ -199,7 +228,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <main class="container relative w-full bg-gray-50">
+  <main class="container relative min-h-screen w-full bg-gray-50">
     <div class="fixed left-0 top-12 w-full bg-white pb-2 pt-5">
       <StepperInline :labels="STEP_LABELS" v-model="stepActive" />
     </div>
@@ -211,16 +240,19 @@ onBeforeMount(async () => {
           <div>
             <SelectInput
               id="location"
-              v-model="form.delivery_details.location_id"
+              :model-value="form.delivery_details.location_id"
+              @update:model-value="onSetLocation"
               :options="
                 locations.map((l) => ({
                   label: `${l.name} ${
-                    l.delivery_price ? `(+${toCurrency(l.delivery_price)})` : ''
+                    l.delivery_price && l.delivery_price > 0
+                      ? `(+${toCurrency(l.delivery_price)})`
+                      : '(Gratis)'
                   }`,
                   value: l.id
                 }))
               "
-              label="Lugar de destino"
+              label="Lugar de Recogida"
               required
             />
           </div>
@@ -256,6 +288,7 @@ onBeforeMount(async () => {
               label="Dirección"
               placeholder="Calle Flores #45"
               required
+              readonly
             />
           </div>
         </section>
@@ -264,24 +297,13 @@ onBeforeMount(async () => {
         <!-- revision Step 2 -->
         <section class="mx-4 space-y-4 rounded-md" v-show="stepActive === 1">
           <!-- Cart Items -->
-          <div class="mt-2 grid grid-cols-3 gap-2">
-            <div
+          <div class="space-y-2">
+            <CaretOfferWidget
               v-for="(item, itemKey) in cart"
               :key="`item-cart-${itemKey}-${item.id}`"
-              class="bg-white p-2 shadow-md"
-            >
-              <div class="p-1">
-                <img
-                  :src="item.image"
-                  :title="item.name"
-                  :alt="item.name"
-                  @error="setDefaultImage"
-                />
-              </div>
-              <div class="p-2 text-sm">
-                {{ toCurrency(item.price * item.qty) }} (x{{ item.qty }})
-              </div>
-            </div>
+              :item="item"
+              readonly
+            />
           </div>
           <!-- / Cart Items -->
 
@@ -350,7 +372,7 @@ onBeforeMount(async () => {
                   <p>Primero transfiere la mitad ({{ toCurrency(total / 2) }})</p>
                   <p>
                     Luego tranfiere la otra mitad ({{ toCurrency(total / 2) }}) cuando le
-                    entreguemos el producto
+                    entreguemos el pedido
                   </p>
                   <p class="font-semibold">Los datos del pago se lo enviaremos a su WhatsApp</p>
                 </div>
@@ -362,16 +384,63 @@ onBeforeMount(async () => {
         <!-- / Payment Step  -->
 
         <!-- Final Step -->
-        <section class="mx-4" v-show="stepActive === 3">
+        <section class="mx-4 text-slate-900" v-show="stepActive === 3">
           <div class="rounded-md bg-white p-4">
-            <h3 class="text-center font-semibold">Estado del Pedido</h3>
+            <div v-if="loading">
+              <h3 class="text-center font-semibold">Guardando Pedido</h3>
 
-            <div v-if="loading">Cargando</div>
+              <div class="mt-4 flex w-full justify-center">
+                <LoadingSpinner class="h-10 w-10" />
+              </div>
+            </div>
 
-            <div v-else-if="order" class="bg-white p-4 shadow-md">
-              <div class="flex justify-between gap-2">
-                <div>Orden {{ order.id }}</div>
-                <div>Estado: {{ order.delivery_status }}</div>
+            <div v-else-if="order" class="bg-white">
+              <h3 class="text-center text-lg font-semibold">Pedido Creado</h3>
+              <div class="mt-4 flex w-full justify-center">
+                <div class="flex h-10 w-10 items-center rounded-full border border-green-500 p-2">
+                  <CheckIcon class="text-green-500" />
+                </div>
+              </div>
+              <div class="mt-2 text-center font-semibold">
+                <p>Su pedido ha sido guardado correctamente</p>
+              </div>
+
+              <p class="mt-4 border p-2">
+                Le enviaremos por WhatsApp los detalles del Pago para proceder con el Envío
+              </p>
+
+              <div class="mt-4 space-y-2 border p-2">
+                <p class="text-center">Qué desea hacer?</p>
+
+                <RouterLink
+                  :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }"
+                  class="flex gap-2"
+                >
+                  <div
+                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
+                  >
+                    <RocketLaunch class="h-6 w-6" />
+                    Revisar Estado del Pedido
+                  </div>
+                </RouterLink>
+
+                <RouterLink :to="{ name: ROUTES.HOME }" class="flex gap-2">
+                  <div
+                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
+                  >
+                    <CartIcon class="h-6 w-6" />
+                    Seguir comprando
+                  </div>
+                </RouterLink>
+
+                <a :href="contactUrl" target="_blank" class="flex gap-2">
+                  <div
+                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
+                  >
+                    <ChatIcon class="h-6 w-6" />
+                    Escríbenos
+                  </div>
+                </a>
               </div>
 
               <div class="mt-2"></div>

@@ -42,7 +42,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: 'orders/:orderId',
-    beforeEnter: authGuard,
+    // beforeEnter: authGuard,
     name: ROUTES.ORDER,
     components: {
       default: () => import('@/views/OrderView.vue'),

@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import { STATUS, type ShopOrder } from '@servimav/wings-services'
+import { toCurrency, CUP_PRICE } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore } from '@/stores'
-import { setDefaultImage, toCurrency, CUP_PRICE } from '@/helpers'
 
 interface OrderStatus {
   label: string
   class: string
 }
-
+/**
+ * ------------------------------------------
+ *	Components
+ * ------------------------------------------
+ */
+const CaretOfferWidget = defineAsyncComponent(
+  () => import('@/components/widgets/CaretOfferWidget.vue')
+)
 /**
  * ------------------------------------------
  *	Composable
@@ -39,7 +46,7 @@ const orderStatus = computed<OrderStatus | undefined>(() => {
       case STATUS.ACCEPTED:
         return {
           class: '',
-          label: 'Aceptada'
+          label: 'Pagada y En Espera de Envío'
         }
       case STATUS.CANCELED_BY_CLIENT:
         return {
@@ -59,7 +66,7 @@ const orderStatus = computed<OrderStatus | undefined>(() => {
       case STATUS.CREATED:
         return {
           class: '',
-          label: 'Creada'
+          label: 'En espera de Pago'
         }
       case STATUS.ONPROGRESS:
         return {
@@ -140,54 +147,29 @@ onBeforeMount(() => {
         <!-- Prices -->
         <div class="border p-4 text-sm">
           <ul class="list-none space-y-1">
-            <li>Precio de Productos: {{ toCurrency(order.offers_price) }}</li>
+            <li>Precio de Productos: {{ toCurrency(order.offers_price * cupPrice) }}</li>
             <li>
               Precio de Envío:
               {{
                 order.delivery_price && order.delivery_price > 0
-                  ? toCurrency(order.delivery_price)
+                  ? toCurrency(order.delivery_price * cupPrice)
                   : 'Gratis'
               }}
             </li>
-            <li>Total: {{ toCurrency(totalPrice) }}</li>
+            <li>Total: {{ toCurrency(totalPrice * cupPrice) }}</li>
           </ul>
         </div>
         <!-- / Prices -->
 
-        <!-- Destination -->
-        <div class="border p-4 text-sm">
-          <ul class="list-none space-y-1">
-            <li>Precio de Productos: {{ toCurrency(order.offers_price) }}</li>
-            <li>
-              Precio de Envío:
-              {{
-                order.delivery_price && order.delivery_price > 0
-                  ? toCurrency(order.delivery_price)
-                  : 'Gratis'
-              }}
-            </li>
-            <li>Total: {{ toCurrency(totalPrice) }}</li>
-          </ul>
-        </div>
-        <!-- / Destination -->
-
         <!-- Cart Items -->
-        <div class="grid grid-cols-2 gap-2">
-          <div
+        <div class="space-y-2">
+          <CaretOfferWidget
             v-for="(item, itemKey) in order.items"
-            :key="`item-cart-${itemKey}-${item.id}`"
-            class="border border-slate-100 bg-white p-2"
-          >
-            <div class="p-1">
-              <img
-                :src="item.offer?.image"
-                :title="item.offer?.name"
-                :alt="item.offer?.name"
-                @error="setDefaultImage"
-              />
-            </div>
-            <div class="p-2 text-sm">{{ toCurrency(item.price * cupPrice) }} (x{{ item.qty }})</div>
-          </div>
+            :key="`item-order-${itemKey}-${item.id}`"
+            :item="item"
+            readonly
+            to-cup
+          />
         </div>
         <!-- / Cart Items -->
       </div>
