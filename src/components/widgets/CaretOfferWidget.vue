@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
-import { setDefaultImage, toCurrency } from '@/helpers'
+import { CUP_PRICE, setDefaultImage, toCurrency } from '@/helpers'
 import type { OrderItem } from '@servimav/wings-services'
+import { useShopStore } from '@/stores'
 
 /**
  * -----------------------------------------
@@ -16,6 +17,8 @@ interface Emit {
 
 interface Props {
   item: OrderItem
+  readonly?: boolean
+  toCup?: boolean
 }
 
 /**
@@ -34,17 +37,25 @@ const MinusIcon = defineAsyncComponent(() => import('@/components/icons/MinusIco
  */
 const $emit = defineEmits<Emit>()
 const $props = defineProps<Props>()
+const $shop = useShopStore()
 
 /**
  * -----------------------------------------
  *	Data
  * -----------------------------------------
  */
+const cupPrice = computed(() => {
+  const cupCurrency = $shop.currencies.find((c) => c.code === 'CUP')
+  return cupCurrency ? cupCurrency.price : CUP_PRICE
+})
 
 const displayPrice = computed(() => {
-  if (offer.value)
-    return offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
-  return undefined
+  let price = 0
+  if ($props.item.price) price = $props.item.price
+  else if (offer.value)
+    price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
+  if ($props.toCup) price = price * cupPrice.value
+  return price
 })
 
 const offer = computed(() => $props.item.offer)
@@ -62,13 +73,16 @@ const offer = computed(() => $props.item.offer)
       @error="setDefaultImage"
       @click="() => $emit('clickImage')"
     />
-
     <div class="ml-2">
       <div class="mb-1 font-medium text-gray-800">{{ offer.name }}</div>
       <div class="text-sm text-gray-500">{{ toCurrency((displayPrice as number) * item.qty) }}</div>
     </div>
 
-    <div class="ml-8 mr-3 flex items-center justify-center gap-2">
+    <div class="ml-8 mr-3 flex items-center justify-center gap-2" v-if="readonly">
+      <div class="w-5 text-center text-sm text-gray-800">x{{ item.qty }}</div>
+    </div>
+
+    <div class="ml-8 mr-3 flex items-center justify-center gap-2" v-else>
       <MinusIcon @click="() => $emit('decrease')" class="h-3 w-3 cursor-pointer text-gray-800" />
       <div class="w-5 text-center text-sm text-gray-800">{{ item.qty }}</div>
       <PlusIcon @click="() => $emit('increase')" class="h-3 w-3 cursor-pointer text-gray-800" />
