@@ -27,6 +27,10 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   const homeOffers = ref<ShopOffer[]>([])
   const homePagination = ref<number>()
 
+  // Incomming offers
+  const incommingOffers = ref<ShopOffer[]>([])
+  const incommingPagination = ref<number>()
+
   /**
    * -----------------------------------------
    *	Methods
@@ -66,7 +70,7 @@ export const useShopStore = defineStore(STORE_NAME, () => {
     if (existsIndex >= 0) {
       const stockType = item.offer?.stock_type
       if (stockType === STOCK_TYPE.INFINITY) return true
-      else if (stockType === STOCK_TYPE.OUT || stockType === STOCK_TYPE.ON_WAY) return false
+      else if (stockType === STOCK_TYPE.OUT || stockType === STOCK_TYPE.INCOMMING) return false
       else if (stockType === STOCK_TYPE.LIMITED && item.offer?.stock_qty) {
         const cartQty = cart.value[existsIndex].qty
         return cartQty < item?.offer.stock_qty
@@ -120,6 +124,8 @@ export const useShopStore = defineStore(STORE_NAME, () => {
     currencies,
     homeOffers,
     homePagination,
+    incommingOffers,
+    incommingPagination,
     // Methods
     addCartOffer,
     canAddOffer,

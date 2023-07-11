@@ -2,12 +2,12 @@
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { useShare, useTitle } from '@vueuse/core'
+import { STOCK_TYPE } from '@servimav/wings-services'
 import { toCurrency, setDefaultImage, scrollTop } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore } from '@/stores'
 import type { Offer } from '@/types'
-import { STOCK_TYPE } from '@servimav/wings-services'
 /**
  * -----------------------------------------
  *	Components
@@ -227,10 +227,11 @@ async function onClickShare() {
     // Share message
     let text = `${offer.value.name}\n\nPrecio: ${toCurrency(price)}\n\n`
 
-    if (offer.value.stock_type === 'LIMITED')
+    if (offer.value.stock_type === STOCK_TYPE.LIMITED)
       text += `Apúrate, solamente quedan ${offer.value.stock_qty}!!!`
-    else if (offer.value.stock_type === 'OUT')
+    else if (offer.value.stock_type === STOCK_TYPE.OUT)
       text += 'En este momento no tenemos disponibilidad pero tal vez pronto tengamos'
+    else if (offer.value.stock_type === STOCK_TYPE.INCOMMING) text += 'Pedidos por encargos'
 
     share({
       title: offer.value.name,
@@ -343,21 +344,28 @@ onBeforeRouteUpdate(async (to) => {
           >
 
           <span
-            v-else-if="offer.stock_type === 'LIMITED'"
+            v-else-if="offer.stock_type === STOCK_TYPE.LIMITED"
             class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
           >
             {{ realStockQty }} Disponibles</span
           >
 
           <span
-            v-else-if="offer.stock_type === 'OUT'"
+            v-else-if="offer.stock_type === STOCK_TYPE.OUT"
             class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
           >
             No hay Disponibles</span
           >
 
+          <span
+            v-else-if="offer.stock_type === STOCK_TYPE.INCOMMING"
+            class="rounded bg-green-100 px-2.5 py-0.5 font-medium text-green-900"
+          >
+            Por Encargo</span
+          >
+
           <div
-            v-if="offer.available && offer.stock_type !== 'OUT' && offer.min_delivery_days"
+            v-if="offer.available && offer.stock_type !== STOCK_TYPE.OUT && offer.min_delivery_days"
             class="rounded-full bg-green-200 px-2 text-gray-900"
           >
             Entrega en {{ offer.min_delivery_days }} días

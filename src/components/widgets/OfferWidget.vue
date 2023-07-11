@@ -34,11 +34,11 @@ const displayPrice = computed(() =>
 
 <template>
   <div
-    class="relative w-full h-full cursor-pointer rounded-lg border border-gray-100 bg-white p-1 transition-shadow hover:shadow"
+    class="relative h-full w-full cursor-pointer rounded-lg border border-gray-100 bg-white p-1 transition-shadow hover:shadow"
   >
     <div class="mb-2 flex items-center">
       <img
-        class="w-full h-48 object-cover object-center rounded-lg"
+        class="h-48 w-full rounded-lg object-cover object-center"
         :src="offer.image ?? '/images/default.png'"
         :alt="offer.name"
         :title="offer.name"
@@ -46,7 +46,7 @@ const displayPrice = computed(() =>
       />
     </div>
     <div class="mt-2 px-1">
-      <div class="text-sm font-medium text-gray-800 truncate">
+      <div class="truncate text-sm font-medium text-gray-800">
         {{ offer.name }}
       </div>
       <div class="text-sm tracking-tight text-gray-600">{{ toCurrency(displayPrice) }}</div>

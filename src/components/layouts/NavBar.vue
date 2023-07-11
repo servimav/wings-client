@@ -19,8 +19,8 @@ const title = computed(() => {
   switch ($route.name) {
     case ROUTES.CARET:
       return 'Carrito'
-    case ROUTES.CATEGORIES:
-      return 'Categorías'
+    case ROUTES.INCOMMING:
+      return 'Encargos'
     case ROUTES.CHECKOUT:
       return 'Envío'
     case ROUTES.ORDER:

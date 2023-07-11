@@ -1,9 +1,9 @@
 export enum ROUTES {
   CARET = 'caret',
-  CATEGORIES = 'categories',
   CHECKOUT = 'checkout',
   FILTER = 'filter',
   HOME = 'home',
+  INCOMMING = 'encargo',
   ORDER = 'order',
   ORDERS = 'orders',
   SINGLE_OFFER = 'single-offer',

@@ -13,11 +13,11 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    path: 'categories',
-    name: ROUTES.CATEGORIES,
+    path: 'encargos',
+    name: ROUTES.INCOMMING,
     components: {
-      default: () => import('@/views/CategoriesView.vue'),
-      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      default: () => import('@/views/IncommingView.vue'),
+      top: () => import('@/components/layouts/NavBar.vue'),
       bottom: () => import('@/components/layouts/BottomNavbar.vue')
     }
   },
