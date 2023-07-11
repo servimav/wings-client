@@ -108,13 +108,13 @@ async function submit() {
         </div>
         <button
           type="submit"
-          class="inline-flex w-full items-center justify-center rounded-lg bg-butterfly-blue-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-butterfly-blue-600 focus:outline-none focus:ring-4 focus:ring-butterfly-blue-100 focus:ring-offset-1"
+          class="inline-flex w-full items-center justify-center rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-1"
         >
           Iniciar
         </button>
         <p class="text-sm text-gray-500">
           Aún no tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.REGISTER }" class="font-medium text-butterfly-blue-500"
+          <RouterLink :to="{ name: ROUTES.REGISTER }" class="font-medium text-primary-500"
             >Regístrate</RouterLink
           >
         </p>

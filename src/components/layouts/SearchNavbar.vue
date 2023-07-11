@@ -17,7 +17,7 @@ export interface Prop {
  *	Components
  * -----------------------------------------
  */
-const BellOutline = defineAsyncComponent(() => import('@/components/icons/BellOutline.vue'))
+const ChatOutline = defineAsyncComponent(() => import('@/components/icons/ChatOutline.vue'))
 const MangifyGlass = defineAsyncComponent(() => import('@/components/icons/MangifyGlass.vue'))
 
 /**
@@ -31,6 +31,9 @@ const $router = useRouter()
  *	Data
  * -----------------------------------------
  */
+
+const contactUrl = `https://wa.me/17372811360?text=${encodeURIComponent('Hola')}`
+
 const search = ref<ShopOfferFilter>({
   currency: 'CUP',
   search: '',
@@ -88,12 +91,12 @@ function onSubmit() {
         </div>
       </form>
 
-      <div class="flex items-center space-x-3">
+      <a :href="contactUrl" target="_blank" class="flex items-center space-x-3">
         <!-- <ShoppingCartOutline class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800" /> -->
-        <BellOutline
+        <ChatOutline
           class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
-      </div>
+      </a>
     </div>
   </nav>
 </template>

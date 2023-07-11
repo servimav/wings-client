@@ -9,6 +9,7 @@ export interface TextInputProps {
   modelValue?: string | number
   type: 'text' | 'number' | 'email' | 'tel' | 'password' | 'textarea' | 'currency' | 'search'
   required?: boolean
+  readonly?: boolean
   id: string
   label?: string
   placeholder?: string
@@ -63,6 +64,7 @@ function onChange(event: Event) {
       :id="id"
       :placeholder="placeholder"
       :required="required"
+      :readonly="readonly"
       :rows="rows"
       autocomplete="on"
       class="w-full rounded-lg border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
@@ -77,6 +79,7 @@ function onChange(event: Event) {
       :id="id"
       :placeholder="placeholder"
       :required="required"
+      :readonly="readonly"
       :min="min"
       :max="max"
       :step="type === 'currency' ? '0.01' : step"
