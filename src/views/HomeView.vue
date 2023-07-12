@@ -13,6 +13,9 @@ import { scrollTop } from '@/helpers'
  *	Components
  * -----------------------------------------
  */
+const AnnouncementSlider = defineAsyncComponent(
+  () => import('@/components/sliders/AnnouncementSlider.vue')
+)
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSkeleton = defineAsyncComponent(() => import('@/components/widgets/OfferSkeleton.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
@@ -124,12 +127,15 @@ onBeforeUnmount(() => {
   <main class="container w-full select-none bg-gray-50 p-2 pb-16 pt-[4.8rem]">
     <!-- Main Content -->
     <div class="mb-2 px-2" v-if="offers.length">
+      <AnnouncementSlider />
+
       <template v-if="categories.length">
         <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
           Descubre nuestras Categorías
         </div>
         <CategorySlider :categories="categories" go-to-filter />
       </template>
+
       <div class="mt-2 grid grid-cols-2 gap-2">
         <OfferWidget
           v-for="(offer, index) in offers"
