@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTitle } from '@vueuse/core'
 import type { OrderItem } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
-import { useShopStore } from '@/stores'
 import { ROUTES } from '@/router'
-import { useTitle } from '@vueuse/core'
+import { useShopStore } from '@/stores'
 
 /**
  * -----------------------------------------
@@ -15,6 +15,7 @@ import { useTitle } from '@vueuse/core'
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
+const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline.vue'))
 /**
  * -----------------------------------------
  *	Composables
@@ -88,7 +89,7 @@ onBeforeMount(() => {
         @click="() => $router.push({ name: ROUTES.CHECKOUT })"
         class="w-full rounded-md border-gray-500 bg-primary px-2.5 py-2 text-center text-white"
       >
-        Configurar Envío ({{ toCurrency(subTotal) }})
+        Crear Pedido ({{ toCurrency(subTotal) }})
       </div>
 
       <div class="mt-2 space-y-2">
@@ -102,5 +103,23 @@ onBeforeMount(() => {
         />
       </div>
     </div>
+
+    <!-- No content -->
+    <div v-else class="flex min-h-[30rem] items-center justify-center">
+      <div class="px-4">
+        <SadIcon class="mx-auto h-28 w-28 text-gray-500" />
+        <p class="text-center text-lg text-gray-600">Tienes el carrito vacío</p>
+
+        <div class="mt-2">
+          <button
+            @click="() => $router.push({ name: ROUTES.HOME })"
+            class="w-full rounded-lg border border-primary-900 px-2 py-1.5 text-primary-900 dark:border-white dark:text-white"
+          >
+            Ver Ofertas
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /  No content  -->
   </main>
 </template>

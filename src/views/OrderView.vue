@@ -3,9 +3,9 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import { STATUS, type ShopOrder } from '@servimav/wings-services'
-import { toCurrency, CUP_PRICE } from '@/helpers'
+import { toCurrency } from '@/helpers'
 import { useServices } from '@/services'
-import { useAppStore, useShopStore } from '@/stores'
+import { useAppStore } from '@/stores'
 
 interface OrderStatus {
   label: string
@@ -27,17 +27,12 @@ const CaretOfferWidget = defineAsyncComponent(
 const $app = useAppStore()
 const $route = useRoute()
 const $service = useServices()
-const $shop = useShopStore()
 /**
  * ------------------------------------------
  *	Data
  * ------------------------------------------
  */
 
-const cupPrice = computed(() => {
-  const cupCurrency = $shop.currencies.find((c) => c.code === 'CUP')
-  return cupCurrency ? cupCurrency.price : CUP_PRICE
-})
 const order = ref<ShopOrder>()
 
 const orderStatus = computed<OrderStatus | undefined>(() => {
@@ -98,11 +93,15 @@ async function getOrder() {
   $app.toggleLoading(true)
   try {
     const data = (
-      await $service.shop.order.show(orderId, {
+      await $service.shop.order.showClient(orderId, {
         currency: 'CUP'
       })
     ).data
     order.value = data
+
+    console.log({
+      order: order.value
+    })
   } catch (error) {
     $app.axiosError(error)
   }
@@ -147,16 +146,16 @@ onBeforeMount(() => {
         <!-- Prices -->
         <div class="border p-4 text-sm">
           <ul class="list-none space-y-1">
-            <li>Precio de Productos: {{ toCurrency(order.offers_price * cupPrice) }}</li>
+            <li>Precio de Productos: {{ toCurrency(order.offers_price) }}</li>
             <li>
               Precio de Envío:
               {{
                 order.delivery_price && order.delivery_price > 0
-                  ? toCurrency(order.delivery_price * cupPrice)
+                  ? toCurrency(order.delivery_price)
                   : 'Gratis'
               }}
             </li>
-            <li>Total: {{ toCurrency(totalPrice * cupPrice) }}</li>
+            <li>Total: {{ toCurrency(totalPrice) }}</li>
           </ul>
         </div>
         <!-- / Prices -->

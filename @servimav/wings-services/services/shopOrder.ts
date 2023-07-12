@@ -20,7 +20,10 @@ export default function init(api: AxiosInstance) {
       api.get<PaginatedData<ShopOrder>>(`${baseURL}/filter`, { params }),
     mine: (params: Omit<ShopOrderFilter, 'customer_id' | 'location_id'>) =>
       api.get<PaginatedData<ShopOrder>>(`${baseURL}/mine`, { params }),
-    show: (id: number, params: { currency: 'CUP' }) => api.get<ShopOrder>(`${id}`, { params })
+    show: (id: number, params: { currency: 'CUP' }) =>
+      api.get<ShopOrder>(`${baseURL}/${id}`, { params }),
+    showClient: (id: number, params: { currency: 'CUP' }) =>
+      api.get<ShopOrder>(`${baseURL}/${id}/client`, { params })
   }
 }
 
