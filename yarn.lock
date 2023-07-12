@@ -971,6 +971,11 @@
   resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-5.1.1.tgz#a53fdf0ac3525a6dd7f0294e7025786eebca0027"
   integrity sha512-FaDg+Igjiz6ohH7yu5TpLHGCQbsjMMy+0a+idsyadTnz/IzRZwqlCyj4Jbqsb5J39j0hE8kqD3o1e5O5Ukbm2g==
 
+"@capacitor/app@^5.0.5":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-5.0.5.tgz#b80cc5f1444ad9dec51df22cdef1a35c4690eb83"
+  integrity sha512-CedAa0aSQu8yNWqgZXWQfcjIg6uzPNdJQPW5CTyT6dA/U7KuJ10YVA6MhoryCUVthnMJqVj9lYqqxyFsSXjzqw==
+
 "@capacitor/assets@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@capacitor/assets/-/assets-2.0.4.tgz#6a9e8d3bd9d6cc39d8f484cdc9bc0492c6c83c5a"
