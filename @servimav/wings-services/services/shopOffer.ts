@@ -6,27 +6,27 @@ import type { STOCK_TYPE } from '../const'
 import type { KeyValue, PaginatedData, PaginationParams } from '../types'
 
 export default function init(api: AxiosInstance) {
-  const baseUrl = '/shop/offers'
+  const baseURL = '/shop/offers'
 
   const crud = generateCrud<ShopOffer, ShopOfferCreate>({
     api,
-    baseUrl
+    baseURL
   })
 
   return {
     ...crud,
     filter: (params: ShopOfferFilter & PaginationParams) =>
-      api.get<PaginatedData<ShopOffer>>(`${baseUrl}/filter`, {
+      api.get<PaginatedData<ShopOffer>>(`${baseURL}/filter`, {
         params
       }),
     filterAdvanced: (params: ShopOfferFilter & PaginationParams) =>
-      api.get<PaginatedData<ShopOffer>>(`${baseUrl}/filter-advanced`, { params }),
+      api.get<PaginatedData<ShopOffer>>(`${baseURL}/filter-advanced`, { params }),
     show: (id: number, params: { currency: string }) =>
-      api.get<ShopOffer>(`${baseUrl}/${id}`, { params }),
+      api.get<ShopOffer>(`${baseURL}/${id}`, { params }),
     showClient: (id: number, params: { currency: string }) =>
-      api.get<ShopOffer>(`${baseUrl}/${id}/show-client`, { params }),
+      api.get<ShopOffer>(`${baseURL}/${id}/show-client`, { params }),
     showSimilar: (id: number, params: ShopOfferSimilar) =>
-      api.get<ShopOffer[]>(`${baseUrl}/${id}/similar`, { params })
+      api.get<ShopOffer[]>(`${baseURL}/${id}/similar`, { params })
   }
 }
 

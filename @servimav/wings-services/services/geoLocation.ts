@@ -2,11 +2,11 @@ import type { AxiosInstance } from 'axios'
 import { generateCrud } from '../crud'
 
 export default function init(api: AxiosInstance) {
-  const baseUrl = '/location'
+  const baseURL = '/location'
 
   const crud = generateCrud<GeoLocation, GeoLocationCreate>({
     api,
-    baseUrl
+    baseURL
   })
 
   return {
