@@ -71,7 +71,11 @@ const navButtons = computed<IconLabelLink[]>(() => {
       to: { name: ROUTES.CARET },
       badge: cartCounter.value
     },
-    { icon: UserOutline, label: 'Cuenta', to: { name: ROUTES.UNDER_CONSTRUCTION } }
+    {
+      icon: UserOutline,
+      label: 'Cuenta',
+      to: { name: ROUTES.USER }
+    }
   ]
 })
 

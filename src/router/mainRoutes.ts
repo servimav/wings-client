@@ -82,7 +82,11 @@ const routes: RouteRecordRaw[] = [
     path: 'user',
     name: ROUTES.USER,
     beforeEnter: authGuard,
-    component: () => import('@/views/UserView.vue')
+    components: {
+      default: () => import('@/views/UserView.vue'),
+      top: () => import('@/components/layouts/NavBar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   }
 ]
 

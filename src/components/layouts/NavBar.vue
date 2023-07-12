@@ -25,6 +25,8 @@ const title = computed(() => {
       return 'Envío'
     case ROUTES.ORDER:
       return 'Detalles de Pedido'
+    case ROUTES.USER:
+      return 'Usuario'
     default:
       return null
   }
