@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Wings</string>
-    <string name="title_activity_main">Wings</string>
+    <string name="app_name">Compras Wings</string>
+    <string name="title_activity_main">Compras Wings</string>
     <string name="package_name">com.servimav.wings</string>
     <string name="custom_url_scheme">com.servimav.wings</string>
 </resources>
