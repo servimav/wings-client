@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useTitle } from '@vueuse/core'
+
 import type {
   DeliveryDetails,
   GeoLocation,
   ShopOrder,
   ShopOrderCreate
 } from '@servimav/wings-services'
-import { scrollTop, toCurrency, useStorage } from '@/helpers'
+import { sendWhatsappMessage, scrollTop, toCurrency, useStorage } from '@/helpers'
+import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
-import { ROUTES } from '@/router'
-import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
 
 /**
  * -----------------------------------------
@@ -50,16 +51,6 @@ const $user = useUserStore()
  */
 
 const cart = computed(() => $shop.cart)
-
-const contactUrl = computed(() => {
-  if (order.value) {
-    const orderUrl = `https://wings.servimav.com/order/${order.value.id}`
-    const phone = '17372811360'
-    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-  }
-  return undefined
-})
 
 const deliveryPrice = computed(() =>
   locationSelected.value?.delivery_price && locationSelected.value.delivery_price > 0
@@ -113,6 +104,16 @@ const user = computed(() => $user.user)
  * Methods
  *******************************************
  */
+/**
+ * contactWhatsapp
+ */
+function contactWhatsapp() {
+  if (order.value) {
+    const orderUrl = `https://wings.servimav.com/orders/${order.value.id}`
+    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
+    sendWhatsappMessage({ message })
+  }
+}
 
 /**
  * onSubmit
@@ -125,12 +126,6 @@ async function onSubmit() {
     // remove cart
     $shop.cart = []
     $shop.saveCartOnStorage()
-    // $router.push({
-    // 	name: ROUTES.ORDER,
-    // 	params: {
-    // 		orderId: data.id
-    // 	}
-    // })
     $app.success('Pedido creado correctamente')
   } catch (error) {
     $app.axiosError(error)
@@ -210,7 +205,10 @@ async function loadLocations() {
     $app.axiosError(error)
   }
 }
-
+/**
+ * onSetLocation
+ * @param value
+ */
 function onSetLocation(value: string | number) {
   form.value.delivery_details.location_id = Number(value)
   if (locationSelected.value && locationSelected.value.description) {
@@ -430,14 +428,14 @@ onBeforeMount(async () => {
                   </div>
                 </RouterLink>
 
-                <a :href="contactUrl" target="_blank" class="flex gap-2">
+                <div @click="contactWhatsapp" role="button" class="flex gap-2">
                   <div
                     class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
                   >
                     <ChatIcon class="h-6 w-6" />
                     Escríbenos
                   </div>
-                </a>
+                </div>
               </div>
 
               <div class="mt-2"></div>

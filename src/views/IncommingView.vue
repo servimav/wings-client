@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } f
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import { STOCK_TYPE, type ShopOffer } from '@servimav/wings-services'
-import { scrollTop } from '@/helpers'
+import { scrollTop, sendWhatsappMessage } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
@@ -98,10 +98,8 @@ async function getOffers() {
  * contactForIncomming
  */
 function contactForIncomming() {
-  const phone = '17372811360'
   const message = 'Hola, me interesa hacer un Encargo Personalizado'
-  const whatsapp = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-  window.location.assign(whatsapp)
+  sendWhatsappMessage({ message })
 }
 /**
  * -----------------------------------------
