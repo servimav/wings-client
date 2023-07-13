@@ -369,11 +369,8 @@ onBeforeMount(async () => {
                 <CheckIcon class="h-4 w-4" v-if="form.payment_type === 'TRANSFER_PARTIAL'" />
                 <div class="flex-1 space-y-2">
                   <b>Pago Parcial</b>
-                  <p>Primero transfiere la mitad ({{ toCurrency(total / 2) }})</p>
-                  <p>
-                    Luego tranfiere la otra mitad ({{ toCurrency(total / 2) }}) cuando le
-                    entreguemos el pedido
-                  </p>
+                  <p>Primero transfiere la mitad para asegurar su pedido</p>
+                  <p>Luego tranfiere la otra mitad cuando le entreguemos el pedido</p>
                   <p class="font-semibold">Los datos del pago se lo enviaremos a su WhatsApp</p>
                 </div>
               </div>

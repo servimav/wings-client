@@ -46,12 +46,17 @@ onMounted(async () => {
   await getAnnouncements()
   setTimeout(() => {
     initCarousels()
-  }, 500)
+  }, 1000)
 })
 </script>
 
 <template>
-  <div id="announcements-carousel" class="relative w-full" data-carousel="slide">
+  <div
+    id="announcements-carousel"
+    class="relative w-full"
+    data-carousel="slide"
+    v-if="announcements.length"
+  >
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
       <!-- Item 1 -->
