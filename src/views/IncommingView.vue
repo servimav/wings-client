@@ -93,6 +93,16 @@ async function getOffers() {
   }
   loading.value = false
 }
+
+/**
+ * contactForIncomming
+ */
+function contactForIncomming() {
+  const phone = '17372811360'
+  const message = 'Hola, me interesa hacer un Encargo Personalizado'
+  const whatsapp = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+  window.location.assign(whatsapp)
+}
 /**
  * -----------------------------------------
  *	Lifecycle
@@ -132,12 +142,16 @@ onBeforeUnmount(() => {
           describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
         </p>
       </div>
-      <button class="mt-4 w-full rounded-full bg-primary px-2 py-1.5 text-white">
+      <button
+        @click="contactForIncomming"
+        class="mt-4 w-full rounded-full bg-primary px-2 py-1.5 text-white"
+      >
         Solicitar encargo
       </button>
     </div>
+
     <!-- Main Content -->
-    <div class="mb-2 px-2" v-if="offers.length">
+    <div class="mb-2 mt-2 px-2" v-if="offers.length">
       <div class="mt-2 grid grid-cols-2 gap-2">
         <OfferWidget
           v-for="(offer, index) in offers"
@@ -152,8 +166,8 @@ onBeforeUnmount(() => {
     <!-- / Main Content -->
 
     <!-- Loading -->
-    <div v-else class="grid grid-cols-2 gap-2">
-      <OfferSkeleton :repeat="8" />
+    <div v-else class="mt-2 grid grid-cols-2 gap-2">
+      <OfferSkeleton :repeat="4" />
     </div>
     <!-- / Loading -->
   </main>
