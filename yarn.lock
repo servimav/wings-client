@@ -1006,6 +1006,11 @@
   dependencies:
     tslib "^2.1.0"
 
+"@capacitor/share@^5.0.6":
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/@capacitor/share/-/share-5.0.6.tgz#76d2f6f13d1596999c49a0d99d21e7a63b8ecfef"
+  integrity sha512-/dVOW7kcuuD7hWB9Z1drArIpEk+5JCoMnMrAs2c7CLp3q5PeaXNJjTkGr6RJ1OtMhsHyXc6DAFwQ4frFkmZsgw==
+
 "@esbuild/android-arm64@0.17.19":
   version "0.17.19"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.17.19.tgz#bafb75234a5d3d1b690e7c2956a599345e84a2fd"
@@ -1512,6 +1517,47 @@
     "@typescript-eslint/types" "5.59.7"
     eslint-visitor-keys "^3.3.0"
 
+"@unhead/dom@1.1.30", "@unhead/dom@^1.1.26":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.1.30.tgz#d4e8e97304c2f8de2e7774b1f4263b43c8f0f0aa"
+  integrity sha512-EvASOkk36lW5sRfIe+StCojpkPEExsQNt+cqcpdVr9iiRH54jziCDFxcLfjawc+jp4NO86KvmfHo86GIly3/SQ==
+  dependencies:
+    "@unhead/schema" "1.1.30"
+    "@unhead/shared" "1.1.30"
+
+"@unhead/schema@1.1.30", "@unhead/schema@^1.1.26":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.1.30.tgz#aa77da28342a7e7ed0825896a48ebf7551fbe5d7"
+  integrity sha512-lgz0aw+OP1PlKHBhNWAVabV2iAHBhSXCt3Ynswu0m++MwJxOVXizYJRZOVKK7Zx3u7vwPRV/nweYc6rmNHv5gA==
+  dependencies:
+    hookable "^5.5.3"
+    zhead "^2.0.9"
+
+"@unhead/shared@1.1.30":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.1.30.tgz#0ae2a78a1d118c0d2a852e2ca9981805c18f7bca"
+  integrity sha512-OPS+d4SZuYSWquQZVLfbyFYggdqKz8DtcdHXObRoKWnosrgVPyGJoOaFnjfkYYuvU6BFYnUtnZNMRQVUjmER1g==
+  dependencies:
+    "@unhead/schema" "1.1.30"
+
+"@unhead/ssr@^1.1.26":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@unhead/ssr/-/ssr-1.1.30.tgz#0524bd80742321e9a17becd63fdd8f00162e66bb"
+  integrity sha512-0XBgoPZoPjLCEQpGc/PhTYPvXEcWufcpcHWo6jxRham3VCoQN5RoSzFNGPEtd4ZhMMVRMQLJ7yPDGfFXtu78Pg==
+  dependencies:
+    "@unhead/schema" "1.1.30"
+    "@unhead/shared" "1.1.30"
+
+"@unhead/vue@^1.1.26":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-1.1.30.tgz#ca1b4eac39d5f91d2ee4406317377bba1201105d"
+  integrity sha512-jWDfYDjiNj8a8GTQoYeJrpKisI7YKIWwuMP1IREKa4cx41oCsbCKUDjomjnpmdBcpqvb/Kw32Tm+EMcuE/CYkA==
+  dependencies:
+    "@unhead/schema" "1.1.30"
+    "@unhead/shared" "1.1.30"
+    hookable "^5.5.3"
+    unhead "1.1.30"
+
 "@vitejs/plugin-basic-ssl@^1.0.1":
   version "1.0.1"
   resolved "https://registry.servimav.com/@vitejs/plugin-basic-ssl/-/plugin-basic-ssl-1.0.1.tgz"
@@ -1692,6 +1738,16 @@
     "@vueuse/metadata" "10.2.0"
     "@vueuse/shared" "10.2.0"
     vue-demi ">=0.14.5"
+
+"@vueuse/head@^1.1.26":
+  version "1.1.26"
+  resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-1.1.26.tgz#45bfbbb006b50a6fb07aa72cf7208e69e0fb9e98"
+  integrity sha512-VUrqvcxKtxt2moKtUa7R/KscnDsNYj5u7HFULLsr84VhWsztzBedxW/8Wh/kTz2+/eMf5gC1KtkZBTFQYOmauQ==
+  dependencies:
+    "@unhead/dom" "^1.1.26"
+    "@unhead/schema" "^1.1.26"
+    "@unhead/ssr" "^1.1.26"
+    "@unhead/vue" "^1.1.26"
 
 "@vueuse/metadata@10.2.0":
   version "10.2.0"
@@ -2803,6 +2859,11 @@ he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.servimav.com/he/-/he-1.2.0.tgz"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
+
+hookable@^5.5.3:
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/hookable/-/hookable-5.5.3.tgz#6cfc358984a1ef991e2518cb9ed4a778bbd3215d"
+  integrity sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"
@@ -4367,6 +4428,16 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
+unhead@1.1.30:
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-1.1.30.tgz#10caa5966004a8f24b73f059d640c1779eaf744e"
+  integrity sha512-25N/P1GnnC8EYCDerzE0hl2nOdRqS1NOFh1STEyKWRo/Bi5dXn8Z2NTaqzkbr5ExJTZEAiDfZ+eALvMTmvlXlA==
+  dependencies:
+    "@unhead/dom" "1.1.30"
+    "@unhead/schema" "1.1.30"
+    "@unhead/shared" "1.1.30"
+    hookable "^5.5.3"
+
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"
   resolved "https://registry.servimav.com/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-2.0.0.tgz"
@@ -4802,3 +4873,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.servimav.com/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zhead@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/zhead/-/zhead-2.0.9.tgz#3972a1f7485cc19fdfb25007fbef44e8d5a87405"
+  integrity sha512-Y3g6EegQc6PVrYXPq2OS7/s27UGVS5Y6NY6SY3XGH4Hg+yQWbQTtWsjCgmpR8kZnYrv8auB54sz+x5FEDrvqzQ==
