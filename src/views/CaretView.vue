@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import type { OrderItem } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
 import { ROUTES } from '@/router'
@@ -77,7 +77,9 @@ function removeOfferQty(item: OrderItem) {
 }
 
 onBeforeMount(() => {
-  useTitle('Compras y Envíos | Wings')
+  useHead({
+    title: 'Compras y Envíos | Wings'
+  })
 })
 </script>
 

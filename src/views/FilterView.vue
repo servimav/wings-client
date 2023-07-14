@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import type { ShopOffer, ShopOfferFilter } from '@servimav/wings-services'
 import { scrollTop } from '@/helpers'
 import { ROUTES } from '@/router'
@@ -111,7 +111,10 @@ onBeforeRouteUpdate((to) => {
 
 onMounted(async () => {
   // set default title
-  useTitle('Compras y Envíos | Wings')
+  useHead({
+    title: 'Compras y Envíos | Wings'
+  })
+
   // init offers and pagination
   scrollTop()
   offers.value = []

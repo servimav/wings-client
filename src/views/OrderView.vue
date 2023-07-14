@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import { STATUS, type ShopOrder } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
 import { useServices } from '@/services'
@@ -109,7 +109,9 @@ async function getOrder() {
 }
 
 onBeforeMount(() => {
-  useTitle('Compras y Envíos | Wings')
+  useHead({
+    title: 'Pedidos | Wings'
+  })
 
   getOrder()
 })

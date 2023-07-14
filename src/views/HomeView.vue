@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import type { ShopOffer } from '@servimav/wings-services'
+import { scrollTop } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
-import { scrollTop } from '@/helpers'
 /**
  * -----------------------------------------
  *	Components
@@ -105,7 +105,10 @@ async function getOffers() {
 
 onBeforeMount(async () => {
   // set default title
-  useTitle('Compras y Envíos | Wings')
+  useHead({
+    title: 'Compras y Envíos | Wings'
+  })
+  // scroll top smoothly
   scrollTop()
   // init Data
   if (!$shop.homeOffers.length) {

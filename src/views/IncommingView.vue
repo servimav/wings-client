@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import { STOCK_TYPE, type ShopOffer } from '@servimav/wings-services'
 import { scrollTop, sendWhatsappMessage } from '@/helpers'
 import { ROUTES } from '@/router'
@@ -109,7 +109,9 @@ function contactForIncomming() {
 
 onBeforeMount(async () => {
   // set default title
-  useTitle('Compras y Envíos | Wings')
+  useHead({
+    title: 'Compras y Envíos | Wings'
+  })
   scrollTop()
   // init Data
   if (!$shop.homeOffers.length) {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 
 import type {
   DeliveryDetails,
@@ -217,7 +217,10 @@ function onSetLocation(value: string | number) {
 }
 
 onBeforeMount(async () => {
-  useTitle('Compras y Envíos | Wings')
+  // Setup title
+  useHead({
+    title: 'Compras y Envíos | Wings'
+  })
   if (!cart.value.length) $router.push({ name: ROUTES.HOME })
   form.value.items = cart.value
   getSavedDeliveryDetails()
