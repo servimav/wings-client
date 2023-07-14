@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
-import { useShare, useTitle } from '@vueuse/core'
+import { useHead } from '@vueuse/head'
 import { STOCK_TYPE } from '@servimav/wings-services'
 import { toCurrency, setDefaultImage, scrollTop } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+import { useCapacitor } from '@/helpers/capacitor'
 /**
  * -----------------------------------------
  *	Components
@@ -31,7 +32,7 @@ const $route = useRoute()
 const $router = useRouter()
 const $service = useServices()
 const $shop = useShopStore()
-const { isSupported, share } = useShare()
+const { canShare, share } = useCapacitor()
 /**
  * -----------------------------------------
  *	Data
@@ -101,7 +102,7 @@ const realStockQty = computed(() => {
   }
   return 0
 })
-
+const shareIsSupported = ref(false)
 const showFullImage = ref(false)
 /**
  * -----------------------------------------
@@ -199,7 +200,15 @@ async function loadData(offerId: number) {
     await getOffer(offerId)
     // get similar offers and put title
     if (offer.value) {
-      useTitle(`${offer.value?.name} | Wings`)
+      useHead({
+        title: `${offer.value?.name} | Wings`,
+        meta: [
+          { name: 'og:image', content: 'Hello World' },
+          { name: 'og:image:type', content: 'image/png' },
+          { name: 'og:image:width', content: '1024' },
+          { name: 'og:image:height', content: '1024' }
+        ]
+      })
       await getOfferSimilar(offerId)
     }
   } catch (error) {
@@ -211,18 +220,6 @@ async function loadData(offerId: number) {
  */
 async function onClickShare() {
   if (offer.value) {
-    // Get image file from url
-    // let files: File[] = []
-    // try {
-    //   const response = await fetch(offer.value.image as string)
-    //   const blob = await response.blob()
-    //   const imageName = `${offer.value.name}.png`
-    //   const imageFile = new File([blob], imageName, { type: blob.type })
-    //   files.push(imageFile)
-    // } catch (error) {
-    //   $app.axiosError(error)
-    // }
-
     // set offer price
     const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
     // Share message
@@ -238,7 +235,6 @@ async function onClickShare() {
       title: offer.value.name,
       url: location.href,
       text
-      // files
     })
   }
 }
@@ -255,6 +251,8 @@ onBeforeMount(async () => {
     scrollTop()
     // Cast offerId as Number
     const offerId = Number($route.params.offerId)
+    shareIsSupported.value = (await canShare()).value
+
     await loadData(offerId)
   }
 })
@@ -288,7 +286,7 @@ onBeforeRouteUpdate(async (to) => {
       <button
         type="button"
         @click="onClickShare"
-        v-if="isSupported"
+        v-if="shareIsSupported"
         class="rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
       >
         <ShareOutline class="h-5 w-5 text-gray-900" />
