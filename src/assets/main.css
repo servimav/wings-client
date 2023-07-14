@@ -12,3 +12,9 @@
     display: none;
   }
 }
+
+@layer components {
+  .input {
+    @apply rounded-lg border border-gray-300 bg-white text-gray-800 outline-none placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400;
+  }
+}

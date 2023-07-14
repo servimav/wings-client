@@ -78,14 +78,14 @@ function onSubmit() {
         >
         <div class="relative">
           <button type="submit" class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <MangifyGlass class="h-6 w-6 cursor-pointer text-gray-500" />
+            <MangifyGlass class="h-5 w-5 cursor-pointer text-gray-500" />
           </button>
           <input
             :value="search.search"
             @change.prevent="onInputChange"
             type="text"
             id="top-navbar-search-input"
-            class="w-full rounded-lg border border-gray-400 p-2 pl-8 text-sm text-gray-600 outline-none placeholder:text-gray-400 focus:ring-1 focus:ring-gray-400"
+            class="input block w-full p-2 pl-8 text-sm"
             placeholder="Buscar..."
           />
         </div>
@@ -94,7 +94,7 @@ function onSubmit() {
       <a :href="contactUrl" target="_blank" class="flex items-center space-x-3">
         <!-- <ShoppingCartOutline class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800" /> -->
         <ChatOutline
-          class="h-6 w-6 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
+          class="h-7 w-7 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
       </a>
     </div>

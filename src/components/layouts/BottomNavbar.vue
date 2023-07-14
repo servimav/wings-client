@@ -95,22 +95,13 @@ const route = useRoute()
         >
           <component
             :is="btn.icon"
-            class="transition-[color]"
-            :class="[
-              route.name == btn.to
-                ? 'h-8 w-8 fill-butterfly-blue stroke-transparent text-butterfly-blue'
-                : 'h-6 w-6 text-gray-600 group-hover:text-gray-800'
-            ]"
+            class="text-gray-600 transition-[color]"
+            :class="[route.name == btn.to.name ? 'h-8 w-8' : 'h-7 w-7']"
           />
 
           <div
             v-if="route.name != btn.to.name"
-            class="text-xs tracking-wide transition-colors"
-            :class="[
-              route.name == btn.to.name
-                ? 'text-butterfly-blue'
-                : 'text-gray-600 group-hover:text-gray-800'
-            ]"
+            class="text-xs tracking-wide text-gray-600 transition-colors group-hover:text-gray-800"
           >
             {{ btn.label }}
           </div>
