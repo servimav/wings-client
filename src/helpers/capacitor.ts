@@ -1,8 +1,27 @@
-import { App } from '@capacitor/app'
+import { App, type URLOpenListenerEvent } from '@capacitor/app'
 import { useRouter } from 'vue-router'
 
 export const useCapacitor = () => {
   const $router = useRouter()
+
+  /**
+   * deepLink
+   */
+  function deepLink() {
+    // Deep Link
+    App.addListener('appUrlOpen', function (event: URLOpenListenerEvent) {
+      // Example url: https://beerswift.app/tabs/tabs2
+      // slug = /tabs/tabs2
+      const slug = event.url.split('.com').pop()
+
+      // We only push to the route if there is a slug present
+      if (slug) {
+        $router.push({
+          path: slug
+        })
+      }
+    })
+  }
 
   /**
    * handleBack
@@ -16,17 +35,8 @@ export const useCapacitor = () => {
     })
   }
 
-  /**
-   * openUrlListener
-   */
-  function openUrlListener() {
-    App.addListener('appUrlOpen', (data) => {
-      $router.push(data.url)
-    })
-  }
-
   return {
-    backListener,
-    openUrlListener
+    deepLink,
+    backListener
   }
 }

@@ -21,7 +21,7 @@ onBeforeMount(() => {
 
   // Register App event listener
   $capacitor.backListener()
-  $capacitor.openUrlListener()
+  $capacitor.deepLink()
 })
 </script>
 
