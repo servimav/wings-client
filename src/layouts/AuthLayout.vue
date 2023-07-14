@@ -15,28 +15,19 @@ const $route = useRoute()
  * Data
  * --------------------------------------------
  */
-const subtitle = computed(() =>
-  $route.name == ROUTES.LOGIN
-    ? 'Inicia sesión para disfrutar de todos los beneficios que tenemos para tí'
-    : 'Regístrate para acceder a nuestras ofertas.'
+const title = computed(() =>
+  $route.name == ROUTES.LOGIN ? 'Hola, <br /> Bienvenido a Wings.' : 'Regístrate para acceder.'
 )
 </script>
 
 <template>
-  <div
-    class="container h-screen w-full bg-cover bg-center"
-    style="background-image: url('images/auth.jpg')"
-  >
-    <div class="flex h-full flex-col">
-      <div class="flex flex-grow items-center px-4 py-3">
-        <div class="w-72">
-          <h5 class="mb-2 text-3xl font-medium tracking-tight text-gray-800">
-            Compras y Envíos Wings.
-          </h5>
-          <p class="font-light text-gray-800">{{ subtitle }}</p>
-        </div>
-      </div>
-      <RouterView class="flex-none" />
+  <div class="container w-full">
+    <div class="mb-3 max-w-sm space-y-4 px-4 pt-16">
+      <h5 class="text-[2.5rem] font-normal leading-tight text-gray-800" v-html="title"></h5>
+      <p class="w-72 text-xl font-light text-gray-500">
+        Tienda en línea con ofertas y encargos para tí.
+      </p>
     </div>
+    <RouterView />
   </div>
 </template>
