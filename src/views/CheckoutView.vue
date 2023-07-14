@@ -444,7 +444,7 @@ onBeforeMount(async () => {
         </section>
         <!-- / Final Step  -->
 
-        <div class="fixed bottom-0 z-10 flex w-screen gap-2 bg-white p-2">
+        <div class="fixed bottom-0 z-10 flex w-screen gap-2 bg-white p-4">
           <div
             @click="stepActive--"
             v-if="stepActive > 0 && stepActive < 3"
