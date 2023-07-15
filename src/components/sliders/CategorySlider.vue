@@ -48,7 +48,7 @@ function onCategoryClick(category: Category) {
     <div
       v-for="(category, index) in categories"
       :key="`category-slider-${index}`"
-      class="cursor-pointer rounded-full px-3 py-2 text-center text-sm transition-colors"
+      class="no-select cursor-pointer rounded-full px-3 py-2 text-center text-sm transition-colors"
       :class="[
         categoryActive && category.name == categoryActive.name
           ? 'bg-butterfly-blue-500 text-white hover:bg-butterfly-blue-400'

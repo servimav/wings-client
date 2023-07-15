@@ -91,7 +91,7 @@ const route = useRoute()
           :key="`bottom-navbar-button-${index}`"
           :to="btn.to"
           type="button"
-          class="no-select group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
+          class="group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
         >
           <component
             :is="btn.icon"

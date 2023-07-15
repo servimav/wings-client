@@ -81,7 +81,7 @@ async function submit() {
             placeholder="Nombre"
             required
             :value="form.name"
-            @input.prevent="($event)=> form.name = ($event.target as HTMLInputElement).value"
+            @input.prevent="($event) => form.name = ($event.target as HTMLInputElement).value"
           />
         </div>
         <!-- / Name -->
@@ -97,7 +97,7 @@ async function submit() {
             placeholder="Móvil"
             required
             :value="form.phone"
-            @input.prevent="($event)=> form.phone = ($event.target as HTMLInputElement).value"
+            @input.prevent="($event) => form.phone = ($event.target as HTMLInputElement).value"
           />
         </div>
         <!-- / Phone number -->
@@ -121,7 +121,7 @@ async function submit() {
               class="input block w-full p-2.5"
               required
               :value="form.password"
-              @input.prevent="($event)=> form.password = ($event.target as HTMLInputElement).value"
+              @input.prevent="($event) => form.password = ($event.target as HTMLInputElement).value"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ async function submit() {
               class="input block w-full p-2.5"
               required
               :value="form.password_confirmation"
-              @input.prevent="($event)=> form.password_confirmation = ($event.target as HTMLInputElement).value"
+              @input.prevent="($event) => form.password_confirmation = ($event.target as HTMLInputElement).value"
             />
           </div>
         </div>
@@ -162,7 +162,7 @@ async function submit() {
         </button>
         <p class="text-gray-500">
           Ya tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.LOGIN }" class="no-select font-medium text-primary-500"
+          <RouterLink :to="{ name: ROUTES.LOGIN }" class="font-medium text-primary-500"
             >Inicia sesión</RouterLink
           >
         </p>

@@ -91,7 +91,7 @@ function onSubmit() {
         </div>
       </form>
 
-      <a :href="contactUrl" target="_blank" class="no-select flex items-center space-x-3">
+      <a :href="contactUrl" target="_blank" class="flex items-center space-x-3">
         <ChatOutline
           class="h-7 w-7 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
