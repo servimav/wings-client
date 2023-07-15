@@ -14,7 +14,7 @@ import { useCapacitor } from '@/helpers/capacitor'
  *	Components
  * -----------------------------------------
  */
-const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
+const GoBackBtn = defineAsyncComponent(() => import('@/components/GoBackBtn.vue'))
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
@@ -170,16 +170,6 @@ function goToCart() {
 }
 
 /**
- * goBack
- */
-function goBack() {
-  const previousRoute = $router.currentRoute.value
-  $router.back()
-
-  if (previousRoute !== $router.currentRoute.value) $router.push({ name: ROUTES.HOME })
-}
-
-/**
  * goToOffer
  * @param offer
  */
@@ -272,22 +262,16 @@ onBeforeRouteUpdate(async (to) => {
 </script>
 
 <template>
-  <nav class="fixed left-0 top-0 z-10 w-screen">
-    <div class="flex items-center justify-between p-2">
-      <button
-        type="button"
-        class="rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
-        @click="goBack"
-      >
-        <ArrowLeft class="h-5 w-5 text-gray-800" />
-      </button>
+  <!-- Nav buttons  -->
+  <nav class="fixed left-0 top-5 z-10 w-screen">
+    <div class="flex items-center justify-between px-5">
+      <GoBackBtn />
 
       <!-- Share button -->
       <button
         type="button"
         @click="onClickShare"
-        v-if="shareIsSupported"
-        class="rounded-full bg-white p-1.5 text-gray-900 shadow-lg focus:outline-none"
+        class="rounded-full bg-white p-2 shadow-lg focus:outline-none"
       >
         <ShareOutline class="h-5 w-5 text-gray-900" />
 
@@ -296,6 +280,8 @@ onBeforeRouteUpdate(async (to) => {
       <!-- Share button -->
     </div>
   </nav>
+  <!-- / Nav buttons  -->
+
   <main class="container relative w-full select-none">
     <template v-if="offer">
       <div class="fixed h-96 w-full bg-white">
@@ -316,7 +302,8 @@ onBeforeRouteUpdate(async (to) => {
           <h4 class="mb-1 text-xl font-semibold tracking-tight text-gray-800">
             {{ offer.name }}
           </h4>
-          <!-- / title -->
+          <!-- / Title -->
+
           <!-- Prices -->
           <div v-if="offer.discount_price" class="text-right">
             <h4 class="text-xl font-semibold text-gray-800">
@@ -376,7 +363,7 @@ onBeforeRouteUpdate(async (to) => {
         <span class="text-thin mt-4 rounded-full bg-gray-200 px-2 text-sm" v-if="offer.store">
           {{ offer.store.name }}: PID-{{ offer.id }}
         </span>
-        <!-- Store Details -->
+        <!-- / Store Details -->
 
         <!-- Description -->
         <div class="mb-2.5">
@@ -401,7 +388,7 @@ onBeforeRouteUpdate(async (to) => {
             </div>
           </li>
         </ul>
-        <!-- /Attributes -->
+        <!-- / Attributes -->
 
         <!-- categories -->
         <template v-if="categories.length">
@@ -440,7 +427,7 @@ onBeforeRouteUpdate(async (to) => {
       </a>
       <div
         v-else
-        class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center"
+        class="fixed bottom-0 flex w-full space-x-2 border-0 bg-white p-4 text-center"
         :class="{ 'justify-end': !canAdd }"
       >
         <button
@@ -450,10 +437,9 @@ onBeforeRouteUpdate(async (to) => {
         >
           Añadir al Carrito
         </button>
-        <div
+        <button
           v-if="cartCounter"
           @click="goToCart"
-          role="button"
           class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"
         >
           <ShoppingBagOutline class="h-6 w-6" />
@@ -462,7 +448,7 @@ onBeforeRouteUpdate(async (to) => {
           >
             {{ cartCounter }}
           </div>
-        </div>
+        </button>
       </div>
       <!-- / Button -->
     </template>
