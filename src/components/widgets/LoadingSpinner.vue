@@ -2,7 +2,7 @@
   <div role="status">
     <svg
       aria-hidden="true"
-      class="mr-2 h-full w-full animate-spin fill-primary-500 text-gray-200 dark:text-gray-600"
+      class="fill-primary-500 mr-2 h-full w-full animate-spin text-gray-200 dark:text-gray-600"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

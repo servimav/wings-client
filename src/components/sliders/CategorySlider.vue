@@ -51,7 +51,7 @@ function onCategoryClick(category: Category) {
       class="no-select cursor-pointer rounded-full px-3 py-2 text-center text-sm transition-colors"
       :class="[
         categoryActive && category.name == categoryActive.name
-          ? 'bg-butterfly-blue-500 text-white hover:bg-butterfly-blue-400'
+          ? 'bg-butterfly-blue-500 hover:bg-butterfly-blue-400 text-white'
           : 'border border-gray-300 bg-white text-gray-800 hover:bg-gray-100'
       ]"
       @click="() => onCategoryClick(category)"

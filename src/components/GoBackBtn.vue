@@ -16,5 +16,6 @@ const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLef
     @click="goBack"
   >
     <ArrowLeft class="h-5 w-5 text-gray-900" />
+    <span class="sr-only">Arrow left icon</span>
   </button>
 </template>
