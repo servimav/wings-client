@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer responsive {
+@layer utilities {
+  .no-select {
+    -webkit-tap-highlight-color: transparent;
+  }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;

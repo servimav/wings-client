@@ -91,12 +91,12 @@ const route = useRoute()
           :key="`bottom-navbar-button-${index}`"
           :to="btn.to"
           type="button"
-          class="group relative inline-flex flex-col items-center justify-center px-5"
+          class="no-select group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
         >
           <component
             :is="btn.icon"
             class="text-gray-600 transition-[color]"
-            :class="[route.name == btn.to.name ? 'h-8 w-8' : 'h-7 w-7']"
+            :class="[route.name == btn.to.name ? 'h-8 w-8' : 'h-6 w-6']"
           />
 
           <div
