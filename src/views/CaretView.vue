@@ -115,7 +115,7 @@ onBeforeMount(() => {
         <div class="mt-2">
           <button
             @click="() => $router.push({ name: ROUTES.HOME })"
-            class="border-primary-900 text-primary-900 w-full rounded-lg border px-2 py-1.5 dark:border-white dark:text-white"
+            class="w-full rounded-lg border border-primary-dark px-2 py-1.5 text-primary-dark dark:border-white dark:text-white"
           >
             Ver Ofertas
           </button>

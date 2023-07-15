@@ -262,7 +262,7 @@ onBeforeRouteUpdate(async (to) => {
 </script>
 
 <template>
-  <!-- Nav buttons  -->
+  <!-- Navigation buttons  -->
   <nav class="fixed left-0 top-5 z-10 w-screen">
     <div class="flex items-center justify-between px-5">
       <GoBackBtn />
@@ -274,13 +274,12 @@ onBeforeRouteUpdate(async (to) => {
         class="rounded-full bg-white p-2 shadow-lg focus:outline-none"
       >
         <ShareOutline class="h-5 w-5 text-gray-900" />
-
         <span class="sr-only">Share icon</span>
       </button>
       <!-- Share button -->
     </div>
   </nav>
-  <!-- / Nav buttons  -->
+  <!-- / Navigation buttons  -->
 
   <main class="container relative w-full select-none">
     <template v-if="offer">
@@ -331,7 +330,7 @@ onBeforeRouteUpdate(async (to) => {
 
           <span
             v-else-if="offer.stock_type === STOCK_TYPE.LIMITED"
-            class="rounded bg-butterfly-blue-50 px-2.5 py-0.5 font-medium text-butterfly-blue-600"
+            class="bg-butterfly-blue-50 text-butterfly-blue-600 rounded px-2.5 py-0.5 font-medium"
           >
             {{ realStockQty }} Disponibles</span
           >
@@ -420,7 +419,7 @@ onBeforeRouteUpdate(async (to) => {
         class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
       >
         <button
-          class="w-full rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
+          class="w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light"
         >
           Contactar al Vendedor
         </button>
@@ -433,18 +432,18 @@ onBeforeRouteUpdate(async (to) => {
         <button
           @click="addOfferToCart"
           v-if="canAdd"
-          class="flex-1 rounded-lg bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100"
+          class="flex-1 rounded-lg bg-primary px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light"
         >
           Añadir al Carrito
         </button>
         <button
           v-if="cartCounter"
           @click="goToCart"
-          class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"
+          class="relative rounded-lg border border-primary bg-white px-5 py-2.5 font-medium text-primary transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-light"
         >
           <ShoppingBagOutline class="h-6 w-6" />
           <div
-            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
+            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary text-xs font-bold text-white"
           >
             {{ cartCounter }}
           </div>

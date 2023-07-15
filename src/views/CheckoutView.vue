@@ -344,7 +344,7 @@ onBeforeMount(async () => {
                 class="flex gap-2 rounded-md border p-4"
                 :class="
                   form.payment_type === 'TRANSFER_TOTAL'
-                    ? 'border-primary-100 shadow-lg'
+                    ? 'border-primary-light shadow-lg'
                     : 'bg-slate-100 text-slate-500'
                 "
               >
@@ -363,7 +363,7 @@ onBeforeMount(async () => {
                 class="flex gap-2 rounded-md border p-4"
                 :class="
                   form.payment_type === 'TRANSFER_PARTIAL'
-                    ? 'border-primary-100 shadow-lg'
+                    ? 'border-primary-light shadow-lg'
                     : 'bg-slate-100 text-slate-500'
                 "
               >
@@ -452,7 +452,7 @@ onBeforeMount(async () => {
             @click="stepActive--"
             v-if="stepActive > 0 && stepActive < 3"
             role="button"
-            class="text-slate-900 hover:bg-primary-700 focus:ring-primary-100 flex-none rounded-lg border border-primary px-5 py-2.5 text-center font-medium transition-colors hover:text-white focus:outline-none focus:ring-4 focus:ring-offset-1"
+            class="text-slate-900 flex-none rounded-lg border border-primary px-5 py-2.5 text-center font-medium transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
           >
             Atrás
           </div>
@@ -460,7 +460,7 @@ onBeforeMount(async () => {
             @click="onNext"
             v-if="stepActive < 3"
             role="button"
-            class="hover:bg-primary-700 focus:ring-primary-100 flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors focus:outline-none focus:ring-4 focus:ring-offset-1"
+            class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
           >
             {{ stepActive === 2 ? 'Finalizar' : 'Confirmar y continuar' }}
           </div>
