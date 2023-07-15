@@ -46,12 +46,17 @@ onMounted(async () => {
   await getAnnouncements()
   setTimeout(() => {
     initCarousels()
-  }, 500)
+  }, 1000)
 })
 </script>
 
 <template>
-  <div id="announcements-carousel" class="relative w-full" data-carousel="slide">
+  <div
+    id="announcements-carousel"
+    class="relative w-full"
+    data-carousel="slide"
+    v-if="announcements.length"
+  >
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
       <!-- Item 1 -->
@@ -65,7 +70,7 @@ onMounted(async () => {
         data-carousel-item
       >
         <img
-          src="https://img.ltwebstatic.com/images3_pi/2022/05/30/1653899545b6b0b2deddd2b89dca1a5702bd224a12_thumbnail_600x.jpg"
+          :src="ann.image"
           :alt="ann.name"
           :title="ann.name"
           style="z-index: 0 !important"
@@ -98,7 +103,7 @@ onMounted(async () => {
         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
       >
         <svg
-          class="h-4 w-4 text-primary dark:text-gray-800"
+          class="h-4 w-4 text-white dark:text-gray-800"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -125,7 +130,7 @@ onMounted(async () => {
         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70"
       >
         <svg
-          class="h-4 w-4 text-primary dark:text-gray-800"
+          class="h-4 w-4 text-white dark:text-gray-800"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

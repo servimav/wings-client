@@ -77,6 +77,7 @@ export interface ShopOrderFilter {
   currency?: CurrencyCode
   location_id?: number
   customer_id?: number
+  page?: number
 }
 
 /**
@@ -89,6 +90,7 @@ export interface OrderItem {
   image: string
   price: number
   offer?: ShopOffer
+  incomming?: boolean
 }
 
 /**

@@ -1,0 +1,14 @@
+[
+	{
+		"relation": [
+			"delegate_permission/common.handle_all_urls"
+		],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "com.servimav.wings",
+			"sha256_cert_fingerprints": [
+				"26:05:ED:7E:D0:60:25:6E:DF:94:7D:0E:28:0E:DA:1C:02:E2:EF:64:47:34:C4:E7:E4:F0:F7:A1:14:A6:9B:E5"
+			]
+		}
+	}
+]

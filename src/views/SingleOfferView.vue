@@ -440,7 +440,11 @@ onBeforeRouteUpdate(async (to) => {
           Contactar al Vendedor
         </button>
       </a>
-      <div v-else class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center">
+      <div
+        v-else
+        class="fixed bottom-0 flex w-full gap-2 bg-white px-2 py-4 text-center"
+        :class="{ 'justify-end': !canAdd }"
+      >
         <button
           @click="addOfferToCart"
           v-if="canAdd"
@@ -453,7 +457,6 @@ onBeforeRouteUpdate(async (to) => {
           @click="goToCart"
           role="button"
           class="relative rounded-lg border border-primary-500 bg-white px-5 py-2.5 font-medium text-primary-500 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100"
-          :class="{ 'flex-1': !canAdd }"
         >
           <ShoppingBagOutline class="h-6 w-6" />
           <div

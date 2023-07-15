@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } f
 import { useRouter } from 'vue-router'
 import { useTitle } from '@vueuse/core'
 import { STOCK_TYPE, type ShopOffer } from '@servimav/wings-services'
-import { scrollTop } from '@/helpers'
+import { scrollTop, sendWhatsappMessage } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
@@ -93,6 +93,14 @@ async function getOffers() {
   }
   loading.value = false
 }
+
+/**
+ * contactForIncomming
+ */
+function contactForIncomming() {
+  const message = 'Hola, me interesa hacer un Encargo Personalizado'
+  sendWhatsappMessage({ message })
+}
 /**
  * -----------------------------------------
  *	Lifecycle
@@ -121,8 +129,27 @@ onBeforeUnmount(() => {
 
 <template>
   <main class="container w-full select-none bg-gray-50 p-2 pb-16 pt-14">
+    <div class="rounded-lg border border-gray-300 bg-white p-4 dark:bg-slate-800">
+      <div class="space-y-2">
+        <p>
+          Si desea adquirir un producto que no esté en nuestra tienda puede hacer un "Encargo
+          Personalizado"
+        </p>
+        <p>
+          Contáctenos y denos los detalles del producto que necesita. Puede darnos Fotos, Enlaces o
+          describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
+        </p>
+      </div>
+      <button
+        @click="contactForIncomming"
+        class="mt-4 w-full rounded-full bg-primary px-2 py-1.5 text-white"
+      >
+        Solicitar encargo
+      </button>
+    </div>
+
     <!-- Main Content -->
-    <div class="mb-2 px-2" v-if="offers.length">
+    <div class="mb-2 mt-2 px-2" v-if="offers.length">
       <div class="mt-2 grid grid-cols-2 gap-2">
         <OfferWidget
           v-for="(offer, index) in offers"
@@ -137,8 +164,8 @@ onBeforeUnmount(() => {
     <!-- / Main Content -->
 
     <!-- Loading -->
-    <div v-else class="grid grid-cols-2 gap-2">
-      <OfferSkeleton :repeat="8" />
+    <div v-else class="mt-2 grid grid-cols-2 gap-2">
+      <OfferSkeleton :repeat="4" />
     </div>
     <!-- / Loading -->
   </main>

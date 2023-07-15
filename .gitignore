@@ -28,3 +28,6 @@ coverage
 *.sw?
 .env
 resources/android/**/*
+
+# Builds
+client.zip

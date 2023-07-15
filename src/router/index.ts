@@ -29,6 +29,17 @@ const router = createRouter({
       path: '/auth',
       component: () => import('@/layouts/AuthLayout.vue'),
       children: authRoutes
+    },
+
+    /**
+     * Default
+     */
+    {
+      path: '/:pathMatch(.*)*',
+      components: {
+        default: () => import('@/views/UnderConstruction.vue'),
+        bottom: () => import('@/components/layouts/BottomNavbar.vue')
+      }
     }
   ]
 })

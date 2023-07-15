@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useTitle } from '@vueuse/core'
+
 import type {
   DeliveryDetails,
   GeoLocation,
   ShopOrder,
   ShopOrderCreate
 } from '@servimav/wings-services'
-import { scrollTop, toCurrency, useStorage } from '@/helpers'
+import { sendWhatsappMessage, scrollTop, toCurrency, useStorage } from '@/helpers'
+import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
-import { ROUTES } from '@/router'
-import { useRouter } from 'vue-router'
-import { useTitle } from '@vueuse/core'
 
 /**
  * -----------------------------------------
@@ -50,16 +51,6 @@ const $user = useUserStore()
  */
 
 const cart = computed(() => $shop.cart)
-
-const contactUrl = computed(() => {
-  if (order.value) {
-    const orderUrl = `https://wings.servimav.com/order/${order.value.id}`
-    const phone = '17372811360'
-    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-  }
-  return undefined
-})
 
 const deliveryPrice = computed(() =>
   locationSelected.value?.delivery_price && locationSelected.value.delivery_price > 0
@@ -113,6 +104,16 @@ const user = computed(() => $user.user)
  * Methods
  *******************************************
  */
+/**
+ * contactWhatsapp
+ */
+function contactWhatsapp() {
+  if (order.value) {
+    const orderUrl = `https://wings.servimav.com/orders/${order.value.id}`
+    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
+    sendWhatsappMessage({ message })
+  }
+}
 
 /**
  * onSubmit
@@ -125,12 +126,6 @@ async function onSubmit() {
     // remove cart
     $shop.cart = []
     $shop.saveCartOnStorage()
-    // $router.push({
-    // 	name: ROUTES.ORDER,
-    // 	params: {
-    // 		orderId: data.id
-    // 	}
-    // })
     $app.success('Pedido creado correctamente')
   } catch (error) {
     $app.axiosError(error)
@@ -210,7 +205,10 @@ async function loadLocations() {
     $app.axiosError(error)
   }
 }
-
+/**
+ * onSetLocation
+ * @param value
+ */
 function onSetLocation(value: string | number) {
   form.value.delivery_details.location_id = Number(value)
   if (locationSelected.value && locationSelected.value.description) {
@@ -369,11 +367,8 @@ onBeforeMount(async () => {
                 <CheckIcon class="h-4 w-4" v-if="form.payment_type === 'TRANSFER_PARTIAL'" />
                 <div class="flex-1 space-y-2">
                   <b>Pago Parcial</b>
-                  <p>Primero transfiere la mitad ({{ toCurrency(total / 2) }})</p>
-                  <p>
-                    Luego tranfiere la otra mitad ({{ toCurrency(total / 2) }}) cuando le
-                    entreguemos el pedido
-                  </p>
+                  <p>Primero transfiere la mitad para asegurar su pedido</p>
+                  <p>Luego tranfiere la otra mitad cuando le entreguemos el pedido</p>
                   <p class="font-semibold">Los datos del pago se lo enviaremos a su WhatsApp</p>
                 </div>
               </div>
@@ -433,14 +428,14 @@ onBeforeMount(async () => {
                   </div>
                 </RouterLink>
 
-                <a :href="contactUrl" target="_blank" class="flex gap-2">
+                <div @click="contactWhatsapp" role="button" class="flex gap-2">
                   <div
                     class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
                   >
                     <ChatIcon class="h-6 w-6" />
                     Escríbenos
                   </div>
-                </a>
+                </div>
               </div>
 
               <div class="mt-2"></div>
@@ -449,7 +444,7 @@ onBeforeMount(async () => {
         </section>
         <!-- / Final Step  -->
 
-        <div class="fixed bottom-0 z-10 flex w-screen gap-2 bg-white p-2">
+        <div class="fixed bottom-0 z-10 flex w-screen gap-2 bg-white p-4">
           <div
             @click="stepActive--"
             v-if="stepActive > 0 && stepActive < 3"
