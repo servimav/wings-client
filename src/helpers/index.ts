@@ -1,3 +1,5 @@
+export * from './checkVersion'
+export * from './capacitor'
 export * from './defaults'
-export * from './mix'
 export * from './goBack'
+export * from './mix'
