@@ -80,7 +80,8 @@ async function submit() {
             class="input block w-full p-2.5"
             placeholder="Nombre"
             required
-            v-model="form.name"
+            :value="form.name"
+            @input.prevent="($event)=> form.name = ($event.target as HTMLInputElement).value"
           />
         </div>
         <!-- / Name -->
@@ -95,7 +96,8 @@ async function submit() {
             class="input block w-full p-2.5"
             placeholder="Móvil"
             required
-            v-model="form.phone"
+            :value="form.phone"
+            @input.prevent="($event)=> form.phone = ($event.target as HTMLInputElement).value"
           />
         </div>
         <!-- / Phone number -->
@@ -118,7 +120,8 @@ async function submit() {
               placeholder="Contraseña"
               class="input block w-full p-2.5"
               required
-              v-model="form.password"
+              :value="form.password"
+              @input.prevent="($event)=> form.password = ($event.target as HTMLInputElement).value"
             />
           </div>
         </div>
@@ -144,7 +147,8 @@ async function submit() {
               placeholder="Confirmar Contraseña"
               class="input block w-full p-2.5"
               required
-              v-model="form.password_confirmation"
+              :value="form.password_confirmation"
+              @input.prevent="($event)=> form.password_confirmation = ($event.target as HTMLInputElement).value"
             />
           </div>
         </div>
@@ -158,7 +162,7 @@ async function submit() {
         </button>
         <p class="text-gray-500">
           Ya tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.LOGIN }" class="font-medium text-primary-500"
+          <RouterLink :to="{ name: ROUTES.LOGIN }" class="no-select font-medium text-primary-500"
             >Inicia sesión</RouterLink
           >
         </p>

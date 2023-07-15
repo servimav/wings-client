@@ -93,7 +93,8 @@ async function submit() {
               placeholder="Contraseña"
               class="input block w-full p-2.5"
               required
-              v-model="form.password"
+              :value="form.password"
+              @input.prevent="($event)=> form.password = ($event.target as HTMLInputElement).value"
             />
           </div>
         </div>
@@ -102,7 +103,7 @@ async function submit() {
         <div class="float-right">
           <RouterLink
             :to="{ name: ROUTES.HOME }"
-            class="text-gray-500 transition-colors hover:text-gray-700"
+            class="no-select text-gray-500 transition-colors hover:text-gray-700"
           >
             Olvidaste tu contraseña?</RouterLink
           >
@@ -115,7 +116,7 @@ async function submit() {
         </button>
         <p class="text-gray-500">
           Aún no tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.REGISTER }" class="font-medium text-primary-500"
+          <RouterLink :to="{ name: ROUTES.REGISTER }" class="no-select font-medium text-primary-500"
             >Regístrate</RouterLink
           >
         </p>
