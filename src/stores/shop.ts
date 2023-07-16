@@ -1,14 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import {
-  type ShopCategory,
-  type ShopOffer,
-  type OrderItem,
-  STOCK_TYPE,
-  type Currency
+import { STOCK_TYPE } from '@servimav/wings-services'
+import type {
+  ShopOffer,
+  OrderItem,
+  ShopOrder,
+  ShopCategory,
+  Currency
 } from '@servimav/wings-services'
-import { useServices } from '@/services'
 import { useStorage } from '@/helpers'
+import { useServices } from '@/services'
 
 const STORE_NAME = 'useShopStore'
 const $storage = useStorage<OrderItem[]>(STORE_NAME)
@@ -30,6 +31,10 @@ export const useShopStore = defineStore(STORE_NAME, () => {
   // Incomming offers
   const incommingOffers = ref<ShopOffer[]>([])
   const incommingPagination = ref<number>()
+
+  // Orders
+  const orders = ref<ShopOrder[]>([])
+  const orderPagination = ref<number>()
 
   /**
    * -----------------------------------------
@@ -126,6 +131,8 @@ export const useShopStore = defineStore(STORE_NAME, () => {
     homePagination,
     incommingOffers,
     incommingPagination,
+    orders,
+    orderPagination,
     // Methods
     addCartOffer,
     canAddOffer,
