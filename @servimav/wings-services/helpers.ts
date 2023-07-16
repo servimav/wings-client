@@ -15,7 +15,7 @@ export function readableStatus(status: STATUS, male = true): string {
     case STATUS.CREATED:
       return male ? 'Creado' : 'Creada'
     case STATUS.ONPROGRESS:
-      return 'En Progereso'
+      return 'En Progreso'
     case STATUS.ONWAY:
       return 'En Camino'
     case STATUS.PARTIAL_PAYED:
