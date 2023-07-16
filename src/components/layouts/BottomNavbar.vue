@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { useRoute, type RouteLocationNamedRaw } from 'vue-router'
-import { ROUTES } from '@/router/names'
+import { ELEMENT_ID } from '@/helpers'
+import { ROUTES } from '@/router'
 import { useShopStore } from '@/stores'
+import { initDrawers } from 'flowbite'
 
 /**
  * -----------------------------------------
@@ -57,6 +59,8 @@ const cartCounter = computed(() => {
   return counter
 })
 
+const drawerId = ELEMENT_ID.DRAWER_LEFT
+
 const navButtons = computed<IconLabelLink[]>(() => {
   return [
     { icon: HomeOutline, label: 'Inicio', to: { name: ROUTES.HOME } },
@@ -70,20 +74,21 @@ const navButtons = computed<IconLabelLink[]>(() => {
       label: 'Carrito',
       to: { name: ROUTES.CARET },
       badge: cartCounter.value
-    },
-    {
-      icon: UserOutline,
-      label: 'Cuenta',
-      to: { name: ROUTES.USER }
     }
   ]
 })
 
 const route = useRoute()
+
+onMounted(() => {
+  setTimeout(() => {
+    initDrawers()
+  }, 1000)
+})
 </script>
 
 <template>
-  <div class="fixed bottom-3 left-1/2 z-50 h-14 w-full max-w-lg -translate-x-1/2 px-2">
+  <div class="fixed bottom-3 left-1/2 z-30 h-14 w-full max-w-lg -translate-x-1/2 px-2">
     <div class="rounded-full border border-gray-100 bg-white py-2 shadow-md">
       <div class="mx-auto grid h-full max-w-lg grid-cols-4">
         <RouterLink
@@ -113,6 +118,20 @@ const route = useRoute()
             {{ btn.badge }}
           </div>
         </RouterLink>
+
+        <button
+          :data-drawer-target="drawerId"
+          :data-drawer-toggle="drawerId"
+          :aria-controls="drawerId"
+          class="group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
+        >
+          <UserOutline class="h-6 w-6 text-gray-600 transition-[color]" />
+          <div
+            class="text-xs tracking-wide text-gray-600 transition-colors group-hover:text-gray-800"
+          >
+            Cuenta
+          </div>
+        </button>
       </div>
     </div>
   </div>

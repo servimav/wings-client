@@ -1,5 +1,6 @@
-export * from './checkVersion'
 export * from './capacitor'
+export * from './checkVersion'
+export * from './const'
 export * from './defaults'
 export * from './goBack'
 export * from './mix'

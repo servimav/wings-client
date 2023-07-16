@@ -2,6 +2,7 @@
 import { onBeforeMount } from 'vue'
 import { useServices } from '@/services'
 import { useShopStore, useUserStore } from '@/stores'
+import DrawerLeft from '@/components/layouts/DrawerLeft.vue'
 
 /**
  * -----------------------------------------
@@ -40,6 +41,7 @@ onBeforeMount(async () => {
 
 <template>
   <div class="bg-gray-50">
+    <DrawerLeft />
     <RouterView name="top" />
     <RouterView v-slot="{ Component }">
       <KeepAlive :include="['HomeView', 'IncommingView']">
