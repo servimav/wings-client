@@ -221,9 +221,11 @@ async function onClickShare() {
       text += 'En este momento no tenemos disponibilidad pero tal vez pronto tengamos'
     else if (offer.value.stock_type === STOCK_TYPE.INCOMMING) text += 'Pedidos por encargos'
 
+    const url = `https://wings.servimav.com/offer/${offer.value.id}`
+
     share({
       title: offer.value.name,
-      url: location.href,
+      url,
       text
     })
   }
