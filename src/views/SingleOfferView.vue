@@ -116,6 +116,7 @@ const showFullImage = ref(false)
 function addOfferToCart() {
   if (offer.value)
     $shop.addCartOffer({
+      store_id: 0,
       offer: offer.value,
       qty: 1,
       id: offer.value.id,
