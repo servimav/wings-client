@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none bg-gray-50 p-2 pb-16 pt-14">
+  <main class="container w-full select-none p-2 pb-16 pt-14">
     <div class="dark:bg-slate-800 rounded-lg border border-gray-300 bg-white p-4">
       <div class="space-y-2">
         <p>

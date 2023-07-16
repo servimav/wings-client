@@ -272,6 +272,7 @@ onBeforeRouteUpdate(async (to) => {
 
       <!-- Share button -->
       <button
+        v-if="shareIsSupported"
         type="button"
         @click="onClickShare"
         class="rounded-full bg-white p-2 shadow-lg focus:outline-none"

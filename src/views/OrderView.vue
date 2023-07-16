@@ -119,12 +119,12 @@ onBeforeMount(() => {
 
 <template>
   <main class="text-slate-900 container w-full select-none pb-16 pt-16">
-    <div class="bg-white px-4" v-if="order">
+    <div class="px-4" v-if="order">
       <div class="text-right text-sm font-thin">Orden #{{ order.id }}</div>
 
       <div class="mt-2 space-y-2">
         <!-- Status -->
-        <div class="border p-4 text-sm">
+        <div class="rounded-md border bg-white p-4">
           <ul class="list-none space-y-1">
             <li :class="orderStatus?.class">Estado: {{ orderStatus?.label }}</li>
             <li v-if="order.delivery_date">
@@ -146,7 +146,7 @@ onBeforeMount(() => {
         <!-- / Status -->
 
         <!-- Prices -->
-        <div class="border p-4 text-sm">
+        <div class="rounded-md border bg-white p-4">
           <ul class="list-none space-y-1">
             <li>Precio de Productos: {{ toCurrency(order.offers_price) }}</li>
             <li>

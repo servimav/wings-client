@@ -229,7 +229,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <main class="container relative min-h-screen w-full bg-gray-50">
+  <main class="container relative min-h-screen w-full">
     <div class="fixed left-0 top-12 w-full bg-white pb-2 pt-5">
       <StepperInline :labels="STEP_LABELS" v-model="stepActive" />
     </div>
