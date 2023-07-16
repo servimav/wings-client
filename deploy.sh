@@ -1,3 +1,5 @@
+rm .env
+cp .env.prod .env
 yarn build
 rm client-zip
 zip client.zip -r dist
