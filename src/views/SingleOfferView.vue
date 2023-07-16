@@ -193,10 +193,10 @@ async function loadData(offerId: number) {
       useHead({
         title: `${offer.value?.name} | Wings`,
         meta: [
-          { name: 'og:image', content: 'Hello World' },
-          { name: 'og:image:type', content: 'image/png' },
-          { name: 'og:image:width', content: '1024' },
-          { name: 'og:image:height', content: '1024' }
+          { name: 'og:title', content: `${offer.value?.name} | Wings` },
+          { name: 'og:type', content: 'website' },
+          { name: 'og:url', content: `https://wings.servimav.com/offer/${offer.value.id}` },
+          { name: 'og:image', content: offer.value.image }
         ]
       })
       await getOfferSimilar(offerId)
@@ -224,6 +224,7 @@ async function onClickShare() {
     const url = `https://wings.servimav.com/offer/${offer.value.id}`
 
     share({
+      dialogTitle: `Comparte ${offer.value.name}`,
       title: offer.value.name,
       url,
       text
