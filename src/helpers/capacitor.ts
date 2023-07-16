@@ -1,9 +1,17 @@
 import { useRouter } from 'vue-router'
+import { Capacitor } from '@capacitor/core'
 import { App, type URLOpenListenerEvent } from '@capacitor/app'
 import { Share, type ShareOptions } from '@capacitor/share'
 
 export const useCapacitor = () => {
   const $router = useRouter()
+  /**
+   * platform
+   * @returns
+   */
+  function platform(): 'android' | 'ios' | 'web' {
+    return Capacitor.getPlatform() as 'android' | 'ios' | 'web'
+  }
 
   /**
    * handleBack
@@ -56,6 +64,7 @@ export const useCapacitor = () => {
     backListener,
     canShare,
     deepLink,
+    platform,
     share
   }
 }
