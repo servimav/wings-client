@@ -91,7 +91,7 @@ const route = useRoute()
           :key="`bottom-navbar-button-${index}`"
           :to="btn.to"
           type="button"
-          class="no-select group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
+          class="group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
         >
           <component
             :is="btn.icon"
@@ -108,7 +108,7 @@ const route = useRoute()
 
           <div
             v-if="btn.badge"
-            class="absolute -top-2 right-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary-500 text-xs font-bold text-white"
+            class="absolute -top-2 right-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary text-xs font-bold text-white"
           >
             {{ btn.badge }}
           </div>

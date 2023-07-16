@@ -63,7 +63,7 @@ const offer = computed(() => $props.item.offer)
 
 <template>
   <div
-    class="flex w-full items-center justify-between rounded-lg border border-slate-100 bg-white p-2 shadow-sm"
+    class="border-slate-100 flex w-full items-center justify-between rounded-lg border bg-white p-2 shadow-sm"
     v-if="offer"
   >
     <img

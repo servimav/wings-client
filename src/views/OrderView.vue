@@ -118,7 +118,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none pb-16 pt-16 text-slate-900">
+  <main class="text-slate-900 container w-full select-none pb-16 pt-16">
     <div class="bg-white px-4" v-if="order">
       <div class="text-right text-sm font-thin">Orden #{{ order.id }}</div>
 

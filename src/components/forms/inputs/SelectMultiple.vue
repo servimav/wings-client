@@ -64,8 +64,8 @@ function onSelectUpdate(updateValue: string | number) {
       <div
         v-for="(optionValue, optKey) in modelValue"
         :key="`value-${optKey}`"
-        class="rounded-full border bg-slate-100 px-2 py-1 text-sm"
-        :class="{ 'border-primary-500': optKey === 0 }"
+        class="bg-slate-100 rounded-full border px-2 py-1 text-sm"
+        :class="{ 'border-primary': optKey === 0 }"
         @click="() => onSelectUpdate(optionValue)"
       >
         {{

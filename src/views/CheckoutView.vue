@@ -235,7 +235,7 @@ onBeforeMount(async () => {
     </div>
 
     <div class="pb-20 pt-36">
-      <form class="select-none text-slate-800">
+      <form class="text-slate-800 select-none">
         <!-- Destinatary Step 1 -->
         <section class="mx-4 space-y-4 rounded-md bg-white p-4" v-show="stepActive === 0">
           <div>
@@ -314,7 +314,7 @@ onBeforeMount(async () => {
             <ul class="mt-2 list-none space-y-2">
               <li>Total de Ofertas: {{ toCurrency(subtotalItems) }}</li>
               <li>Envío: {{ deliveryPrice > 0 ? toCurrency(deliveryPrice) : 'Gratis' }}</li>
-              <li class="border border-slate-400"></li>
+              <li class="border-slate-400 border"></li>
               <li>Total: {{ toCurrency(total) }}</li>
             </ul>
           </div>
@@ -344,7 +344,7 @@ onBeforeMount(async () => {
                 class="flex gap-2 rounded-md border p-4"
                 :class="
                   form.payment_type === 'TRANSFER_TOTAL'
-                    ? 'border-primary-100 shadow-lg'
+                    ? 'border-primary-light shadow-lg'
                     : 'bg-slate-100 text-slate-500'
                 "
               >
@@ -363,7 +363,7 @@ onBeforeMount(async () => {
                 class="flex gap-2 rounded-md border p-4"
                 :class="
                   form.payment_type === 'TRANSFER_PARTIAL'
-                    ? 'border-primary-100 shadow-lg'
+                    ? 'border-primary-light shadow-lg'
                     : 'bg-slate-100 text-slate-500'
                 "
               >
@@ -382,7 +382,7 @@ onBeforeMount(async () => {
         <!-- / Payment Step  -->
 
         <!-- Final Step -->
-        <section class="mx-4 text-slate-900" v-show="stepActive === 3">
+        <section class="text-slate-900 mx-4" v-show="stepActive === 3">
           <div class="rounded-md bg-white p-4">
             <div v-if="loading">
               <h3 class="text-center font-semibold">Guardando Pedido</h3>
@@ -452,7 +452,7 @@ onBeforeMount(async () => {
             @click="stepActive--"
             v-if="stepActive > 0 && stepActive < 3"
             role="button"
-            class="flex-none rounded-lg border border-primary px-5 py-2.5 text-center font-medium text-slate-900 transition-colors hover:bg-primary-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-1"
+            class="text-slate-900 flex-none rounded-lg border border-primary px-5 py-2.5 text-center font-medium transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
           >
             Atrás
           </div>
@@ -460,7 +460,7 @@ onBeforeMount(async () => {
             @click="onNext"
             v-if="stepActive < 3"
             role="button"
-            class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-100 focus:ring-offset-1"
+            class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
           >
             {{ stepActive === 2 ? 'Finalizar' : 'Confirmar y continuar' }}
           </div>
