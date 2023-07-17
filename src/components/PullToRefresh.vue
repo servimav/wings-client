@@ -98,7 +98,7 @@ const state = ref<'initial' | 'pulldown' | 'loading'>('initial')
 /**
  * Constant parameters
  */
-const NEGATIVE_TOP = 40
+const NEGATIVE_TOP = 50
 const SLOWNESS = 3
 const MAX_PULL = 50
 
