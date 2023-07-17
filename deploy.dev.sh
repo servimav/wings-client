@@ -3,10 +3,11 @@ sshCommands="$(cat <<END_HEREDOC
 cd /var/www/servimav.com/wings/client/
 
 # Pull
+git checkout dev
 git pull
 
 # copy env
-cp .env.prod .env
+cp .env.dev .env
 
 # Install api server dependencies.
 source ~/.nvm/nvm.sh
@@ -20,7 +21,7 @@ fi
 # echo "Installing server api dependencies"
 # if ! yarn ; then
 #  echo "Error installing server api dependencies."
-  exit 15
+#  exit 15
 # fi
 
 echo "Installing building app"
