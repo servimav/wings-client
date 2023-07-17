@@ -30,7 +30,7 @@ const title = computed(() => {
     case ROUTES.ORDERS:
       return 'Pedidos'
     case ROUTES.USER:
-      return 'Usuario'
+      return 'Perfil'
     case ROUTES.HELP:
       return 'Ayuda'
     default:
