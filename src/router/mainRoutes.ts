@@ -87,6 +87,15 @@ const routes: RouteRecordRaw[] = [
       top: () => import('@/components/layouts/NavBar.vue'),
       bottom: () => import('@/components/layouts/BottomNavbar.vue')
     }
+  },
+  {
+    path: 'help',
+    name: ROUTES.HELP,
+    components: {
+      default: () => import('@/views/HelpView.vue'),
+      top: () => import('@/components/layouts/NavBar.vue'),
+      bottom: () => import('@/components/layouts/BottomNavbar.vue')
+    }
   }
 ]
 

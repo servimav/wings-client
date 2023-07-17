@@ -8,6 +8,7 @@ import { ROUTES } from '@/router'
  *	Components
  ******************************************
  */
+
 const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
 
 /**
@@ -15,6 +16,7 @@ const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLef
  *	Data
  * -----------------------------------------
  */
+
 const title = computed(() => {
   switch ($route.name) {
     case ROUTES.CARET:
@@ -29,6 +31,8 @@ const title = computed(() => {
       return 'Pedidos'
     case ROUTES.USER:
       return 'Usuario'
+    case ROUTES.HELP:
+      return 'Ayuda'
     default:
       return null
   }
@@ -39,6 +43,7 @@ const title = computed(() => {
  *	Composable
  * -----------------------------------------
  */
+
 const $router = useRouter()
 const $route = useRoute()
 
@@ -47,6 +52,7 @@ const $route = useRoute()
  *	Methods
  * -----------------------------------------
  */
+
 function goBack() {
   const previousRoute = $router.currentRoute.value
   $router.back()
