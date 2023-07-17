@@ -42,6 +42,7 @@ const totalPrice = computed(
  *	Methods
  * ------------------------------------------
  */
+
 /**
  * getOrder
  */
@@ -60,6 +61,25 @@ async function getOrder() {
   }
   $app.toggleLoading(false)
 }
+
+/**
+ * formatDate
+ * @param date text in date format
+ */
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+/**
+ -------------------------------------------
+ *	Lifecycle
+ -------------------------------------------
+ */
 
 onBeforeMount(() => {
   useHead({
@@ -86,14 +106,7 @@ onBeforeMount(() => {
             </li>
             <li v-if="order.delivery_date">
               Entrega:
-              {{
-                new Date(order.delivery_date).toLocaleDateString('es-ES', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })
-              }}
+              {{ formatDate(order.delivery_date) }}
             </li>
             <li>Dirección: {{ order.delivery_details.address }}</li>
             <li>Destinatario: {{ order.delivery_details.name }}</li>
