@@ -73,9 +73,9 @@ const eventHandler = () => {
 }
 
 /**
-* go to single offer page
-* @param offer
-*/
+ * go to single offer page
+ * @param offer
+ */
 function goToOffer(offer: Offer) {
   void $router.push({
     name: ROUTES.SINGLE_OFFER,
@@ -155,8 +155,8 @@ onBeforeUnmount(() => {
 <template>
   <PullToRefresh v-if="IS_PLATAFORM_MOBILE" :on-pull="handlePullToRefresh" />
 
-  <main class="container w-full h-full min-h-screen select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
-    <div class="text-gray-500 rounded-lg border border-gray-200 bg-white p-4">
+  <main class="container h-full min-h-screen w-full select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
+    <div class="rounded-lg border border-gray-200 bg-white p-4 text-gray-500">
       <div class="space-y-2">
         <p>
           Si desea adquirir un producto que no esté en nuestra tienda puede hacer un "Encargo
@@ -167,8 +167,10 @@ onBeforeUnmount(() => {
           describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
         </p>
       </div>
-      <button @click="contactForIncomming"
-        class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1">
+      <button
+        @click="contactForIncomming"
+        class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1"
+      >
         Solicitar encargo
       </button>
     </div>
@@ -176,8 +178,12 @@ onBeforeUnmount(() => {
     <!-- Main Content -->
     <div class="mb-2 mt-2 px-2" v-if="offers.length">
       <div class="mt-2 grid grid-cols-2 gap-2">
-        <OfferWidget v-for="(offer, index) in offers" :key="`home-view-offer-grid-${index}`" :offer="offer"
-          @click="() => goToOffer(offer)" />
+        <OfferWidget
+          v-for="(offer, index) in offers"
+          :key="`home-view-offer-grid-${index}`"
+          :offer="offer"
+          @click="() => goToOffer(offer)"
+        />
         <OfferSkeleton :repeat="4" v-if="loading" />
       </div>
     </div>
