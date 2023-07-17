@@ -43,7 +43,7 @@ defineOptions({
 const loading = ref(false)
 const offers = computed<ShopOffer[]>(() => $shop.incommingOffers)
 const currentPage = computed<number | undefined>(() => $shop.incommingPagination)
-const isPlataformMobile = $capacitor.platform() === 'android' || $capacitor.platform() === 'ios'
+const IS_PLATAFORM_MOBILE = $capacitor.platform() !== 'web'
 
 /**
  * -----------------------------------------
@@ -55,34 +55,9 @@ const isPlataformMobile = $capacitor.platform() === 'android' || $capacitor.plat
  * handlePullToRefresh
  */
 async function handlePullToRefresh(endPull: CallableFunction) {
-  loading.value = true
-  try {
-    $shop.homePagination = undefined
-    $shop.homeOffers = []
-
-    const resp = (
-      await $service.shop.offer.filter({
-        page: currentPage.value ? currentPage.value + 1 : undefined,
-        currency: 'CUP',
-        sort: 'views',
-        stock: STOCK_TYPE.INCOMMING
-      })
-    ).data
-    $shop.incommingPagination = resp.meta.current_page
-    // if server return data
-    if (resp.data.length) {
-      $shop.incommingOffers.push(...resp.data)
-    } else {
-      // if no more data stop event
-      window.removeEventListener('scroll', eventHandler)
-    }
-  } catch (error) {
-    console.log({ error })
-    // stop event
-    window.removeEventListener('scroll', eventHandler)
-  }
-  loading.value = false
-
+  $shop.incommingPagination = undefined
+  $shop.incommingOffers = []
+  getOffers()
   endPull()
 }
 
@@ -178,8 +153,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <PullToRefresh v-if="isPlataformMobile" :on-pull="handlePullToRefresh" />
-  <main class="container w-full h-screen select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
+  <PullToRefresh v-if="IS_PLATAFORM_MOBILE" :on-pull="handlePullToRefresh" />
+
+  <main class="container w-full h-full min-h-screen select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
     <div class="text-gray-500 rounded-lg border border-gray-200 bg-white p-4">
       <div class="space-y-2">
         <p>
@@ -191,7 +167,8 @@ onBeforeUnmount(() => {
           describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
         </p>
       </div>
-      <button @click="contactForIncomming" class="mt-4 rounded-lg bg-primary px-2 py-1.5 text-white font-medium">
+      <button @click="contactForIncomming"
+        class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1">
         Solicitar encargo
       </button>
     </div>
