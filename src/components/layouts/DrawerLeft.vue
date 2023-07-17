@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { type RouteLocationRaw, useRouter } from 'vue-router'
-import { ELEMENT_ID } from '@/helpers'
+import { ELEMENT_ID, useCapacitor } from '@/helpers'
 import { ROUTES } from '@/router'
+import { useUserStore } from '@/stores'
 // Components
+const ArrowPath = defineAsyncComponent(() => import('@/components/icons/ArrowPath.vue'))
+const ArrowRightRectangle = defineAsyncComponent(
+  () => import('@/components/icons/ArrowRightRectangle.vue')
+)
+const CartIcon = defineAsyncComponent(() => import('@/components/icons/ShoppingCartOutline.vue'))
+const WhatsApp = defineAsyncComponent(() => import('@/components/icons/WhatsApp.vue'))
+const CheckBadge = defineAsyncComponent(() => import('@/components/icons/CheckBadge.vue'))
+const HelpIcon = defineAsyncComponent(() => import('@/components/icons/HelpCircle.vue'))
+const ShareIcon = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
+const SquaresIcon = defineAsyncComponent(() => import('@/components/icons/SquaresPlus.vue'))
 const UserIcon = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
 
 const elementId = ELEMENT_ID.DRAWER_LEFT
@@ -13,67 +24,59 @@ interface MenuItem {
   label: string
   icon: typeof UserIcon
   badge?: string
+  external?: string
 }
 /**
  * -----------------------------------------
  *	Helpers
  * -----------------------------------------
  */
+const { canShare, share } = useCapacitor()
 const $router = useRouter()
+const $user = useUserStore()
 /**
  * -----------------------------------------
  *	Data
  * -----------------------------------------
  */
+
+const apkUrl = 'https://api.wings.servimav.com/download'
+
+const shareIsSupported = (await canShare()).value
+
 const drawerItems: MenuItem[] = [
   {
     icon: UserIcon,
-    label: 'Inicio',
-    to: { name: ROUTES.HOME }
+    label: 'Perfil',
+    to: { name: ROUTES.USER }
   },
   {
-    icon: UserIcon,
-    label: 'Categorías',
-    // badge: '5',
-    to: { name: ROUTES.HOME }
-  },
-  {
-    icon: UserIcon,
-    label: 'Anuncios',
-    // badge: '5',
-    to: { name: ROUTES.HOME }
-  },
-  {
-    icon: UserIcon,
-    label: 'Tiendas',
-    to: { name: ROUTES.HOME }
-  },
-  {
-    icon: UserIcon,
-    label: 'Productos',
-    to: { name: ROUTES.HOME }
-  },
-  {
-    icon: UserIcon,
+    icon: CartIcon,
     label: 'Pedidos',
+    // badge: '5',
     to: { name: ROUTES.ORDERS }
   },
   {
-    icon: UserIcon,
-    label: 'Usuarios',
+    icon: SquaresIcon,
+    label: 'Nuevos Productos',
+    // badge: '5',
+    to: { name: ROUTES.FILTER }
+  },
+  {
+    icon: HelpIcon,
+    label: 'Ayuda',
+    // badge: '5',
     to: { name: ROUTES.HOME }
   },
   {
-    icon: UserIcon,
-    label: 'Mensajes',
-    badge: '10',
-    to: { name: ROUTES.HOME }
-  },
-  {
-    icon: UserIcon,
-    label: 'Ajustes'
+    icon: WhatsApp,
+    label: 'Contacto',
+    // badge: '5',
+    external: 'https://wa.me/17372811360'
   }
 ]
+
+const profile = computed(() => $user.user)
 
 /**
  * -----------------------------------------
@@ -84,26 +87,60 @@ const drawerItems: MenuItem[] = [
  * goTo
  * @param to
  */
-function goTo(to?: RouteLocationRaw) {
-  if (to) void $router.push(to)
+function goTo(item: MenuItem) {
+  if (item.external) window.location.assign(item.external)
+  else if (item.to) $router.push(item.to)
+}
+
+/**
+ * logout
+ */
+function logout() {
+  $user.logout()
+  $router.push({ name: ROUTES.LOGIN })
+}
+
+/**
+ * shareApp
+ */
+function shareApp() {
+  share({
+    dialogTitle: 'Compartir Wings',
+    text: 'Aplicación de Compras y Envíos Wings\nGran variedad de productos y con precios excelentes',
+    url: apkUrl,
+    title: 'Compras y Envíos Wings'
+  })
 }
 </script>
 
 <template>
   <aside
     :id="elementId"
-    class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-6 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0"
+    class="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full border-r border-gray-200 bg-white pt-6 text-gray-800 transition-transform dark:border-gray-700 dark:bg-gray-800 sm:translate-x-0"
     aria-label="Sidebar"
   >
-    <div class="h-full overflow-y-auto bg-white px-3 pb-4 dark:bg-gray-800">
-      <ul class="space-y-2 font-medium">
+    <div class="h-full overflow-y-auto px-3 pb-4 dark:bg-gray-800">
+      <!-- Profile Info -->
+      <div class="rounded-xl border p-4 shadow-sm">
+        <p>{{ profile?.name }}</p>
+        <div class="flex items-center gap-2">
+          <CheckBadge
+            v-if="profile?.phone_verified_at"
+            class="inline-block h-5 w-5 text-green-700"
+          />
+          <p>{{ profile?.phone }}</p>
+        </div>
+      </div>
+      <!-- / Profile Info -->
+      <!-- Links -->
+      <ul class="mt-4 space-y-2 rounded-lg border p-2 font-medium shadow-sm">
         <li
           v-for="(item, itemKey) in drawerItems"
           :key="`draweri-item-${itemKey}`"
-          @click="() => goTo(item.to)"
+          @click="() => goTo(item)"
           :data-drawer-target="elementId"
           :data-drawer-toggle="elementId"
-          class="flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+          class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           <component :is="item.icon" class="h-6 w-6 flex-shrink-0" />
           <span class="ml-3 flex-1 whitespace-nowrap">{{ item.label }}</span>
@@ -113,7 +150,45 @@ function goTo(to?: RouteLocationRaw) {
             >{{ item.badge }}</span
           >
         </li>
+        <!-- Share -->
+        <li
+          v-if="shareIsSupported"
+          @click="shareApp"
+          :data-drawer-target="elementId"
+          :data-drawer-toggle="elementId"
+          class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        >
+          <ShareIcon class="h-6 w-6 flex-shrink-0" />
+          <span class="ml-3 flex-1 whitespace-nowrap">Compartir</span>
+        </li>
+        <!-- / Share -->
+
+        <!-- Update -->
+        <li :data-drawer-target="elementId" :data-drawer-toggle="elementId">
+          <a
+            :href="apkUrl"
+            class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            target="_blank"
+          >
+            <ArrowPath class="h-6 w-6 flex-shrink-0" />
+            <span class="ml-3 flex-1 whitespace-nowrap">Actualizar</span>
+          </a>
+        </li>
+        <!-- / Update -->
+
+        <!-- Logout -->
+        <li
+          @click="logout"
+          :data-drawer-target="elementId"
+          :data-drawer-toggle="elementId"
+          class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        >
+          <ArrowRightRectangle class="h-6 w-6 flex-shrink-0" />
+          <span class="ml-3 flex-1 whitespace-nowrap">Salir</span>
+        </li>
+        <!-- / Logout -->
       </ul>
+      <!-- / Links -->
     </div>
   </aside>
 </template>
