@@ -66,7 +66,7 @@ const drawerItems: MenuItem[] = [
     icon: HelpIcon,
     label: 'Ayuda',
     // badge: '5',
-    to: { name: ROUTES.HOME }
+    to: { name: ROUTES.HELP }
   },
   {
     icon: WhatsApp,
