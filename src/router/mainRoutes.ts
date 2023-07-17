@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     }
   },
   {
-    path: 'encargos',
+    path: 'incomming',
     name: ROUTES.INCOMMING,
     components: {
       default: () => import('@/views/IncommingView.vue'),
