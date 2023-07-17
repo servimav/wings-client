@@ -78,7 +78,7 @@ async function submit() {
             name="name"
             id="name"
             class="input block w-full p-2.5"
-            placeholder="Nombre"
+            placeholder="Nombre y Apellidos"
             required
             :value="form.name"
             @input.prevent="($event) => form.name = ($event.target as HTMLInputElement).value"
@@ -88,11 +88,11 @@ async function submit() {
 
         <!-- Phone number -->
         <div>
-          <label for="phone-number" class="sr-only mb-2 block text-sm text-gray-800">Móvil</label>
+          <label for="phone" class="sr-only mb-2 block text-sm text-gray-800">Móvil</label>
           <input
             type="tel"
-            name="phone-number"
-            id="phone-number"
+            name="phone"
+            id="phone"
             class="input block w-full p-2.5"
             placeholder="Móvil"
             required
