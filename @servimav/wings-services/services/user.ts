@@ -37,6 +37,7 @@ export interface User {
   email?: string
   phone: string
   phone_verified_at?: string
+  created_at: string
   roles: UserRole[]
 }
 
