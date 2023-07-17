@@ -116,6 +116,7 @@ const showFullImage = ref(false)
 function addOfferToCart() {
   if (offer.value)
     $shop.addCartOffer({
+      store_id: 0,
       offer: offer.value,
       qty: 1,
       id: offer.value.id,
@@ -193,10 +194,10 @@ async function loadData(offerId: number) {
       useHead({
         title: `${offer.value?.name} | Wings`,
         meta: [
-          { name: 'og:image', content: 'Hello World' },
-          { name: 'og:image:type', content: 'image/png' },
-          { name: 'og:image:width', content: '1024' },
-          { name: 'og:image:height', content: '1024' }
+          { name: 'og:title', content: `${offer.value?.name} | Wings` },
+          { name: 'og:type', content: 'website' },
+          { name: 'og:url', content: `https://wings.servimav.com/offer/${offer.value.id}` },
+          { name: 'og:image', content: offer.value.image }
         ]
       })
       await getOfferSimilar(offerId)
@@ -224,6 +225,7 @@ async function onClickShare() {
     const url = `https://wings.servimav.com/offer/${offer.value.id}`
 
     share({
+      dialogTitle: `Comparte ${offer.value.name}`,
       title: offer.value.name,
       url,
       text
@@ -271,6 +273,7 @@ onBeforeRouteUpdate(async (to) => {
 
       <!-- Share button -->
       <button
+        v-if="shareIsSupported"
         type="button"
         @click="onClickShare"
         class="rounded-full bg-white p-2 shadow-lg focus:outline-none"

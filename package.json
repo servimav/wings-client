@@ -9,13 +9,15 @@
 		"build-only": "vite build",
 		"type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-		"format": "prettier --write src/",
-		"format:package": "prettier --write @servimav/"
+		"format": "prettier --write src/ && prettier --write @servimav/",
+		"format:package": "prettier --write @servimav/",
+		"format:src": "prettier --write src/"
 	},
 	"dependencies": {
 		"@capacitor/android": "^5.1.1",
 		"@capacitor/app": "^5.0.5",
 		"@capacitor/core": "^5.1.1",
+		"@capacitor/filesystem": "^5.1.0",
 		"@capacitor/share": "^5.0.6",
 		"@vueuse/core": "^10.2.0",
 		"@vueuse/head": "^1.1.26",

@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: authGuard,
     components: {
       default: () => import('@/views/OrdersView.vue'),
-      top: () => import('@/components/layouts/SearchNavbar.vue'),
+      top: () => import('@/components/layouts/NavBar.vue'),
       bottom: () => import('@/components/layouts/BottomNavbar.vue')
     }
   },

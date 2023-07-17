@@ -104,32 +104,9 @@ async function getOffers() {
  * handleOnPull
  */
 async function handleOnPull(endPull: CallableFunction) {
-  loading.value = true
-  try {
-    $shop.homePagination = undefined
-    $shop.homeOffers = []
-    const resp = (
-      await $service.shop.offer.filter({
-        page: currentPage.value ? currentPage.value + 1 : undefined,
-        currency: 'CUP',
-        sort: 'views'
-      })
-    ).data
-    $shop.homePagination = resp.meta.current_page
-    // if server return data
-    if (resp.data.length) {
-      $shop.homeOffers.push(...resp.data)
-    } else {
-      // if no more data stop event
-      window.removeEventListener('scroll', eventHandler)
-    }
-  } catch (error) {
-    console.log({ error })
-    // stop event
-    window.removeEventListener('scroll', eventHandler)
-  }
-  loading.value = false
-
+  $shop.homePagination = undefined
+  $shop.homeOffers = []
+  await getOffers()
   endPull()
 }
 
@@ -164,7 +141,7 @@ onBeforeUnmount(() => {
 
 <template>
   <PullToRefresh :on-pull="handleOnPull" />
-  <main class="container w-full select-none bg-gray-50 p-2 pb-[4.5rem] pt-[4.8rem]">
+  <main class="container w-full select-none p-2 pb-[4.5rem] pt-[4.8rem]">
     <!-- Main Content -->
     <div class="mb-2 px-2" v-if="offers.length">
       <AnnouncementSlider />

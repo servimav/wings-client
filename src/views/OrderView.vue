@@ -2,15 +2,10 @@
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { STATUS, type ShopOrder } from '@servimav/wings-services'
+import { readableStatus, type ShopOrder } from '@servimav/wings-services'
 import { toCurrency } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore } from '@/stores'
-
-interface OrderStatus {
-  label: string
-  class: string
-}
 /**
  * ------------------------------------------
  *	Components
@@ -34,44 +29,6 @@ const $service = useServices()
  */
 
 const order = ref<ShopOrder>()
-
-const orderStatus = computed<OrderStatus | undefined>(() => {
-  if (order.value) {
-    switch (order.value.delivery_status) {
-      case STATUS.ACCEPTED:
-        return {
-          class: '',
-          label: 'Pagada y En Espera de Envío'
-        }
-      case STATUS.CANCELED_BY_CLIENT:
-        return {
-          class: '',
-          label: 'Cancelada'
-        }
-      case STATUS.CANCELED_BY_PROVIDER:
-        return {
-          class: '',
-          label: 'Cancelada'
-        }
-      case STATUS.COMPLETED:
-        return {
-          class: '',
-          label: 'Completada'
-        }
-      case STATUS.CREATED:
-        return {
-          class: '',
-          label: 'En espera de Pago'
-        }
-      case STATUS.ONPROGRESS:
-        return {
-          class: '',
-          label: 'En Progreso'
-        }
-    }
-  }
-  return undefined
-})
 
 const totalPrice = computed(
   () =>
@@ -98,10 +55,6 @@ async function getOrder() {
       })
     ).data
     order.value = data
-
-    console.log({
-      order: order.value
-    })
   } catch (error) {
     $app.axiosError(error)
   }
@@ -119,14 +72,18 @@ onBeforeMount(() => {
 
 <template>
   <main class="text-slate-900 container w-full select-none pb-16 pt-16">
-    <div class="bg-white px-4" v-if="order">
+    <div class="px-4" v-if="order">
       <div class="text-right text-sm font-thin">Orden #{{ order.id }}</div>
 
       <div class="mt-2 space-y-2">
         <!-- Status -->
-        <div class="border p-4 text-sm">
-          <ul class="list-none space-y-1">
-            <li :class="orderStatus?.class">Estado: {{ orderStatus?.label }}</li>
+        <div class="rounded-md border bg-white p-4">
+          <ul class="list-none space-y-2">
+            <li class="text-center">
+              <span class="rounded-xl border bg-gray-200 p-1">
+                {{ readableStatus(order.delivery_status) }}
+              </span>
+            </li>
             <li v-if="order.delivery_date">
               Entrega:
               {{
@@ -146,7 +103,7 @@ onBeforeMount(() => {
         <!-- / Status -->
 
         <!-- Prices -->
-        <div class="border p-4 text-sm">
+        <div class="rounded-md border bg-white p-4">
           <ul class="list-none space-y-1">
             <li>Precio de Productos: {{ toCurrency(order.offers_price) }}</li>
             <li>

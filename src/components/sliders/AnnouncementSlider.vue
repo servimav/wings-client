@@ -35,7 +35,7 @@ const announcements = ref<Announcement[]>([])
  */
 async function getAnnouncements() {
   try {
-    const { data } = await $service.announcement.filter()
+    const { data } = await $service.announcement.filter({})
     announcements.value = data.data
   } catch (error) {
     $app.axiosError(error)

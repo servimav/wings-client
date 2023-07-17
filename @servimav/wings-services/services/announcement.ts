@@ -1,18 +1,19 @@
 import type { AxiosInstance } from 'axios'
-import { generateCrudWithoutPaginate } from '../crud'
-import type { PaginatedData } from '..'
+import { generateCrud } from '../crud'
+import type { PaginatedData } from '../types'
 
 export default function init(api: AxiosInstance) {
   const baseURL = '/announcement'
 
-  const crud = generateCrudWithoutPaginate<Announcement>({
+  const crud = generateCrud<Announcement>({
     api,
     baseURL
   })
 
   return {
     ...crud,
-    filter: () => api.get<PaginatedData<Announcement>>(`${baseURL}/filter`)
+    filter: (params: { page?: number }) =>
+      api.get<PaginatedData<Announcement>>(`${baseURL}/filter`, { params })
   }
 }
 
