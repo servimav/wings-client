@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { type RouteLocationRaw, useRouter } from 'vue-router'
-import { ELEMENT_ID, useCapacitor } from '@/helpers'
+import { checkVersion, CURRENT_VERSION, ELEMENT_ID, useCapacitor } from '@/helpers'
 import { ROUTES } from '@/router'
-import { useUserStore } from '@/stores'
+import { useAppStore, useUserStore } from '@/stores'
+import { useServices } from '@/services'
 // Components
 const ArrowPath = defineAsyncComponent(() => import('@/components/icons/ArrowPath.vue'))
 const ArrowRightRectangle = defineAsyncComponent(
@@ -19,6 +20,12 @@ const UserIcon = defineAsyncComponent(() => import('@/components/icons/UserOutli
 
 const elementId = ELEMENT_ID.DRAWER_LEFT
 
+interface Application {
+  id: number
+  name: string
+  version: string
+}
+
 interface MenuItem {
   to?: RouteLocationRaw
   label: string
@@ -32,6 +39,8 @@ interface MenuItem {
  * -----------------------------------------
  */
 const { canShare, share } = useCapacitor()
+const { api } = useServices()
+const $app = useAppStore()
 const $router = useRouter()
 const $user = useUserStore()
 /**
@@ -40,7 +49,9 @@ const $user = useUserStore()
  * -----------------------------------------
  */
 
-const apkUrl = 'https://api.wings.servimav.com/download'
+const apkUrl = 'https://api.wings.servimav.com/download-app/2'
+
+const updateVersion = ref<string>()
 
 const shareIsSupported = (await canShare()).value
 
@@ -84,6 +95,24 @@ const profile = computed(() => $user.user)
  * -----------------------------------------
  */
 /**
+ * getAppUpdates
+ */
+async function getAppUpdates() {
+  try {
+    const { data } = await api.get<Application>('/app/current')
+    const lowerVersion = checkVersion(data.version, CURRENT_VERSION) >= 1
+    console.log({ data, CURRENT_VERSION, lowerVersion })
+
+    if (lowerVersion) {
+      updateVersion.value = data.version
+    } else {
+      updateVersion.value = undefined
+    }
+  } catch (error) {
+    $app.axiosError(error)
+  }
+}
+/**
  * goTo
  * @param to
  */
@@ -111,6 +140,10 @@ function shareApp() {
     title: 'Compras y Envíos Wings'
   })
 }
+
+onBeforeMount(() => {
+  getAppUpdates()
+})
 </script>
 
 <template>
@@ -164,7 +197,7 @@ function shareApp() {
         <!-- / Share -->
 
         <!-- Update -->
-        <li :data-drawer-target="elementId" :data-drawer-toggle="elementId">
+        <li v-if="updateVersion" :data-drawer-target="elementId" :data-drawer-toggle="elementId">
           <a
             :href="apkUrl"
             class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -172,6 +205,11 @@ function shareApp() {
           >
             <ArrowPath class="h-6 w-6 flex-shrink-0" />
             <span class="ml-3 flex-1 whitespace-nowrap">Actualizar</span>
+            <span
+              class="ml-3 inline-flex items-center justify-center rounded-full bg-blue-100 p-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+            >
+              v{{ updateVersion }}
+            </span>
           </a>
         </li>
         <!-- / Update -->
