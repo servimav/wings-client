@@ -5,20 +5,12 @@ import { checkVersion, CURRENT_VERSION, ELEMENT_ID, useCapacitor } from '@/helpe
 import { ROUTES } from '@/router'
 import { useAppStore, useUserStore } from '@/stores'
 import { useServices } from '@/services'
-// Components
-const ArrowPath = defineAsyncComponent(() => import('@/components/icons/ArrowPath.vue'))
-const ArrowRightRectangle = defineAsyncComponent(
-  () => import('@/components/icons/ArrowRightRectangle.vue')
-)
-const CartIcon = defineAsyncComponent(() => import('@/components/icons/ShoppingCartOutline.vue'))
-const WhatsApp = defineAsyncComponent(() => import('@/components/icons/WhatsApp.vue'))
-const CheckBadge = defineAsyncComponent(() => import('@/components/icons/CheckBadge.vue'))
-const HelpIcon = defineAsyncComponent(() => import('@/components/icons/HelpCircle.vue'))
-const ShareIcon = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
-const SquaresIcon = defineAsyncComponent(() => import('@/components/icons/SquaresPlus.vue'))
-const UserIcon = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
 
-const elementId = ELEMENT_ID.DRAWER_LEFT
+/**
+ -------------------------------------------
+ *	Types
+ -------------------------------------------
+ */
 
 interface Application {
   id: number
@@ -33,11 +25,31 @@ interface MenuItem {
   badge?: string
   external?: string
 }
+
+/**
+ -------------------------------------------
+ *	Components
+ -------------------------------------------
+ */
+
+const ArrowPath = defineAsyncComponent(() => import('@/components/icons/ArrowPath.vue'))
+const ArrowRightRectangle = defineAsyncComponent(
+  () => import('@/components/icons/ArrowRightRectangle.vue')
+)
+const CartIcon = defineAsyncComponent(() => import('@/components/icons/ShoppingCartOutline.vue'))
+const WhatsApp = defineAsyncComponent(() => import('@/components/icons/WhatsApp.vue'))
+const CheckBadge = defineAsyncComponent(() => import('@/components/icons/CheckBadge.vue'))
+const HelpIcon = defineAsyncComponent(() => import('@/components/icons/HelpCircle.vue'))
+const ShareIcon = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
+const SquaresIcon = defineAsyncComponent(() => import('@/components/icons/SquaresPlus.vue'))
+const UserIcon = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
+
 /**
  * -----------------------------------------
- *	Helpers
+ *	Composables
  * -----------------------------------------
  */
+
 const { canShare, share } = useCapacitor()
 const { api } = useServices()
 const $app = useAppStore()
@@ -48,6 +60,8 @@ const $user = useUserStore()
  *	Data
  * -----------------------------------------
  */
+
+const elementId = ELEMENT_ID.DRAWER_LEFT
 
 const apkUrl = 'https://api.wings.servimav.com/download-app/2'
 
@@ -94,6 +108,7 @@ const profile = computed(() => $user.user)
  *	Methods
  * -----------------------------------------
  */
+
 /**
  * getAppUpdates
  */
@@ -112,6 +127,7 @@ async function getAppUpdates() {
     $app.axiosError(error)
   }
 }
+
 /**
  * goTo
  * @param to
@@ -141,6 +157,12 @@ function shareApp() {
   })
 }
 
+/**
+ -------------------------------------------
+ *	Lifecyle
+ -------------------------------------------
+ */
+
 onBeforeMount(() => {
   getAppUpdates()
 })
@@ -165,6 +187,7 @@ onBeforeMount(() => {
         </div>
       </div>
       <!-- / Profile Info -->
+
       <!-- Links -->
       <ul class="mt-4 space-y-2 rounded-lg border p-2 font-medium shadow-sm">
         <li
@@ -183,6 +206,7 @@ onBeforeMount(() => {
             >{{ item.badge }}</span
           >
         </li>
+
         <!-- Share -->
         <li
           v-if="shareIsSupported"
