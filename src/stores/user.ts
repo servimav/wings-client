@@ -51,7 +51,9 @@ export const useUserStore = defineStore(STORE_NAME, () => {
    * geMe
    */
   async function geMe() {
-    if (auth_token.value) user.value = (await $service.user.me()).data
+    if (auth_token.value) {
+      user.value = (await $service.user.me()).data
+    }
   }
 
   /**
