@@ -55,6 +55,7 @@ const { api } = useServices()
 const $app = useAppStore()
 const $router = useRouter()
 const $user = useUserStore()
+
 /**
  * -----------------------------------------
  *	Data
@@ -65,7 +66,7 @@ const elementId = ELEMENT_ID.DRAWER_LEFT
 
 const apkUrl = 'https://api.wings.servimav.com/download-app/2'
 
-const updateVersion = ref<string>()
+const updateVersion = ref<string | undefined>()
 
 const shareIsSupported = (await canShare()).value
 
@@ -116,8 +117,6 @@ async function getAppUpdates() {
   try {
     const { data } = await api.get<Application>('/app/current')
     const lowerVersion = checkVersion(data.version, CURRENT_VERSION) >= 1
-    console.log({ data, CURRENT_VERSION, lowerVersion })
-
     if (lowerVersion) {
       updateVersion.value = data.version
     } else {
@@ -195,7 +194,7 @@ onBeforeMount(() => {
           :key="`draweri-item-${itemKey}`"
           @click="() => goTo(item)"
           :data-drawer-target="elementId"
-          :data-drawer-toggle="elementId"
+          :data-drawer-hide="elementId"
           class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           <component :is="item.icon" class="h-6 w-6 flex-shrink-0" />
@@ -212,7 +211,7 @@ onBeforeMount(() => {
           v-if="shareIsSupported"
           @click="shareApp"
           :data-drawer-target="elementId"
-          :data-drawer-toggle="elementId"
+          :data-drawer-hide="elementId"
           class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           <ShareIcon class="h-6 w-6 flex-shrink-0" />
@@ -221,7 +220,7 @@ onBeforeMount(() => {
         <!-- / Share -->
 
         <!-- Update -->
-        <li v-if="updateVersion" :data-drawer-target="elementId" :data-drawer-toggle="elementId">
+        <li v-if="updateVersion" :data-drawer-target="elementId" :data-drawer-hide="elementId">
           <a
             :href="apkUrl"
             class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
@@ -242,7 +241,7 @@ onBeforeMount(() => {
         <li
           @click="logout"
           :data-drawer-target="elementId"
-          :data-drawer-toggle="elementId"
+          :data-drawer-hide="elementId"
           class="no-select flex cursor-pointer items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         >
           <ArrowRightRectangle class="h-6 w-6 flex-shrink-0" />
