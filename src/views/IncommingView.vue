@@ -15,7 +15,7 @@ import type { Offer } from '@/types'
  * -----------------------------------------
  */
 
-const OfferSkeleton = defineAsyncComponent(() => import('@/components/widgets/OfferSkeleton.vue'))
+const OfferSkeleton = defineAsyncComponent(() => import('@/components/skeletons/OfferSkeleton.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
 const PullToRefresh = defineAsyncComponent(() => import('@/components/PullToRefresh.vue'))
 

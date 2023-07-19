@@ -11,8 +11,8 @@ import { ROUTES } from '@/router'
  * -----------------------------------------
  */
 
-const ProfileSkeleton = defineAsyncComponent(
-  () => import('@/components/widgets/skeletons/ProfileSkeleton.vue')
+const UserViewSkeleton = defineAsyncComponent(
+  () => import('@/components/skeletons/UserViewSkeleton.vue')
 )
 const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
 const PhoneOutline = defineAsyncComponent(() => import('@/components/icons/PhoneOutline.vue'))
@@ -175,6 +175,6 @@ function formatDate(date: string) {
     </template>
     <!-- / Main Content -->
 
-    <ProfileSkeleton v-else class="mt-10" />
+    <UserViewSkeleton v-else class="mt-10" />
   </main>
 </template>

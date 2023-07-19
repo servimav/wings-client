@@ -14,7 +14,7 @@ import type { Offer } from '@/types'
  * -----------------------------------------
  */
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
-const OfferSkeleton = defineAsyncComponent(() => import('@/components/widgets/OfferSkeleton.vue'))
+const OfferSkeleton = defineAsyncComponent(() => import('@/components/skeletons/OfferSkeleton.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
 const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline.vue'))
 /**
