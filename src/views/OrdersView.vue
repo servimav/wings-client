@@ -83,6 +83,7 @@ async function handleOnPull(done: CallableFunction) {
   await getOrders()
   done()
 }
+
 /**
  * ------------------------------------------
  *	Lifecycle
@@ -114,8 +115,9 @@ onBeforeUnmount(() => {
 
 <template>
   <PullToRefresh :on-pull="handleOnPull" />
-
-  <main class="container w-full select-none p-2 pb-[4.5rem] pt-[3.2rem] text-gray-800">
+  <main
+    class="container h-full min-h-screen w-full select-none p-2 pb-[4.5rem] pt-[3.2rem] text-gray-800"
+  >
     <div v-for="(order, key) in orders" :key="`order-${order.id}-${key}`" class="my-2">
       <RouterLink :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }">
         <OrderWidget :order="order" />

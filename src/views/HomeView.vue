@@ -8,11 +8,13 @@ import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+
 /**
  * -----------------------------------------
  *	Components
  * -----------------------------------------
  */
+
 const AnnouncementSlider = defineAsyncComponent(
   () => import('@/components/sliders/AnnouncementSlider.vue')
 )
@@ -26,6 +28,7 @@ const PullToRefresh = defineAsyncComponent(() => import('@/components/PullToRefr
  *	Composables
  * -----------------------------------------
  */
+
 const $router = useRouter()
 const $service = useServices()
 const $shop = useShopStore()
@@ -39,6 +42,7 @@ defineOptions({
  *	Data
  * -----------------------------------------
  */
+
 const categories = computed(() => $shop.categories)
 
 const eventHandler = () => {
@@ -51,11 +55,13 @@ const eventHandler = () => {
 const loading = ref(false)
 const offers = computed<ShopOffer[]>(() => $shop.homeOffers)
 const currentPage = computed<number | undefined>(() => $shop.homePagination)
+
 /**
  * -----------------------------------------
  *	Methods
  * -----------------------------------------
  */
+
 /**
  * go to single offer page
  * @param offer
@@ -141,7 +147,7 @@ onBeforeUnmount(() => {
 
 <template>
   <PullToRefresh :on-pull="handleOnPull" />
-  <main class="container w-full select-none p-2 pb-[4.5rem] pt-[4.8rem]">
+  <main class="container h-full min-h-screen w-full select-none p-2 pb-[4.5rem] pt-[4.8rem]">
     <!-- Main Content -->
     <div class="mb-2 px-2" v-if="offers.length">
       <AnnouncementSlider />
@@ -166,10 +172,10 @@ onBeforeUnmount(() => {
 
     <!-- / Main Content -->
 
-    <!-- Loading -->
+    <!-- Loading Skeleton -->
     <div v-else class="grid grid-cols-2 gap-2">
       <OfferSkeleton :repeat="8" />
     </div>
-    <!-- / Loading -->
+    <!-- / Loading Skeleton -->
   </main>
 </template>

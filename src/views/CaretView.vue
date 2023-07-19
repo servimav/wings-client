@@ -12,15 +12,18 @@ import { useShopStore } from '@/stores'
  *	Components
  * -----------------------------------------
  */
+
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
 const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $router = useRouter()
 const $shop = useShopStore()
 
@@ -29,8 +32,8 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
-const cart = computed(() => $shop.cart)
 
+const cart = computed(() => $shop.cart)
 const subTotal = computed(() => {
   let val = 0
   cart.value.forEach((item) => {
@@ -47,6 +50,7 @@ const subTotal = computed(() => {
  *	Methods
  * -----------------------------------------
  */
+
 /**
  * addOfferQty
  * @param item
@@ -68,6 +72,7 @@ function goToOffer(item: OrderItem) {
     }
   })
 }
+
 /**
  * removeOfferQty
  * @param item
@@ -75,6 +80,12 @@ function goToOffer(item: OrderItem) {
 function removeOfferQty(item: OrderItem) {
   $shop.removeCartOffer(item)
 }
+
+/**
+ -------------------------------------------
+ *	Lifecycle
+ -------------------------------------------
+ */
 
 onBeforeMount(() => {
   useHead({
@@ -84,7 +95,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none p-2 pb-16 pt-14">
+  <main class="container h-full min-h-screen w-full select-none p-2 pb-16 pt-14">
     <div class="p-2" v-if="cart.length">
       <div
         role="button"
@@ -122,6 +133,6 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-    <!-- /  No content  -->
+    <!-- / No content -->
   </main>
 </template>
