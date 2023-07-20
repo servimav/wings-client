@@ -13,6 +13,19 @@
   .input {
     @apply rounded-lg border border-gray-300 bg-white text-gray-800 outline-none placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400;
   }
+
+  /* Buttons */
+  .btn {
+    @apply px-5 py-2.5 text-lg font-medium focus:outline-none focus:ring-4 focus:ring-offset-1;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white transition-colors hover:bg-primary-dark focus:ring-primary-light;
+  }
+
+  .btn-block {
+    @apply inline-flex w-full items-center justify-center;
+  }
 }
 
 @layer utilities {

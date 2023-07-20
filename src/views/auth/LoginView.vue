@@ -4,18 +4,23 @@ import { useRouter } from 'vue-router'
 import { ROUTES } from '@/router'
 import { useAppStore, useUserStore } from '@/stores'
 import type { UserLogin } from '@servimav/wings-services'
+import { sendWhatsappMessage } from '@/helpers'
+
 /**
  * --------------------------------------------
  * Components
  * --------------------------------------------
  */
+
 const EyeOutline = defineAsyncComponent(() => import('@/components/icons/EyeOutline.vue'))
 const EyeSlashOutline = defineAsyncComponent(() => import('@/components/icons/EyeSlashOutline.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $app = useAppStore()
 const $router = useRouter()
 const $user = useUserStore()
@@ -25,6 +30,7 @@ const $user = useUserStore()
  * Data
  * --------------------------------------------
  */
+
 const form = ref<UserLogin>({
   password: '',
   phone: ''
@@ -32,11 +38,13 @@ const form = ref<UserLogin>({
 const showPassword = ref(false)
 const passwordIcon = computed(() => (showPassword.value ? EyeSlashOutline : EyeOutline))
 const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
+
 /**
  * -----------------------------------------
  *	Methods
  * -----------------------------------------
  */
+
 /**
  * submit
  */
@@ -50,6 +58,14 @@ async function submit() {
   } catch (error) {
     $app.axiosError(error)
   }
+}
+
+/**
+ * contactWhatsapp
+ */
+function contactWhatsapp() {
+  const message = 'Necesito ayuda'
+  sendWhatsappMessage({ message })
 }
 </script>
 
@@ -101,19 +117,15 @@ async function submit() {
         <!-- / Password  -->
 
         <div class="float-right">
-          <RouterLink
-            :to="{ name: ROUTES.HOME }"
+          <a
+            target="_blank"
             class="text-gray-500 transition-colors hover:text-gray-700"
+            @click="contactWhatsapp"
           >
-            Olvidaste tu contraseña?</RouterLink
+            Olvidaste tu contraseña?</a
           >
         </div>
-        <button
-          type="submit"
-          class="inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1"
-        >
-          Iniciar
-        </button>
+        <button type="submit" class="btn btn-primary btn-block rounded-2xl">Entrar</button>
         <p class="text-gray-500">
           Aún no tienes cuenta?
           <RouterLink :to="{ name: ROUTES.REGISTER }" class="font-medium text-primary"
