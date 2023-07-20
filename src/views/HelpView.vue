@@ -77,16 +77,16 @@ onMounted(async () => {
     <!-- Main Content -->
     <div v-if="helpList.length" class="px-2">
       <div id="accordion-collapse" data-accordion="collapse" class="space-y-2">
-        <div v-for="(help, index) in helpList" :key="`accordion-collapse-${index}`">
+        <div v-for="(help, helpIndex) in helpList" :key="`accordion-collapse-${helpIndex}`">
           <!-- Title -->
-          <h2 :id="`accordion-collapse-heading-${index}`">
+          <h2 :id="`accordion-collapse-heading-${helpIndex}`">
             <button
               type="button"
               class="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left text-gray-500 aria-expanded:rounded-b-none aria-expanded:border-b-0 aria-expanded:border-gray-500 aria-expanded:bg-white aria-expanded:text-gray-800"
-              :data-accordion-target="`#accordion-collapse-body-${index}`"
-              :aria-controls="`accordion-collapse-body-${index}`"
+              :data-accordion-target="`#accordion-collapse-body-${helpIndex}`"
+              :aria-controls="`accordion-collapse-body-${helpIndex}`"
             >
-              <div>{{ `${index + 1}. ` }}{{ help.title }}</div>
+              <div>{{ `${helpIndex + 1}. ` }}{{ help.title }}</div>
               <ChevronUp data-accordion-icon class="h-5 w-5 shrink-0" aria-hidden="true" />
             </button>
           </h2>
@@ -94,16 +94,16 @@ onMounted(async () => {
 
           <!-- Body -->
           <div
-            :id="`accordion-collapse-body-${index}`"
+            :id="`accordion-collapse-body-${helpIndex}`"
             class="hidden"
-            :aria-labelledby="`accordion-collapse-heading-${index}`"
+            :aria-labelledby="`accordion-collapse-heading-${helpIndex}`"
           >
             <div
               class="space-y-2 rounded-b-xl border-x border-b border-gray-500 bg-white px-5 pb-5"
             >
               <p
-                v-for="(paragraph, innerIndex) in help.content"
-                :key="`accordion-collapse-body-${innerIndex}`"
+                v-for="(paragraph, pIndex) in help.content"
+                :key="`accordion-collapse-body-${pIndex}`"
                 class="text-gray-500"
               >
                 {{ paragraph }}
