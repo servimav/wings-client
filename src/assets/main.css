@@ -26,6 +26,11 @@
   .btn-block {
     @apply inline-flex w-full items-center justify-center;
   }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center justify-center px-2 py-1 text-sm font-medium;
+  }
 }
 
 @layer utilities {
