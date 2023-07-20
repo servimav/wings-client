@@ -98,7 +98,9 @@ onMounted(async () => {
             class="hidden"
             :aria-labelledby="`accordion-collapse-heading-${index}`"
           >
-            <div class="space-y-2 rounded-b-xl border-x border-b border-gray-500 px-5 pb-5">
+            <div
+              class="space-y-2 rounded-b-xl border-x border-b border-gray-500 bg-white px-5 pb-5"
+            >
               <p
                 v-for="(paragraph, innerIndex) in help.content"
                 :key="`accordion-collapse-body-${innerIndex}`"
