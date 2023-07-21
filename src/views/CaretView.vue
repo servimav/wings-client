@@ -169,7 +169,7 @@ onBeforeMount(() => {
       </div>
       <div class="mb-5 text-center">
         <h3 class="mb-2 text-2xl font-medium text-gray-800">Carrito vacío</h3>
-        <p class="text-lg leading-normal text-gray-500">
+        <p class="text-lg text-gray-500">
           Añade productos al carrito con las ofertas que tenemos para tí.
         </p>
       </div>
