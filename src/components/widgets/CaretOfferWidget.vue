@@ -9,6 +9,7 @@ import { useShopStore } from '@/stores'
  *	Types
  * -----------------------------------------
  */
+
 interface Emit {
   (e: 'decrease'): void
   (e: 'increase'): void
@@ -35,6 +36,7 @@ const MinusIcon = defineAsyncComponent(() => import('@/components/icons/MinusIco
  *	Composables
  * -----------------------------------------
  */
+
 const $emit = defineEmits<Emit>()
 const $props = defineProps<Props>()
 const $shop = useShopStore()
@@ -44,6 +46,7 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
+
 const cupPrice = computed(() => {
   const cupCurrency = $shop.currencies.find((c) => c.code === 'CUP')
   return cupCurrency ? cupCurrency.price : CUP_PRICE
@@ -62,30 +65,42 @@ const offer = computed(() => $props.item.offer)
 </script>
 
 <template>
-  <div
-    class="border-slate-100 flex w-full items-center justify-between rounded-lg border bg-white p-2 shadow-sm"
-    v-if="offer"
-  >
+  <div class="flex w-full items-center rounded-xl border border-gray-100 bg-white" v-if="offer">
+    <!-- Image -->
     <img
-      class="w-[5.5rem] shrink-0 rounded-lg"
+      class="h-40 w-36 shrink-0 rounded-l-xl object-cover object-center"
       :src="offer.image ?? '/images/default.png'"
       :alt="offer.name"
       @error="setDefaultImage"
       @click="() => $emit('clickImage')"
     />
-    <div class="ml-2">
-      <div class="mb-1 font-medium text-gray-800">{{ offer.name }}</div>
-      <div class="text-sm text-gray-500">{{ toCurrency((displayPrice as number) * item.qty) }}</div>
-    </div>
+    <!-- / Image -->
 
-    <div class="ml-8 mr-3 flex items-center justify-center gap-2" v-if="readonly">
-      <div class="w-5 text-center text-sm text-gray-800">x{{ item.qty }}</div>
-    </div>
+    <!-- Offer Description -->
+    <div class="py-2 pl-3 pr-2">
+      <div class="mb-2 line-clamp-2 text-lg text-gray-800">{{ offer.name }}</div>
+      <div class="mb-4 text-gray-500">{{ toCurrency((displayPrice as number) * item.qty) }}</div>
 
-    <div class="ml-8 mr-3 flex items-center justify-center gap-2" v-else>
-      <MinusIcon @click="() => $emit('decrease')" class="h-3 w-3 cursor-pointer text-gray-800" />
-      <div class="w-5 text-center text-sm text-gray-800">{{ item.qty }}</div>
-      <PlusIcon @click="() => $emit('increase')" class="h-3 w-3 cursor-pointer text-gray-800" />
+      <div v-if="readonly" class="w-5 text-center text-sm text-gray-800">x{{ item.qty }}</div>
+
+      <div class="flex items-center justify-center gap-2" v-else>
+        <button
+          type="button"
+          class="rounded-lg p-1 hover:bg-gray-100"
+          @click="() => $emit('decrease')"
+        >
+          <MinusIcon class="h-3 w-3 text-gray-800" />
+        </button>
+        <div class="w-5 text-center text-gray-800">{{ item.qty }}</div>
+        <button
+          type="button"
+          class="rounded-lg p-1 hover:bg-gray-100"
+          @click="() => $emit('increase')"
+        >
+          <PlusIcon class="h-3 w-3 text-gray-800" />
+        </button>
+      </div>
     </div>
+    <!-- / Offer Description -->
   </div>
 </template>
