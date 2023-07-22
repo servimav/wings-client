@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { goBack } from '@/helpers'
 import { ROUTES } from '@/router'
 
 /**
@@ -44,21 +45,7 @@ const title = computed(() => {
  * -----------------------------------------
  */
 
-const $router = useRouter()
 const $route = useRoute()
-
-/**
- * -----------------------------------------
- *	Methods
- * -----------------------------------------
- */
-
-function goBack() {
-  const previousRoute = $router.currentRoute.value
-  $router.back()
-
-  if (previousRoute !== $router.currentRoute.value) $router.push({ name: ROUTES.HOME })
-}
 </script>
 
 <template>
