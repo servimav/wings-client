@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ROUTES } from '@/router'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { ROUTES } from '@/router'
 
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $route = useRoute()
 
 /**
@@ -15,13 +16,14 @@ const $route = useRoute()
  * Data
  * --------------------------------------------
  */
+
 const title = computed(() =>
   $route.name == ROUTES.LOGIN ? 'Hola, <br /> Bienvenido a Wings.' : 'Regístrate para acceder.'
 )
 </script>
 
 <template>
-  <div class="container w-full">
+  <main class="container h-full min-h-screen w-full">
     <div class="mb-3 max-w-sm space-y-4 px-4 pt-16">
       <h5 class="text-[2.5rem] font-normal leading-tight text-gray-800" v-html="title"></h5>
       <p class="w-72 text-xl font-light text-gray-500">
@@ -29,5 +31,5 @@ const title = computed(() =>
       </p>
     </div>
     <RouterView />
-  </div>
+  </main>
 </template>

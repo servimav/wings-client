@@ -154,11 +154,8 @@ async function submit() {
         </div>
         <!-- / Password confirm  -->
 
-        <button
-          type="submit"
-          class="inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1"
-        >
-          Iniciar
+        <button type="submit" class="btn btn-block btn-primary rounded-2xl">
+          Registrar cuenta
         </button>
         <p class="text-gray-500">
           Ya tienes cuenta?

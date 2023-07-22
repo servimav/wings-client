@@ -19,6 +19,7 @@ import { useAppStore, useShopStore, useUserStore } from '@/stores'
  *	Components
  * -----------------------------------------
  */
+
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
@@ -32,9 +33,9 @@ const SelectInput = defineAsyncComponent(() => import('@/components/forms/inputs
 const TextInput = defineAsyncComponent(() => import('@/components/forms/inputs/TextInput.vue'))
 
 /**
- * ************************************
+ -------------------------------------------
  *	Composables
- * ************************************
+ -------------------------------------------
  */
 
 const $app = useAppStore()
@@ -45,9 +46,9 @@ const $storage = useStorage<DeliveryDetails>('deliveryDetails')
 const $user = useUserStore()
 
 /**
- *******************************************
+ -------------------------------------------
  *	Data
- *******************************************
+ -------------------------------------------
  */
 
 const cart = computed(() => $shop.cart)
@@ -100,10 +101,11 @@ const total = computed(() => Number(subtotalItems.value) + Number(deliveryPrice.
 const user = computed(() => $user.user)
 
 /**
- *******************************************
- * Methods
- *******************************************
+ -------------------------------------------
+ *	Methods
+ -------------------------------------------
  */
+
 /**
  * contactWhatsapp
  */
@@ -216,6 +218,12 @@ function onSetLocation(value: string | number) {
   }
 }
 
+/**
+ -------------------------------------------
+ *	Lifecycle
+ -------------------------------------------
+ */
+
 onBeforeMount(async () => {
   // Setup title
   useHead({
@@ -229,7 +237,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <main class="container relative min-h-screen w-full">
+  <main class="container relative h-full min-h-screen w-full">
     <div class="fixed left-0 top-12 w-full bg-white pb-2 pt-5">
       <StepperInline :labels="STEP_LABELS" v-model="stepActive" />
     </div>

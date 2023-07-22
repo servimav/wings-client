@@ -12,15 +12,18 @@ import { useShopStore } from '@/stores'
  *	Components
  * -----------------------------------------
  */
+
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
-const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline.vue'))
+const CaretEmpty = defineAsyncComponent(() => import('@/components/icons/CaretEmpty.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $router = useRouter()
 const $shop = useShopStore()
 
@@ -29,8 +32,8 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
-const cart = computed(() => $shop.cart)
 
+const cart = computed(() => $shop.cart)
 const subTotal = computed(() => {
   let val = 0
   cart.value.forEach((item) => {
@@ -47,6 +50,7 @@ const subTotal = computed(() => {
  *	Methods
  * -----------------------------------------
  */
+
 /**
  * addOfferQty
  * @param item
@@ -68,6 +72,7 @@ function goToOffer(item: OrderItem) {
     }
   })
 }
+
 /**
  * removeOfferQty
  * @param item
@@ -75,6 +80,19 @@ function goToOffer(item: OrderItem) {
 function removeOfferQty(item: OrderItem) {
   $shop.removeCartOffer(item)
 }
+
+/**
+ * goToHome
+ */
+function goToHome() {
+  $router.push({ name: ROUTES.HOME })
+}
+
+/**
+ -------------------------------------------
+ *	Lifecycle
+ -------------------------------------------
+ */
 
 onBeforeMount(() => {
   useHead({
@@ -84,17 +102,9 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none p-2 pb-16 pt-14">
-    <div class="p-2" v-if="cart.length">
-      <div
-        role="button"
-        @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-        class="w-full rounded-md border-gray-500 bg-primary px-2.5 py-2 text-center text-white"
-      >
-        Crear Pedido ({{ toCurrency(subTotal) }})
-      </div>
-
-      <div class="mt-2 space-y-2">
+  <main class="container h-full min-h-screen w-full p-2 pb-16 pt-14">
+    <div class="p-2 pb-10" v-if="cart.length">
+      <div class="mt-2 space-y-4">
         <CaretOfferWidget
           v-for="(item, key) in cart"
           :key="`offer-cart-${key}-${item.id}`"
@@ -104,24 +114,40 @@ onBeforeMount(() => {
           @click-image="() => goToOffer(item)"
         />
       </div>
-    </div>
 
-    <!-- No content -->
-    <div v-else class="flex min-h-[30rem] items-center justify-center">
-      <div class="px-4">
-        <SadIcon class="mx-auto h-28 w-28 text-gray-500" />
-        <p class="text-center text-lg text-gray-600">Tienes el carrito vacío</p>
-
-        <div class="mt-2">
+      <div class="fixed bottom-[4.2rem] left-0 z-10 w-full p-2">
+        <div class="rounded-xl border border-gray-100 bg-white p-2">
+          <div class="flex justify-between px-2 py-4 text-lg font-medium text-gray-800">
+            <span>Total</span>
+            <span>{{ toCurrency(subTotal) }}</span>
+          </div>
           <button
-            @click="() => $router.push({ name: ROUTES.HOME })"
-            class="w-full rounded-lg border border-primary-dark px-2 py-1.5 text-primary-dark dark:border-white dark:text-white"
+            type="button"
+            @click="() => $router.push({ name: ROUTES.CHECKOUT })"
+            class="btn btn-primary btn-block rounded-2xl"
           >
-            Ver Ofertas
+            Crear Pedido
           </button>
         </div>
       </div>
     </div>
-    <!-- /  No content  -->
+
+    <!-- Empty Caret -->
+    <div v-else class="mx-auto flex max-w-xs flex-col items-center py-20">
+      <div class="mb-8">
+        <CaretEmpty class="relative right-2 h-44 w-44 fill-gray-800" />
+      </div>
+      <div class="mb-5 text-center">
+        <h3 class="mb-2 text-2xl font-medium text-gray-800">Carrito vacío</h3>
+        <p class="text-lg text-gray-500">
+          Tu carrito de compras está vacío. ¡Revisa algunas de nuestras ofertas para comenzar a
+          comprar!
+        </p>
+      </div>
+      <button type="button" @click="goToHome" class="btn btn-primary btn-large rounded-2xl">
+        Explorar ofertas
+      </button>
+    </div>
+    <!-- / Empty Caret -->
   </main>
 </template>

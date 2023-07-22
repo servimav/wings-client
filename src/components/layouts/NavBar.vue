@@ -5,9 +5,9 @@ import { goBack } from '@/helpers'
 import { ROUTES } from '@/router'
 
 /**
- ******************************************
+ -------------------------------------------
  *	Components
- ******************************************
+ -------------------------------------------
  */
 
 const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
@@ -49,10 +49,14 @@ const $route = useRoute()
 </script>
 
 <template>
-  <nav class="fixed left-0 top-0 z-20 w-screen border-b border-b-gray-100 bg-white">
-    <div class="flex flex-wrap items-center px-5 py-3">
+  <nav class="fixed left-0 top-0 z-20 w-full border-b border-b-gray-100 bg-white">
+    <div class="flex flex-wrap items-center px-5 py-2">
       <div class="flex grow items-center">
-        <button type="button" class="focus:outline-none" @click="goBack">
+        <button
+          type="button"
+          @click="goBack"
+          class="rounded-xl p-2 transition-colors hover:bg-gray-100"
+        >
           <ArrowLeft class="h-5 w-5 text-gray-800" />
         </button>
       </div>

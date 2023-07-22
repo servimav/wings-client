@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="container w-full select-none p-2 pb-16 pt-[4.8rem]">
+  <main class="container h-full min-h-screen w-full select-none p-2 pb-16 pt-[4.8rem]">
     <div class="mb-2 space-y-2">
       <div class="px-2" v-if="categories.length">
         <div class="bg-white p-2 text-center text-gray-800 shadow-sm">Categorías</div>

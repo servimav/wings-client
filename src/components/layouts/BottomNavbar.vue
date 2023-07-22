@@ -39,6 +39,7 @@ const ShoppingBagOutline = defineAsyncComponent(
   () => import('@/components/icons/ShoppingBagOutline.vue')
 )
 const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
@@ -46,11 +47,15 @@ const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOu
  */
 
 const $shop = useShopStore()
+
+const $route = useRoute()
+
 /**
  * -----------------------------------------
  *	Data
  * -----------------------------------------
  */
+
 const cartCounter = computed(() => {
   let counter = 0
   $shop.cart.forEach((offerCart) => {
@@ -59,7 +64,7 @@ const cartCounter = computed(() => {
   return counter
 })
 
-const drawerId = ELEMENT_ID.DRAWER_LEFT
+const DRAWER_ID = ELEMENT_ID.DRAWER_LEFT
 
 const navButtons = computed<IconLabelLink[]>(() => {
   return [
@@ -78,7 +83,11 @@ const navButtons = computed<IconLabelLink[]>(() => {
   ]
 })
 
-const route = useRoute()
+/**
+ -------------------------------------------
+ *	Lifecycle
+ -------------------------------------------
+ */
 
 onMounted(() => {
   setTimeout(() => {
@@ -101,11 +110,11 @@ onMounted(() => {
           <component
             :is="btn.icon"
             class="text-gray-600 transition-[color]"
-            :class="[route.name == btn.to.name ? 'h-8 w-8' : 'h-6 w-6']"
+            :class="[$route.name == btn.to.name ? 'h-8 w-8' : 'h-6 w-6']"
           />
 
           <div
-            v-if="route.name != btn.to.name"
+            v-if="$route.name != btn.to.name"
             class="text-xs tracking-wide text-gray-600 transition-colors group-hover:text-gray-800"
           >
             {{ btn.label }}
@@ -113,16 +122,16 @@ onMounted(() => {
 
           <div
             v-if="btn.badge"
-            class="absolute -top-2 right-2 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary text-xs font-bold text-white"
+            class="absolute -top-2 right-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-sm font-medium text-white"
           >
             {{ btn.badge }}
           </div>
         </RouterLink>
 
         <button
-          :data-drawer-target="drawerId"
-          :data-drawer-toggle="drawerId"
-          :aria-controls="drawerId"
+          :data-drawer-target="DRAWER_ID"
+          :data-drawer-toggle="DRAWER_ID"
+          :aria-controls="DRAWER_ID"
           class="group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
         >
           <UserOutline class="h-6 w-6 text-gray-600 transition-[color]" />

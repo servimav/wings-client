@@ -1,6 +1,8 @@
+import { useRouter } from 'vue-router'
 import { _userStorage } from '@/stores'
 import initServimav from '@servimav/wings-services'
 import type { TokenHandler } from '@servimav/wings-services'
+import { ROUTES } from '@/router'
 
 function tokenHandler(): TokenHandler {
   const handler: TokenHandler = {
@@ -9,7 +11,6 @@ function tokenHandler(): TokenHandler {
       return token ?? null
     },
     setToken(token: null | string) {
-      const storage = _userStorage.get()
       _userStorage.set(token ?? undefined)
     }
   }
@@ -20,6 +21,7 @@ function tokenHandler(): TokenHandler {
 export function useServices() {
   const apiUrl = import.meta.env.VITE_API_URL
   const appSecretKey = import.meta.env.VITE_APP_TOKEN
+  const $router = useRouter()
 
   const services = initServimav({
     apiUrl,
@@ -32,7 +34,7 @@ export function useServices() {
     (error) => {
       if (error.response.status === 401) {
         _userStorage.remove()
-        window.location.assign('/auth')
+        $router.push({ name: ROUTES.LOGIN })
       }
       throw error
     }

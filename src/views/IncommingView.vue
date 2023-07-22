@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { STOCK_TYPE, type ShopOffer } from '@servimav/wings-services'
@@ -8,6 +8,7 @@ import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+import { initAccordions } from 'flowbite'
 
 /**
  * -----------------------------------------
@@ -15,6 +16,7 @@ import type { Offer } from '@/types'
  * -----------------------------------------
  */
 
+const ChevronUp = defineAsyncComponent(() => import('@/components/icons/ChevronUp.vue'))
 const OfferSkeleton = defineAsyncComponent(() => import('@/components/skeletons/OfferSkeleton.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
 const PullToRefresh = defineAsyncComponent(() => import('@/components/PullToRefresh.vue'))
@@ -124,6 +126,7 @@ function contactForIncomming() {
   const message = 'Hola, me interesa hacer un Encargo Personalizado'
   sendWhatsappMessage({ message })
 }
+
 /**
  * -----------------------------------------
  *	Lifecycle
@@ -150,29 +153,54 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', eventHandler)
 })
+
+onMounted(() =>
+  setTimeout(() => {
+    initAccordions()
+  }, 1000)
+)
 </script>
 
 <template>
   <PullToRefresh v-if="IS_PLATAFORM_MOBILE" :on-pull="handlePullToRefresh" />
-
   <main class="container h-full min-h-screen w-full select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
-    <div class="rounded-lg border border-gray-200 bg-white p-4 text-gray-500">
-      <div class="space-y-2">
-        <p>
-          Si desea adquirir un producto que no esté en nuestra tienda puede hacer un "Encargo
-          Personalizado"
-        </p>
-        <p>
-          Contáctenos y denos los detalles del producto que necesita. Puede darnos Fotos, Enlaces o
-          describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
-        </p>
-      </div>
-      <button
-        @click="contactForIncomming"
-        class="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-2 text-lg font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light focus:ring-offset-1"
+    <div id="accordion-collapse-custom-order" data-accordion="collapse" class="px-2">
+      <!-- Title -->
+      <h2 id="accordion-collapse-custom-order-heading">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left text-lg text-gray-500 aria-expanded:rounded-b-none aria-expanded:border-b-0 aria-expanded:bg-white"
+          data-accordion-target="#accordion-collapse-custom-order-body"
+          aria-controls="aaccordion-collapse-custom-order-body"
+        >
+          No está en nuestra tienda el producto que buscas?
+          <ChevronUp data-accordion-icon class="h-5 w-5 shrink-0" aria-hidden="true" />
+        </button>
+      </h2>
+      <!-- / Title  -->
+
+      <!-- Body -->
+      <div
+        id="accordion-collapse-custom-order-body"
+        class="hidden"
+        aria-labelledby="accordion-collapse-custom-order-heading"
       >
-        Solicitar encargo
-      </button>
+        <div class="rounded-b-xl border-x border-b border-gray-200 bg-white px-5 pb-5">
+          <p class="mb-2 text-gray-500">
+            Si desea adquirir un producto que no esté en nuestra tienda puede hacer un "Encargo
+            Personalizado"
+          </p>
+          <p class="mb-4 text-gray-500">
+            Contáctenos y denos los detalles del producto que necesita. Puede darnos Fotos, Enlaces
+            o describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
+          </p>
+
+          <button @click="contactForIncomming" class="btn btn-primary btn-block rounded-2xl">
+            Solicitar encargo
+          </button>
+        </div>
+      </div>
+      <!-- / Body -->
     </div>
 
     <!-- Main Content -->

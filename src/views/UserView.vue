@@ -34,6 +34,7 @@ const ChevronRight = defineAsyncComponent(() => import('@/components/icons/Chevr
 
 const $user = useUserStore()
 const $router = useRouter()
+
 /**
  -------------------------------------------
  *	Data

@@ -12,7 +12,7 @@ import { useAppStore } from '@/stores'
 
 interface HelpItem {
   title: string
-  content: string
+  content: string[]
 }
 
 /**
@@ -73,64 +73,61 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="container h-full min-h-screen w-full select-none bg-gray-50 p-2 pb-[4.5rem] pt-16">
+  <main class="container h-full min-h-screen w-full p-2 pb-[4.5rem] pt-16">
     <!-- Main Content -->
     <div v-if="helpList.length" class="px-2">
-      <div
-        id="accordion-collapse"
-        data-accordion="collapse"
-        data-active-classes="group-last:rounded-b-none"
-        class="bg-white"
-      >
-        <div v-for="(help, index) in helpList" :key="`accordion-collapse-${index}`" class="group">
-          <h2 :id="`accordion-collapse-heading-${index}`">
+      <div id="accordion-collapse" data-accordion="collapse" class="space-y-2">
+        <div v-for="(help, helpIndex) in helpList" :key="`accordion-collapse-${helpIndex}`">
+          <!-- Title -->
+          <h2 :id="`accordion-collapse-heading-${helpIndex}`">
             <button
               type="button"
-              class="flex w-full items-center justify-between border border-b-0 border-gray-200 p-5 text-left font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 group-first:rounded-t-xl group-last:rounded-b-xl group-last:border-b group-last:aria-expanded:rounded-b-none dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800"
-              :data-accordion-target="`#accordion-collapse-body-${index}`"
-              aria-expanded="true"
-              :aria-controls="`accordion-collapse-body-${index}`"
+              class="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left text-gray-500 aria-expanded:rounded-b-none aria-expanded:border-b-0 aria-expanded:border-gray-500 aria-expanded:bg-white aria-expanded:text-gray-800"
+              :data-accordion-target="`#accordion-collapse-body-${helpIndex}`"
+              :aria-controls="`accordion-collapse-body-${helpIndex}`"
             >
-              <span>{{ help.title }}</span>
-              <ChevronUp
-                data-accordion-icon
-                class="h-5 w-5 shrink-0 rotate-180"
-                aria-hidden="true"
-              />
+              <div>{{ `${helpIndex + 1}. ` }}{{ help.title }}</div>
+              <ChevronUp data-accordion-icon class="h-5 w-5 shrink-0" aria-hidden="true" />
             </button>
           </h2>
+          <!-- / Title  -->
+
+          <!-- Body -->
           <div
-            :id="`accordion-collapse-body-${index}`"
+            :id="`accordion-collapse-body-${helpIndex}`"
             class="hidden"
-            :aria-labelledby="`accordion-collapse-heading-${index}`"
+            :aria-labelledby="`accordion-collapse-heading-${helpIndex}`"
           >
-            <div class="border-x border-gray-200 p-5 dark:border-gray-700">
-              <p class="text-gray-500 dark:text-gray-400">
-                {{ help.content }}
+            <div
+              class="space-y-2 rounded-b-xl border-x border-b border-gray-500 bg-white px-5 pb-5"
+            >
+              <p
+                v-for="(paragraph, pIndex) in help.content"
+                :key="`accordion-collapse-body-${pIndex}`"
+                class="text-gray-500"
+              >
+                {{ paragraph }}
               </p>
             </div>
           </div>
+          <!-- / Body -->
         </div>
       </div>
     </div>
     <!-- / Main Content  -->
 
     <!-- Skeleton -->
-    <div
-      v-else
-      role="status"
-      class="max-w-md animate-pulse space-y-4 divide-y divide-gray-200 rounded border border-gray-200 bg-white p-4 shadow dark:divide-gray-700 dark:border-gray-700 md:p-6"
-    >
+    <div v-else role="status" class="max-w-md animate-pulse space-y-4 px-2">
       <div
         v-for="index in 4"
         :key="`skeleton-help-${index}`"
-        class="flex items-center justify-between pt-4 first:pt-0"
+        class="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow"
       >
         <div>
-          <div class="mb-2.5 h-3 w-24 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-          <div class="h-3 w-32 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+          <div class="mb-2.5 h-3 w-32 rounded-full bg-gray-300"></div>
+          <div class="h-3 w-14 rounded-full bg-gray-200"></div>
         </div>
-        <div class="h-3 w-12 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+        <div class="h-3 w-3 rounded-full bg-gray-300"></div>
       </div>
 
       <span class="sr-only">Loading...</span>
