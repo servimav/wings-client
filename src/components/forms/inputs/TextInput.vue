@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 /**
- *******************************************
+ -------------------------------------------
  *	Data
- *******************************************
+ -------------------------------------------
  */
+
 export interface TextInputProps {
   modelValue?: string | number
   type: 'text' | 'number' | 'email' | 'tel' | 'password' | 'textarea' | 'currency' | 'search'
@@ -25,9 +26,9 @@ const $emit = defineEmits<{ (e: 'update:modelValue', value: string | number): vo
 const realType = computed(() => ($props.type === 'currency' ? 'number' : $props.type))
 
 /**
- *******************************************
+ -------------------------------------------
  *	Methods
- *******************************************
+ -------------------------------------------
  */
 
 /**
@@ -67,7 +68,7 @@ function onChange(event: Event) {
       :readonly="readonly"
       :rows="rows"
       autocomplete="on"
-      class="w-full rounded-lg border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      class="input block w-full p-2.5"
       @change="onChange"
     ></textarea>
 
@@ -84,7 +85,7 @@ function onChange(event: Event) {
       :max="max"
       :step="type === 'currency' ? '0.01' : step"
       autocomplete="on"
-      class="w-full rounded-lg border border-gray-200 p-2 text-gray-600 outline-none placeholder:text-gray-500 focus:ring-1 focus:ring-gray-500"
+      class="input block w-full p-2.5"
       @change="onChange"
     />
   </div>
