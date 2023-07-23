@@ -1,16 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue'
 
+/**
+ -------------------------------------------
+ *	Types
+ -------------------------------------------
+ */
+
 interface Prop {
   onPull: (call: CallableFunction) => Promise<void>
 }
 
 const $props = defineProps<Prop>()
+
 /**
  -------------------------------------------
  *	Components
  -------------------------------------------
  */
+
 const ArrowPath = defineAsyncComponent(() => import('@/components/icons/ArrowPath.vue'))
 
 /**
@@ -30,6 +38,7 @@ onUnmounted(() => {
   window.removeEventListener('touchmove', pull)
   window.removeEventListener('touchend', endPull)
 })
+
 /**
  -------------------------------------------
 *	Methods
@@ -91,6 +100,7 @@ function done() {
  *	Data
  -------------------------------------------
  */
+
 const startPoint = ref<number | null>(null)
 const pullChange = ref(0)
 const state = ref<'initial' | 'pulldown' | 'loading'>('initial')
