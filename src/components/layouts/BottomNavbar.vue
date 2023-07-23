@@ -122,7 +122,7 @@ onMounted(() => {
 
           <div
             v-if="btn.badge"
-            class="absolute -top-2 right-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-sm font-medium text-white"
+            class="absolute -top-2 right-2 inline-flex items-center justify-center rounded-full bg-primary px-1 py-0 text-sm font-medium text-white"
           >
             {{ btn.badge }}
           </div>
@@ -134,7 +134,7 @@ onMounted(() => {
           :aria-controls="DRAWER_ID"
           class="group relative inline-flex flex-col items-center justify-center space-y-0.5 px-5"
         >
-          <UserOutline class="h-6 w-6 text-gray-600 transition-[color]" />
+          <UserOutline class="h-5 w-5 text-gray-600 transition-[color]" />
           <div
             class="text-xs tracking-wide text-gray-600 transition-colors group-hover:text-gray-800"
           >

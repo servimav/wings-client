@@ -182,6 +182,7 @@ function goToOffer(offer: Offer) {
     }
   })
 }
+
 /**
  * loadData
  */
@@ -206,6 +207,7 @@ async function loadData(offerId: number) {
     $app.axiosError(error)
   }
 }
+
 /**
  * handle on share button click event
  */
@@ -448,7 +450,7 @@ onBeforeRouteUpdate(async (to) => {
         >
           <ShoppingBagOutline class="h-6 w-6" />
           <div
-            class="absolute -top-2 right-0 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 bg-primary text-xs font-bold text-white"
+            class="absolute -top-2 right-2 inline-flex items-center justify-center rounded-full bg-primary px-1 py-0 text-sm font-medium text-white"
           >
             {{ cartCounter }}
           </div>
