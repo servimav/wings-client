@@ -20,6 +20,7 @@ interface Props {
   item: OrderItem
   readonly?: boolean
   toCup?: boolean
+  small?: boolean
 }
 
 /**
@@ -68,7 +69,8 @@ const offer = computed(() => $props.item.offer)
   <div class="flex w-full items-center rounded-xl border border-gray-100 bg-white" v-if="offer">
     <!-- Image -->
     <img
-      class="h-40 w-36 shrink-0 rounded-l-xl object-cover object-center"
+      class="shrink-0 rounded-l-xl object-cover object-center"
+      :class="[small ? 'w-24' : 'h-40 w-36']"
       :src="offer.image ?? '/images/default.png'"
       :alt="offer.name"
       @error="setDefaultImage"
@@ -77,13 +79,17 @@ const offer = computed(() => $props.item.offer)
     <!-- / Image -->
 
     <!-- Offer Description -->
-    <div class="py-2 pl-3 pr-2">
-      <div class="mb-2 line-clamp-2 text-lg text-gray-800">{{ offer.name }}</div>
-      <div class="mb-4 text-gray-500">{{ toCurrency((displayPrice as number) * item.qty) }}</div>
+    <div class="py-2 pl-4 pr-2">
+      <div class="line-clamp-2 text-gray-800" :class="{ 'mb-2 text-lg': !small }">
+        {{ offer.name }}
+      </div>
+      <div class="text-gray-500" :class="[small ? 'mb-2' : 'mb-4']">
+        {{ toCurrency((displayPrice as number) * item.qty) }}
+      </div>
 
-      <div v-if="readonly" class="w-5 text-center text-sm text-gray-800">x{{ item.qty }}</div>
+      <div v-if="readonly" class="w-5 text-center font-medium text-gray-800">x{{ item.qty }}</div>
 
-      <div class="flex items-center justify-center gap-2" v-else>
+      <div class="flex items-center space-x-2" v-else>
         <button
           type="button"
           class="rounded-lg p-1 hover:bg-gray-100"
