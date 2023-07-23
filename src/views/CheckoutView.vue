@@ -2,7 +2,6 @@
 import { ref, defineAsyncComponent, onBeforeMount, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
-
 import type {
   DeliveryDetails,
   GeoLocation,
@@ -31,6 +30,7 @@ const RocketLaunch = defineAsyncComponent(() => import('@/components/icons/Rocke
 const StepperInline = defineAsyncComponent(() => import('@/components/StepperInline.vue'))
 const SelectInput = defineAsyncComponent(() => import('@/components/forms/inputs/SelectInput.vue'))
 const TextInput = defineAsyncComponent(() => import('@/components/forms/inputs/TextInput.vue'))
+const ChevronRight = defineAsyncComponent(() => import('@/components/icons/ChevronRight.vue'))
 
 /**
  -------------------------------------------
@@ -134,6 +134,7 @@ async function onSubmit() {
   }
   $app.toggleLoading(false)
 }
+
 /**
  * onNext
  */
@@ -207,6 +208,7 @@ async function loadLocations() {
     $app.axiosError(error)
   }
 }
+
 /**
  * onSetLocation
  * @param value
@@ -244,8 +246,12 @@ onBeforeMount(async () => {
 
     <div class="pb-20 pt-36">
       <form class="text-slate-800 select-none">
-        <!-- Destinatary Step 1 -->
-        <section class="mx-4 space-y-4 rounded-md bg-white p-4" v-show="stepActive === 0">
+        <!-- Destinatary (Step 1) -->
+        <section class="mx-4 space-y-4 rounded-xl bg-white p-4" v-show="stepActive === 0">
+          <p class="text-gray-500">
+            Rellene el siguiente formulario con la información de la persona que recogerá el pedido
+            y el lugar donde se lo enviaremos.
+          </p>
           <div>
             <SelectInput
               id="location"
@@ -264,6 +270,9 @@ onBeforeMount(async () => {
               label="Lugar de Recogida"
               required
             />
+            <p class="mt-2 text-gray-500">
+              {{ form.delivery_details.address }}
+            </p>
           </div>
 
           <div>
@@ -271,8 +280,8 @@ onBeforeMount(async () => {
               v-model="form.delivery_details.name"
               id="name"
               type="text"
-              label="Nombre completo"
-              placeholder="Nombres y apellidos"
+              label="Nombre Completo"
+              placeholder="Nombres y Apellidos"
               required
             />
           </div>
@@ -288,36 +297,42 @@ onBeforeMount(async () => {
             />
           </div>
 
+          <!-- Address Input  -->
+          <!--
           <div>
-            <TextInput
-              v-model="form.delivery_details.address"
-              id="address"
-              type="textarea"
-              :rows="4"
-              label="Dirección"
-              placeholder="Calle Flores #45"
-              required
-              readonly
-            />
-          </div>
+            <TextInput v-model="form.delivery_details.address" id="address" type="textarea" :rows="4" label="Dirección"
+              placeholder="Calle Flores #45" required readonly />
+          </div
+           -->
         </section>
-        <!-- / Destinatary Step 1 -->
+        <!-- Destinatary (Step 1) -->
 
-        <!-- revision Step 2 -->
+        <!-- Revision (Step 2) -->
         <section class="mx-4 space-y-4 rounded-md" v-show="stepActive === 1">
           <!-- Cart Items -->
+          <h3 class="text-center text-lg font-semibold">Carrito</h3>
+
           <div class="space-y-2">
             <CaretOfferWidget
               v-for="(item, itemKey) in cart"
               :key="`item-cart-${itemKey}-${item.id}`"
               :item="item"
               readonly
+              small
             />
           </div>
+
+          <RouterLink
+            :to="{ name: ROUTES.CARET }"
+            class="btn-sm mx-auto flex w-fit items-center justify-center space-x-2 rounded-xl border border-gray-500 bg-white"
+          >
+            <span>Editar carrito</span>
+            <ChevronRight class="h-5 w-5 text-gray-800" />
+          </RouterLink>
           <!-- / Cart Items -->
 
           <!-- Cart Prices -->
-          <div class="mt-2 rounded-sm border bg-white p-4 shadow-sm">
+          <div class="mt-2 rounded-xl bg-white p-4">
             <h3 class="text-center text-lg font-semibold">Listado de Precios</h3>
             <ul class="mt-2 list-none space-y-2">
               <li>Total de Ofertas: {{ toCurrency(subtotalItems) }}</li>
@@ -328,7 +343,7 @@ onBeforeMount(async () => {
           </div>
           <!-- / Cart Prices -->
 
-          <div class="mt-2 rounded-sm border bg-white p-4 shadow-sm">
+          <div class="mt-2 rounded-xl bg-white p-4">
             <h3 class="text-center text-lg font-semibold">Detalles de Destinatario</h3>
 
             <ul class="mt-2 list-none space-y-2">
@@ -338,27 +353,27 @@ onBeforeMount(async () => {
             </ul>
           </div>
         </section>
-        <!-- / Revision Step 2 -->
+        <!-- / Revision (Step 2) -->
 
-        <!-- Payment Step -->
+        <!-- Payment (Step 3) -->
         <section class="mx-4" v-show="stepActive === 2">
           <div class="rounded-md bg-white p-4">
-            <h3 class="text-center font-semibold">Seleccione la forma de pago</h3>
+            <h3 class="text-center text-lg font-semibold">Seleccione la forma de pago</h3>
 
             <div class="mt-4 space-y-4">
               <!-- Payment Total -->
               <div
                 @click="form.payment_type = 'TRANSFER_TOTAL'"
-                class="flex gap-2 rounded-md border p-4"
+                class="flex gap-2 rounded-xl p-4"
                 :class="
                   form.payment_type === 'TRANSFER_TOTAL'
-                    ? 'border-primary-light shadow-lg'
-                    : 'bg-slate-100 text-slate-500'
+                    ? 'border border-gray-500'
+                    : 'text-gray-500'
                 "
               >
                 <CheckIcon class="h-4 w-4" v-if="form.payment_type === 'TRANSFER_TOTAL'" />
                 <div class="flex-1 space-y-2">
-                  <b>Pago Total</b>
+                  Pago Total<br />
                   <p>Pago por transferencia de {{ toCurrency(total) }}</p>
                   <p class="font-semibold">Los datos del pago se lo enviaremos a su WhatsApp</p>
                 </div>
@@ -368,11 +383,11 @@ onBeforeMount(async () => {
               <!-- Payment Partial -->
               <div
                 @click="form.payment_type = 'TRANSFER_PARTIAL'"
-                class="flex gap-2 rounded-md border p-4"
+                class="flex gap-2 rounded-xl p-4"
                 :class="
                   form.payment_type === 'TRANSFER_PARTIAL'
-                    ? 'border-primary-light shadow-lg'
-                    : 'bg-slate-100 text-slate-500'
+                    ? 'border border-gray-500 '
+                    : 'text-gray-500'
                 "
               >
                 <CheckIcon class="h-4 w-4" v-if="form.payment_type === 'TRANSFER_PARTIAL'" />
@@ -387,7 +402,7 @@ onBeforeMount(async () => {
             </div>
           </div>
         </section>
-        <!-- / Payment Step  -->
+        <!-- / Payment (Step 3)  -->
 
         <!-- Final Step -->
         <section class="text-slate-900 mx-4" v-show="stepActive === 3">
@@ -448,29 +463,29 @@ onBeforeMount(async () => {
                   </div>
                 </div>
               </div>
-
-              <div class="mt-2"></div>
             </div>
           </div>
         </section>
         <!-- / Final Step  -->
 
-        <div class="fixed bottom-0 z-10 flex w-screen gap-2 bg-white p-4">
-          <div
-            @click="stepActive--"
-            v-if="stepActive > 0 && stepActive < 3"
-            role="button"
-            class="text-slate-900 flex-none rounded-lg border border-primary px-5 py-2.5 text-center font-medium transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
-          >
-            Atrás
-          </div>
-          <div
-            @click="onNext"
-            v-if="stepActive < 3"
-            role="button"
-            class="flex-1 rounded-lg bg-primary px-5 py-2.5 text-center font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-dark focus:ring-offset-1"
-          >
-            {{ stepActive === 2 ? 'Finalizar' : 'Confirmar y continuar' }}
+        <div class="fixed bottom-0 z-10 w-full border-t border-gray-100 bg-white p-4">
+          <div class="flex items-center justify-center space-x-2">
+            <button
+              type="button"
+              @click="stepActive--"
+              v-if="stepActive > 0 && stepActive < 3"
+              class="btn btn-secondary rounded-2xl"
+            >
+              Atrás
+            </button>
+            <button
+              type="button"
+              @click="onNext"
+              v-if="stepActive < 3"
+              class="btn btn-primary w-full rounded-2xl"
+            >
+              {{ stepActive === 2 ? 'Finalizar' : 'Continuar' }}
+            </button>
           </div>
         </div>
       </form>

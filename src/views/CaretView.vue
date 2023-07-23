@@ -103,7 +103,8 @@ onBeforeMount(() => {
 
 <template>
   <main class="container h-full min-h-screen w-full p-2 pb-16 pt-14">
-    <div class="p-2 pb-10" v-if="cart.length">
+    <!-- Main Content -->
+    <div class="p-2 pb-32" v-if="cart.length">
       <div class="mt-2 space-y-4">
         <CaretOfferWidget
           v-for="(item, key) in cart"
@@ -115,22 +116,21 @@ onBeforeMount(() => {
         />
       </div>
 
-      <div class="fixed bottom-[4.2rem] left-0 z-10 w-full p-2">
-        <div class="rounded-xl border border-gray-100 bg-white p-2">
-          <div class="flex justify-between px-2 py-4 text-lg font-medium text-gray-800">
-            <span>Total</span>
-            <span>{{ toCurrency(subTotal) }}</span>
-          </div>
-          <button
-            type="button"
-            @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-            class="btn btn-primary btn-block rounded-2xl"
-          >
-            Crear Pedido
-          </button>
+      <div class="fixed bottom-0 left-0 z-10 w-full border-t border-gray-100 bg-white px-4 pb-20">
+        <div class="flex justify-between px-2 py-3 text-lg font-medium text-gray-800">
+          <span>Total</span>
+          <span>{{ toCurrency(subTotal) }}</span>
         </div>
+        <button
+          type="button"
+          @click="() => $router.push({ name: ROUTES.CHECKOUT })"
+          class="btn btn-primary btn-block rounded-2xl"
+        >
+          Crear Pedido
+        </button>
       </div>
     </div>
+    <!-- / Main Content -->
 
     <!-- Empty Caret -->
     <div v-else class="mx-auto flex max-w-xs flex-col items-center py-20">
