@@ -19,8 +19,16 @@
     @apply px-5 py-2.5 text-lg font-medium focus:outline-none focus:ring-4 focus:ring-offset-1;
   }
 
+  .btn-sm {
+    @apply px-2 py-1;
+  }
+
   .btn-primary {
-    @apply bg-primary text-white transition-colors hover:bg-primary-dark focus:ring-primary-light;
+    @apply border border-primary bg-primary text-white transition-colors hover:bg-primary-dark focus:ring-primary-light;
+  }
+
+  .btn-secondary {
+    @apply border border-gray-200 bg-gray-200 text-gray-800 transition-colors hover:bg-gray-300 focus:ring-gray-200;
   }
 
   .btn-block {
