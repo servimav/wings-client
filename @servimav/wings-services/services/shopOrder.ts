@@ -47,6 +47,8 @@ export interface ShopOrder {
   service_price: number
   items: OrderItem[]
   payment_type: PaymentType
+  created_at: string
+  updated_at: string
 }
 
 /**

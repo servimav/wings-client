@@ -16,11 +16,11 @@
 
   /* Buttons */
   .btn {
-    @apply rounded-md px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.3s_linear_1];
+    @apply rounded-2xl rounded-md px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.2s_linear_1];
   }
 
   .btn-sm {
-    @apply rounded-md px-2 py-1.5 focus:animate-[scaleEffect_0.3s_linear_1];
+    @apply rounded-2xl px-2 py-1.5 focus:animate-[scaleEffect_0.2s_linear_1];
   }
 
   .btn-primary {
