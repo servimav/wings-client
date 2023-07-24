@@ -8,7 +8,7 @@ import type {
   ShopOrder,
   ShopOrderCreate
 } from '@servimav/wings-services'
-import { sendWhatsappMessage, scrollTop, toCurrency, useStorage } from '@/helpers'
+import { scrollTop, toCurrency, useStorage } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
@@ -22,11 +22,8 @@ import { useAppStore, useShopStore, useUserStore } from '@/stores'
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
-const CartIcon = defineAsyncComponent(() => import('@/components/icons/ShoppingCartOutline.vue'))
-const ChatIcon = defineAsyncComponent(() => import('@/components/icons/ChatOutline.vue'))
 const CheckIcon = defineAsyncComponent(() => import('@/components/icons/CheckIcon.vue'))
 const LoadingSpinner = defineAsyncComponent(() => import('@/components/widgets/LoadingSpinner.vue'))
-const RocketLaunch = defineAsyncComponent(() => import('@/components/icons/RocketLaunch.vue'))
 const StepperInline = defineAsyncComponent(() => import('@/components/StepperInline.vue'))
 const SelectInput = defineAsyncComponent(() => import('@/components/forms/inputs/SelectInput.vue'))
 const TextInput = defineAsyncComponent(() => import('@/components/forms/inputs/TextInput.vue'))
@@ -105,17 +102,6 @@ const user = computed(() => $user.user)
  *	Methods
  -------------------------------------------
  */
-
-/**
- * contactWhatsapp
- */
-function contactWhatsapp() {
-  if (order.value) {
-    const orderUrl = `https://wings.servimav.com/orders/${order.value.id}`
-    const message = `Hola, he creado un pedido.\nPuede revisarlo en\n${orderUrl}`
-    sendWhatsappMessage({ message })
-  }
-}
 
 /**
  * onSubmit
@@ -449,7 +435,7 @@ onBeforeMount(async () => {
               type="button"
               @click="stepActive--"
               v-if="stepActive > 0 && stepActive < 3"
-              class="btn btn-secondary rounded-2xl px-2 py-1.5"
+              class="btn btn-secondary"
             >
               Atrás
             </button>
@@ -457,7 +443,7 @@ onBeforeMount(async () => {
               type="button"
               @click="onNext"
               v-if="stepActive < 3"
-              class="btn btn-primary w-full rounded-2xl px-2 py-1.5"
+              class="btn btn-primary w-full"
             >
               {{ stepActive === 2 ? 'Finalizar' : 'Continuar' }}
             </button>

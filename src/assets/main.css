@@ -16,7 +16,7 @@
 
   /* Buttons */
   .btn {
-    @apply rounded-2xl rounded-md px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.2s_linear_1];
+    @apply rounded-2xl px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.2s_linear_1];
   }
 
   .btn-sm {
