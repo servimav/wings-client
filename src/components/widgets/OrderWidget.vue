@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { readableStatus, type ShopOrder } from '@servimav/wings-services'
-import { CUP_PRICE, toCurrency } from '@/helpers'
+import { CUP_PRICE, formatDate, toCurrency } from '@/helpers'
 import { useShopStore } from '@/stores'
 
 interface Prop {
@@ -57,6 +57,10 @@ const totalPrice = computed(
           <span :class="['rounded-xl border p-1', statusStyle]">
             {{ readableStatus(order.delivery_status) }}
           </span>
+        </li>
+        <li class="capitalize">
+          Creado:
+          {{ formatDate(order.created_at) }}
         </li>
         <li>
           Envio:

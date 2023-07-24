@@ -2,6 +2,19 @@ import type { WhatsappMessage } from '@/types'
 import { ADMIN_PHONE } from './defaults'
 
 /**
+ * formatDate
+ * @param date text in date format
+ */
+export function formatDate(date: string) {
+  return new Date(date).toLocaleDateString('es-ES', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+/**
  * useStorage
  * @param key
  * @returns
