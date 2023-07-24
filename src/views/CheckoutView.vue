@@ -308,9 +308,9 @@ onBeforeMount(async () => {
         <!-- Destinatary (Step 1) -->
 
         <!-- Revision (Step 2) -->
-        <section class="mx-4 space-y-4 rounded-md" v-show="stepActive === 1">
+        <section class="mx-4 space-y-2 rounded-md" v-show="stepActive === 1">
           <!-- Cart Items -->
-          <h3 class="text-center text-lg font-semibold">Carrito</h3>
+          <h3 class="text-center font-semibold">Productos Seleccionados</h3>
 
           <div class="space-y-2">
             <CaretOfferWidget
@@ -324,9 +324,10 @@ onBeforeMount(async () => {
 
           <RouterLink
             :to="{ name: ROUTES.CARET }"
-            class="btn-sm mx-auto flex w-fit items-center justify-center space-x-2 rounded-xl border border-gray-500 bg-white"
+            class="btn-sm mx-auto flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white py-2"
           >
-            <span>Editar carrito</span>
+            <span></span>
+            <span>Editar Productos</span>
             <ChevronRight class="h-5 w-5 text-gray-800" />
           </RouterLink>
           <!-- / Cart Items -->
@@ -430,39 +431,13 @@ onBeforeMount(async () => {
                 Le enviaremos por WhatsApp los detalles del Pago para proceder con el Envío
               </p>
 
-              <div class="mt-4 space-y-2 border p-2">
-                <p class="text-center">Qué desea hacer?</p>
-
-                <RouterLink
-                  :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }"
-                  class="flex gap-2"
+              <RouterLink :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }">
+                <div
+                  class="text-md btn-primary mt-2 w-full rounded-3xl px-4 py-1.5 text-center font-semibold"
                 >
-                  <div
-                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
-                  >
-                    <RocketLaunch class="h-6 w-6" />
-                    Revisar Estado del Pedido
-                  </div>
-                </RouterLink>
-
-                <RouterLink :to="{ name: ROUTES.HOME }" class="flex gap-2">
-                  <div
-                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
-                  >
-                    <CartIcon class="h-6 w-6" />
-                    Seguir comprando
-                  </div>
-                </RouterLink>
-
-                <div @click="contactWhatsapp" role="button" class="flex gap-2">
-                  <div
-                    class="flex gap-2 rounded-lg border border-primary p-2 text-primary hover:bg-primary hover:text-white hover:shadow-lg"
-                  >
-                    <ChatIcon class="h-6 w-6" />
-                    Escríbenos
-                  </div>
+                  Revisar Pedido
                 </div>
-              </div>
+              </RouterLink>
             </div>
           </div>
         </section>
@@ -474,7 +449,7 @@ onBeforeMount(async () => {
               type="button"
               @click="stepActive--"
               v-if="stepActive > 0 && stepActive < 3"
-              class="btn btn-secondary rounded-2xl"
+              class="btn btn-secondary rounded-2xl px-2 py-1.5"
             >
               Atrás
             </button>
@@ -482,7 +457,7 @@ onBeforeMount(async () => {
               type="button"
               @click="onNext"
               v-if="stepActive < 3"
-              class="btn btn-primary w-full rounded-2xl"
+              class="btn btn-primary w-full rounded-2xl px-2 py-1.5"
             >
               {{ stepActive === 2 ? 'Finalizar' : 'Continuar' }}
             </button>

@@ -102,10 +102,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main class="container h-full min-h-screen w-full p-2 pb-16 pt-14">
+  <main class="container h-full min-h-screen w-full p-2 pb-16 pt-12">
     <!-- Main Content -->
     <div class="p-2 pb-32" v-if="cart.length">
-      <div class="mt-2 space-y-4">
+      <div class="mt-2 space-y-2">
         <CaretOfferWidget
           v-for="(item, key) in cart"
           :key="`offer-cart-${key}-${item.id}`"
@@ -124,7 +124,7 @@ onBeforeMount(() => {
         <button
           type="button"
           @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-          class="btn btn-primary btn-block rounded-2xl"
+          class="btn btn-primary btn-block rounded-2xl px-2 py-1.5"
         >
           Crear Pedido
         </button>
@@ -135,16 +135,20 @@ onBeforeMount(() => {
     <!-- Empty Caret -->
     <div v-else class="mx-auto flex max-w-xs flex-col items-center py-20">
       <div class="mb-8">
-        <CaretEmpty class="relative right-2 h-44 w-44 fill-gray-800" />
+        <CaretEmpty class="relative right-2 h-28 w-28 fill-gray-600" />
       </div>
       <div class="mb-5 text-center">
         <h3 class="mb-2 text-2xl font-medium text-gray-800">Carrito vacío</h3>
-        <p class="text-lg text-gray-500">
+        <p class="text-lg text-gray-600">
           Tu carrito de compras está vacío. ¡Revisa algunas de nuestras ofertas para comenzar a
           comprar!
         </p>
       </div>
-      <button type="button" @click="goToHome" class="btn btn-primary btn-large rounded-2xl">
+      <button
+        type="button"
+        @click="goToHome"
+        class="btn btn-primary btn-large rounded-2xl px-4 py-1.5"
+      >
         Explorar ofertas
       </button>
     </div>

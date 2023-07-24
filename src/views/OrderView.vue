@@ -139,6 +139,7 @@ onBeforeMount(() => {
             :key="`item-order-${itemKey}-${item.id}`"
             :item="item"
             readonly
+            small
             to-cup
           />
         </div>

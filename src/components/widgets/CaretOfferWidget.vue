@@ -70,7 +70,7 @@ const offer = computed(() => $props.item.offer)
     <!-- Image -->
     <img
       class="shrink-0 rounded-l-xl object-cover object-center"
-      :class="[small ? 'w-24' : 'h-40 w-36']"
+      :class="[small ? 'h-28 w-24' : 'h-32 w-28']"
       :src="offer.image ?? '/images/default.png'"
       :alt="offer.name"
       @error="setDefaultImage"
@@ -80,7 +80,7 @@ const offer = computed(() => $props.item.offer)
 
     <!-- Offer Description -->
     <div class="py-2 pl-4 pr-2">
-      <div class="line-clamp-2 text-gray-800" :class="{ 'mb-2 text-lg': !small }">
+      <div class="line-clamp-2 text-gray-800">
         {{ offer.name }}
       </div>
       <div class="text-gray-500" :class="[small ? 'mb-2' : 'mb-4']">
