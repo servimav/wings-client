@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount } from 'vue'
 import { useServices } from '@/services'
-import { useShopStore, useUserStore } from '@/stores'
+import { useAppStore, useShopStore, useUserStore } from '@/stores'
 import DrawerLeft from '@/components/layouts/DrawerLeft.vue'
 
 /**
@@ -9,7 +9,7 @@ import DrawerLeft from '@/components/layouts/DrawerLeft.vue'
  *	Composables
  * -----------------------------------------
  */
-
+const $app = useAppStore()
 const $service = useServices()
 const $shop = useShopStore()
 const $user = useUserStore()
@@ -30,12 +30,21 @@ async function getCategories() {
 onBeforeMount(async () => {
   $user.loadFromStorage()
   $shop.getCartFromStorage()
-
+  $app.toggleLoading(true)
   try {
-    Promise.all([getCategories(), $user.geMe(), $shop.getCurrencies()])
+    await Promise.all([getCategories(), $user.geMe(), $shop.getCurrencies()])
+    // Get orders
+    if ($user.auth_token) {
+      $shop.orderPagination = undefined
+      $shop.orders = []
+      const { data } = await $service.shop.order.mine({ currency: 'CUP', page: undefined })
+      $shop.orders = data.data
+      $shop.orderPagination = data.meta.current_page
+    }
   } catch (error) {
-    console.log({ error })
+    $app.axiosError(error)
   }
+  $app.toggleLoading(false)
 })
 </script>
 
