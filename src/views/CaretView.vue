@@ -124,7 +124,7 @@ onBeforeMount(() => {
         <button
           type="button"
           @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-          class="btn btn-primary btn-block rounded-2xl px-2 py-1.5"
+          class="btn-sm btn-primary btn-block"
         >
           Crear Pedido
         </button>

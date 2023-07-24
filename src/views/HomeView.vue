@@ -153,9 +153,9 @@ onBeforeUnmount(() => {
       <AnnouncementSlider />
 
       <template v-if="categories.length">
-        <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
+        <!-- <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
           Descubre nuestras Categorías
-        </div>
+        </div> -->
         <CategorySlider :categories="categories" go-to-filter />
       </template>
 
