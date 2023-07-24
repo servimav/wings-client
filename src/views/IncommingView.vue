@@ -169,11 +169,11 @@ onMounted(() =>
       <h2 id="accordion-collapse-custom-order-heading">
         <button
           type="button"
-          class="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left text-lg text-gray-500 aria-expanded:rounded-b-none aria-expanded:border-b-0 aria-expanded:bg-white"
+          class="flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white p-5 text-left text-gray-500 aria-expanded:rounded-b-none aria-expanded:border-b-0 aria-expanded:bg-white"
           data-accordion-target="#accordion-collapse-custom-order-body"
           aria-controls="aaccordion-collapse-custom-order-body"
         >
-          No está en nuestra tienda el producto que buscas?
+          ¿No encuentras lo que Buscas?
           <ChevronUp data-accordion-icon class="h-5 w-5 shrink-0" aria-hidden="true" />
         </button>
       </h2>
@@ -195,7 +195,10 @@ onMounted(() =>
             o describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
           </p>
 
-          <button @click="contactForIncomming" class="btn btn-primary btn-block rounded-2xl">
+          <button
+            @click="contactForIncomming"
+            class="btn btn-primary btn-block rounded-2xl px-2 py-1.5"
+          >
             Solicitar encargo
           </button>
         </div>

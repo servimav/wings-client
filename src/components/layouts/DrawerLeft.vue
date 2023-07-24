@@ -91,7 +91,12 @@ const internalLinks: MenuLink[] = [
     icon: SquaresIcon,
     label: 'Nuevos Productos',
     // badge: '5',
-    to: { name: ROUTES.FILTER }
+    to: {
+      name: ROUTES.FILTER,
+      query: {
+        currency: 'CUP'
+      }
+    }
   },
   {
     icon: HelpIcon,

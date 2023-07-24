@@ -127,6 +127,7 @@ function addOfferToCart() {
           ? offer.value.discount_price
           : offer.value.sell_price
     })
+  $app.success(`Agregado ${offer.value?.name}`)
 }
 
 /**
