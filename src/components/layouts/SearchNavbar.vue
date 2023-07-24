@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { ShopOfferFilter } from '@servimav/wings-services'
+import { STATUS, type ShopOfferFilter } from '@servimav/wings-services'
 import { ROUTES } from '@/router'
+import { useShopStore } from '@/stores'
 /**
  * -----------------------------------------
  *	Types
@@ -28,6 +29,7 @@ const MangifyGlass = defineAsyncComponent(() => import('@/components/icons/Mangi
  * -----------------------------------------
  */
 const $router = useRouter()
+const $shop = useShopStore()
 /**
  * -----------------------------------------
  *	Data
@@ -39,6 +41,8 @@ const search = ref<ShopOfferFilter>({
   search: '',
   sort: 'views'
 })
+
+const showPulse = computed(() => $shop.orders.length > 0)
 /**
  * -----------------------------------------
  *	Methods
@@ -95,6 +99,15 @@ function onSubmit() {
         <ShoppingCartOutline
           class="h-7 w-7 cursor-pointer text-gray-600 transition-colors hover:text-gray-800"
         />
+        <span
+          v-if="showPulse"
+          class="absolute right-2 top-4 inline-flex h-5 w-5 items-center justify-center"
+        >
+          <span
+            class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"
+          ></span>
+          <span class="relative inline-flex h-3 w-3 rounded-full bg-primary"></span>
+        </span>
       </RouterLink>
     </div>
   </nav>
