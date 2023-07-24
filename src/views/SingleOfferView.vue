@@ -426,22 +426,14 @@ onBeforeRouteUpdate(async (to) => {
         v-if="contactUrl"
         class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
       >
-        <button
-          class="w-full rounded-lg bg-primary px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light"
-        >
-          Contactar al Vendedor
-        </button>
+        <button class="btn-sm btn-primary">Contactar al Vendedor</button>
       </a>
       <div
         v-else
         class="fixed bottom-0 flex w-full space-x-2 border-0 bg-white p-4 text-center"
         :class="{ 'justify-end': !canAdd }"
       >
-        <button
-          @click="addOfferToCart"
-          v-if="canAdd"
-          class="flex-1 rounded-lg bg-primary px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary-light"
-        >
+        <button @click="addOfferToCart" v-if="canAdd" class="btn-sm btn-primary flex-1">
           Añadir al Carrito
         </button>
         <button

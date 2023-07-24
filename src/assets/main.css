@@ -16,19 +16,33 @@
 
   /* Buttons */
   .btn {
-    @apply px-5 py-2.5 text-lg font-medium focus:outline-none focus:ring-4 focus:ring-offset-1;
+    @apply rounded-md px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.3s_linear_1];
   }
 
   .btn-sm {
-    @apply px-2 py-1;
+    @apply rounded-md px-2 py-1.5 focus:animate-[scaleEffect_0.3s_linear_1];
   }
 
   .btn-primary {
-    @apply border border-primary bg-primary text-white transition-colors hover:bg-primary-dark focus:ring-primary-light;
+    @apply border border-primary bg-primary text-white transition-colors;
+  }
+
+  @keyframes scaleEffect {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(0.95);
+    }
+
+    100% {
+      transform: scale(1);
+    }
   }
 
   .btn-secondary {
-    @apply border border-gray-200 bg-gray-200 text-gray-800 transition-colors hover:bg-gray-300 focus:ring-gray-200;
+    @apply border border-gray-200 bg-gray-200 text-gray-800 transition-colors;
   }
 
   .btn-block {
