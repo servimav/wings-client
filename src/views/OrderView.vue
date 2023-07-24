@@ -2,8 +2,8 @@
 import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { readableStatus, type ShopOrder } from '@servimav/wings-services'
-import { toCurrency } from '@/helpers'
+import { readableStatus, STATUS, type ShopOrder } from '@servimav/wings-services'
+import { formatDate, toCurrency } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore } from '@/stores'
 /**
@@ -14,6 +14,7 @@ import { useAppStore } from '@/stores'
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
+const ListSkeleton = defineAsyncComponent(() => import('@/components/skeletons/ListSkeleton.vue'))
 /**
  * ------------------------------------------
  *	Composable
@@ -28,6 +29,8 @@ const $service = useServices()
  * ------------------------------------------
  */
 
+const loading = computed(() => $app.loading)
+
 const order = ref<ShopOrder>()
 
 const totalPrice = computed(
@@ -36,6 +39,16 @@ const totalPrice = computed(
     Number(order.value?.offers_price) +
     Number(order.value?.service_price)
 )
+
+const showDeliveryDate = computed(() => {
+  if (!order.value?.delivery_date) return false
+  return (
+    order.value.delivery_status === STATUS.ONPROGRESS ||
+    order.value.delivery_status === STATUS.ONWAY ||
+    order.value.delivery_status === STATUS.PARTIAL_PAYED ||
+    order.value.delivery_status === STATUS.PAYED
+  )
+})
 
 /**
  * ------------------------------------------
@@ -63,30 +76,17 @@ async function getOrder() {
 }
 
 /**
- * formatDate
- * @param date text in date format
- */
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('es-ES', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
-}
-
-/**
  -------------------------------------------
  *	Lifecycle
  -------------------------------------------
  */
 
-onBeforeMount(() => {
-  useHead({
-    title: 'Pedidos | Wings'
-  })
+onBeforeMount(async () => {
+  await getOrder()
 
-  getOrder()
+  useHead({
+    title: order.value ? `Pedido # ${order.value.id} | Wings` : 'Pedidos | Wings'
+  })
 })
 </script>
 
@@ -104,9 +104,13 @@ onBeforeMount(() => {
                 {{ readableStatus(order.delivery_status) }}
               </span>
             </li>
-            <li v-if="order.delivery_date">
+            <li class="capitalize">
+              Creado:
+              {{ formatDate(order.created_at) }}
+            </li>
+            <li v-if="showDeliveryDate">
               Entrega:
-              {{ formatDate(order.delivery_date) }}
+              {{ formatDate(order.delivery_date as string) }}
             </li>
             <li>Dirección: {{ order.delivery_details.address }}</li>
             <li>Destinatario: {{ order.delivery_details.name }}</li>
@@ -146,5 +150,15 @@ onBeforeMount(() => {
         <!-- / Cart Items -->
       </div>
     </div>
+
+    <!-- Loading -->
+    <div v-else-if="loading" class="px-4">
+      <ListSkeleton :repeat="8" />
+    </div>
+    <!-- / Loading -->
+
+    <!-- No content -->
+    <div v-else></div>
+    <!-- / No content -->
   </main>
 </template>

@@ -13,8 +13,10 @@ import { ROUTES } from '@/router'
  * ------------------------------------------
  */
 
+const ListSkeleton = defineAsyncComponent(() => import('@/components/skeletons/ListSkeleton.vue'))
 const OrderWidget = defineAsyncComponent(() => import('@/components/widgets/OrderWidget.vue'))
 const PullToRefresh = defineAsyncComponent(() => import('@/components/PullToRefresh.vue'))
+
 /**
  * ------------------------------------------
  *	Composables
@@ -38,7 +40,7 @@ const scrollHandler = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
   const scrolled = window.scrollY
   if (scrollable - scrolled <= 10) {
-    getOrders()
+    getOrders({ init: false })
   }
 }
 /**
@@ -49,19 +51,22 @@ const scrollHandler = () => {
 /**
  * getOrders
  */
-async function getOrders() {
+async function getOrders({ init }: { init: boolean }) {
   if (loading.value) return
 
   $app.toggleLoading(true)
   try {
     const { data } = await $service.shop.order.mine({
       currency: 'CUP',
-      page: orderPagination.value ? orderPagination.value + 1 : undefined
+      page: init ? undefined : orderPagination.value ? orderPagination.value + 1 : undefined
     })
     $shop.orderPagination = data.meta.current_page
     // if server return data
     if (data.data.length) {
-      $shop.orders.push(...data.data)
+      // If init data
+      if (init) $shop.orders = data.data
+      // Push data
+      else $shop.orders.push(...data.data)
     } else {
       // if no more data stop event
       window.removeEventListener('scroll', scrollHandler)
@@ -80,7 +85,7 @@ async function getOrders() {
 async function handleOnPull(done: CallableFunction) {
   $shop.orders = []
   $shop.orderPagination = undefined
-  await getOrders()
+  await getOrders({ init: true })
   done()
 }
 
@@ -101,9 +106,9 @@ onBeforeMount(async () => {
   if (!$shop.homeOffers.length) {
     $shop.homeOffers = []
     $shop.homePagination = undefined
+    // start get offer
+    await getOrders({ init: true })
   }
-  // start get offer
-  await getOrders()
   // start listening event
   window.addEventListener('scroll', scrollHandler)
 })
@@ -118,10 +123,22 @@ onBeforeUnmount(() => {
   <main
     class="container h-full min-h-screen w-full select-none p-2 pb-[4.5rem] pt-[3.2rem] text-gray-800"
   >
-    <div v-for="(order, key) in orders" :key="`order-${order.id}-${key}`" class="my-2">
-      <RouterLink :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }">
-        <OrderWidget :order="order" />
-      </RouterLink>
+    <template v-if="orders.length">
+      <div v-for="(order, key) in orders" :key="`order-${order.id}-${key}`" class="my-2">
+        <RouterLink :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }">
+          <OrderWidget :order="order" />
+        </RouterLink>
+      </div>
+    </template>
+
+    <!-- Loading -->
+    <div v-else-if="loading" class="my-2">
+      <ListSkeleton :repeat="8" />
     </div>
+    <!-- / Loading -->
+
+    <!-- No content -->
+    <div v-else>No content</div>
+    <!-- / No content -->
   </main>
 </template>
