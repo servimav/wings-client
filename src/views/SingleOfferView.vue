@@ -433,7 +433,7 @@ onBeforeRouteUpdate(async (to) => {
         class="fixed bottom-0 flex w-full space-x-2 border-0 bg-white p-4 text-center"
         :class="{ 'justify-end': !canAdd }"
       >
-        <button @click="addOfferToCart" v-if="canAdd" class="btn-sm btn-primary flex-1">
+        <button @click="addOfferToCart" v-if="canAdd" class="btn btn-primary flex-1">
           Añadir al Carrito
         </button>
         <button

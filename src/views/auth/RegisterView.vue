@@ -159,9 +159,7 @@ async function submit() {
         </button>
         <p class="text-gray-500">
           Ya tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.LOGIN }" class="font-medium text-primary"
-            >Inicia sesión</RouterLink
-          >
+          <RouterLink :to="{ name: ROUTES.LOGIN }" class="text-link">Inicia sesión</RouterLink>
         </p>
       </form>
       <!-- / Form -->
