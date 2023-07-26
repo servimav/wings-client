@@ -3,25 +3,29 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import type { ShopOffer, ShopOfferFilter } from '@servimav/wings-services'
-import { scrollTop } from '@/helpers'
+import { scrollTop, TITLE } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useShopStore } from '@/stores'
 import type { Offer } from '@/types'
+
 /**
  * -----------------------------------------
  *	Components
  * -----------------------------------------
  */
+
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSkeleton = defineAsyncComponent(() => import('@/components/skeletons/OfferSkeleton.vue'))
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
-const SadIcon = defineAsyncComponent(() => import('@/components/icons/SadOutline.vue'))
+const SearchLoop = defineAsyncComponent(() => import('@/components/icons/SearchLoop.vue'))
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $route = useRoute()
 const $router = useRouter()
 const $service = useServices()
@@ -32,11 +36,22 @@ const $shop = useShopStore()
  *	Data
  * -----------------------------------------
  */
+
+const filterText = ref<string>()
 const categories = computed(() => $shop.categories)
 const loading = ref(false)
 const offers = ref<ShopOffer[]>([])
 const offersCurrentPage = ref<number>()
 
+/**
+ * -----------------------------------------
+ *	Methods
+ * -----------------------------------------
+ */
+
+/**
+ * scrollEventHandler
+ */
 const scrollEventHandler = () => {
   const scrollable = document.documentElement.scrollHeight - window.innerHeight
   const scrolled = window.scrollY
@@ -46,20 +61,12 @@ const scrollEventHandler = () => {
   }
 }
 
-const title = ref<string>()
-
-/**
- * -----------------------------------------
- *	Methods
- * -----------------------------------------
- */
-
 /**
  * filterOffers
  * @param filter
  */
 async function filterOffers(filter: ShopOfferFilter) {
-  title.value = filter.search ? `de "${filter.search?.toLocaleUpperCase()}"` : ''
+  filterText.value = filter.search ? filter.search?.toLocaleUpperCase() : ''
   loading.value = true
   try {
     const resp = (
@@ -82,7 +89,8 @@ async function filterOffers(filter: ShopOfferFilter) {
 }
 
 /**
- * go to single offer page
+ * goToOffer
+ * @description go to single offer page
  * @param offer
  */
 function goToOffer(offer: Offer) {
@@ -100,30 +108,33 @@ function goToOffer(offer: Offer) {
  * -----------------------------------------
  */
 
-onBeforeRouteUpdate((to) => {
-  scrollTop()
-  const urlFilter = to.query as ShopOfferFilter
-  // init offers and pagination
-  offers.value = []
-  offersCurrentPage.value = undefined
-  filterOffers(urlFilter)
-})
-
 onMounted(async () => {
   // set default title
   useHead({
-    title: 'Compras y Envíos | Wings'
+    title: TITLE.DEFAULT
   })
 
   // init offers and pagination
   scrollTop()
   offers.value = []
   offersCurrentPage.value = undefined
+
   // start filter
   const urlFilter = $route.query as ShopOfferFilter
   await filterOffers(urlFilter)
+
   // init scroll event
   window.addEventListener('scroll', scrollEventHandler)
+})
+
+onBeforeRouteUpdate((to) => {
+  scrollTop()
+  const urlFilter = to.query as ShopOfferFilter
+
+  // init offers and pagination
+  offers.value = []
+  offersCurrentPage.value = undefined
+  filterOffers(urlFilter)
 })
 
 onBeforeUnmount(() => {
@@ -132,40 +143,18 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main class="container h-full min-h-screen w-full select-none p-2 pb-16 pt-[4.8rem]">
-    <div class="mb-2 space-y-2">
-      <div class="px-2" v-if="categories.length">
-        <div class="bg-white p-2 text-center text-gray-800 shadow-sm">Categorías</div>
+  <main
+    class="container h-full min-h-screen w-full select-none p-2 pb-16 pt-[4.5rem]"
+    :class="{ 'flex flex-col justify-center': !offers.length }"
+  >
+    <div v-if="loading || offers.length" class="mb-2">
+      <div class="mb-2 px-2" v-if="categories.length">
         <CategorySlider :categories="categories" go-to-filter />
       </div>
-
-      <!-- Data -->
-      <div class="px-2" v-if="offers.length">
-        <h2 class="bg-white p-2 text-center text-lg text-gray-800 shadow-sm">
-          Resultados {{ title }}
-        </h2>
-
-        <div class="mt-2 grid grid-cols-2 gap-2">
-          <OfferWidget
-            v-for="(offer, index) in offers"
-            :key="`home-view-offer-grid-example-${index}`"
-            :offer="offer"
-            @click="() => goToOffer(offer)"
-          />
-
-          <OfferSkeleton :repeat="8" v-if="loading" />
-        </div>
-
-        <div class="mt-2" v-if="categories.length">
-          <CategorySlider :categories="categories" go-to-filter />
-        </div>
-      </div>
-      <!-- / Data -->
-
       <!-- Loading -->
-      <template v-else-if="loading">
-        <h2 class="bg-white p-2 text-center text-lg text-gray-800 shadow-sm">
-          Buscando {{ title }}
+      <template v-if="loading">
+        <h2 class="mb-3 bg-white text-center text-lg text-gray-800 shadow-sm">
+          Buscando "{{ filterText }}"
         </h2>
         <div class="mt-2 grid grid-cols-2 gap-2">
           <OfferSkeleton :repeat="8" />
@@ -173,16 +162,43 @@ onBeforeUnmount(() => {
       </template>
       <!-- / Loading -->
 
-      <!-- No content -->
-      <div v-else class="flex min-h-[30rem] items-center justify-center">
-        <div class="px-4">
-          <SadIcon class="mx-auto h-28 w-28 text-gray-500" />
-          <p class="text-center text-lg text-gray-600">
-            No encontramos ninguna coincidencia en la búsqueda {{ title }}
-          </p>
+      <!-- Search Content -->
+      <div v-else-if="offers.length" class="px-2">
+        <h3 class="text-center text-lg text-gray-800">Resultados de "{{ filterText }}"</h3>
+
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <OfferWidget
+            v-for="(offer, offerIndex) in offers"
+            :key="`filter-view-grid-offer-${offerIndex}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+
+          <OfferSkeleton :repeat="8" v-if="loading" />
         </div>
       </div>
-      <!-- /  No content  -->
+      <!-- / Search Content -->
     </div>
+
+    <!-- Not Found -->
+    <div v-else class="text-center">
+      <div class="mb-8">
+        <SearchLoop class="mx-auto h-28 w-28 fill-gray-200 text-gray-500" />
+      </div>
+      <div class="mb-5">
+        <h3 class="mb-3 text-2xl font-medium text-gray-800">No se encuentra "{{ filterText }}"</h3>
+        <p class="max-w-xs text-gray-500">
+          No encontramos coincidencias, revisa nuestras categorías y encargos para otros productos.
+        </p>
+      </div>
+      <button
+        type="button"
+        @click="$router.push({ name: ROUTES.HOME })"
+        class="btn btn-md btn-primary"
+      >
+        Explorar encargos
+      </button>
+    </div>
+    <!-- / Not Found -->
   </main>
 </template>
