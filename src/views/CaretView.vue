@@ -117,14 +117,14 @@ onBeforeMount(() => {
       </div>
 
       <div class="fixed bottom-0 left-0 z-10 w-full border-t border-gray-100 bg-white px-4 pb-20">
-        <div class="flex justify-between px-2 py-3 text-lg font-medium text-gray-800">
+        <div class="mb-2 flex justify-between px-2 py-3 text-lg font-medium text-gray-800">
           <span>Total</span>
           <span>{{ toCurrency(subTotal) }}</span>
         </div>
         <button
           type="button"
           @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-          class="btn-sm btn-primary btn-block"
+          class="btn btn-primary btn-block"
         >
           Crear Pedido
         </button>
@@ -144,11 +144,7 @@ onBeforeMount(() => {
           comprar!
         </p>
       </div>
-      <button
-        type="button"
-        @click="goToHome"
-        class="btn btn-primary btn-large rounded-2xl px-4 py-1.5"
-      >
+      <button type="button" @click="goToHome" class="btn-sm btn-primary rounded-2xl px-4">
         Explorar ofertas
       </button>
     </div>
