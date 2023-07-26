@@ -310,7 +310,7 @@ onBeforeMount(async () => {
 
           <RouterLink
             :to="{ name: ROUTES.CARET }"
-            class="btn-sm mx-auto flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white py-2"
+            class="btn btn-sm mx-auto flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white py-2"
           >
             <span></span>
             <span>Editar Productos</span>
@@ -418,9 +418,7 @@ onBeforeMount(async () => {
               </p>
 
               <RouterLink :to="{ name: ROUTES.ORDER, params: { orderId: order.id } }">
-                <div
-                  class="text-md btn-primary mt-2 w-full rounded-3xl px-4 py-1.5 text-center font-semibold"
-                >
+                <div class="text-md btn btn-md btn-primary mt-2 w-full text-center font-semibold">
                   Revisar Pedido
                 </div>
               </RouterLink>
@@ -435,7 +433,7 @@ onBeforeMount(async () => {
               type="button"
               @click="stepActive--"
               v-if="stepActive > 0 && stepActive < 3"
-              class="btn btn-secondary"
+              class="btn btn-lg btn-secondary"
             >
               Atrás
             </button>
@@ -443,7 +441,7 @@ onBeforeMount(async () => {
               type="button"
               @click="onNext"
               v-if="stepActive < 3"
-              class="btn btn-primary w-full"
+              class="btn btn-lg btn-primary w-full"
             >
               {{ stepActive === 2 ? 'Finalizar' : 'Continuar' }}
             </button>

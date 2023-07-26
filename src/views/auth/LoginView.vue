@@ -121,7 +121,7 @@ function contactWhatsapp() {
             Olvidaste tu contraseña?</a
           >
         </div>
-        <button type="submit" class="btn btn-primary btn-block rounded-2xl">Entrar</button>
+        <button type="submit" class="btn btn-lg btn-primary w-full">Entrar</button>
         <p class="text-gray-500">
           Aún no tienes cuenta?
           <RouterLink :to="{ name: ROUTES.REGISTER }" class="text-link"> Regístrate </RouterLink>

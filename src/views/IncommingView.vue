@@ -173,7 +173,7 @@ onMounted(() =>
           data-accordion-target="#accordion-collapse-custom-order-body"
           aria-controls="aaccordion-collapse-custom-order-body"
         >
-          ¿No encuentras lo que Buscas?
+          ¿No encuentras lo que buscas?
           <ChevronUp data-accordion-icon class="h-5 w-5 shrink-0" aria-hidden="true" />
         </button>
       </h2>
@@ -195,10 +195,7 @@ onMounted(() =>
             o describirnos qué quiere comprar y nosotros le buscaremos las mejores ofertas
           </p>
 
-          <button
-            @click="contactForIncomming"
-            class="btn btn-primary btn-block rounded-2xl px-2 py-1.5"
-          >
+          <button @click="contactForIncomming" class="btn btn-md btn-primary w-full">
             Solicitar encargo
           </button>
         </div>
