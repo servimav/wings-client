@@ -102,7 +102,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <main class="container h-full min-h-screen w-full p-2 pb-16 pt-12">
+  <main
+    class="container h-full min-h-screen w-full p-2 pb-16 pt-12"
+    :class="{ 'flex flex-col justify-center': !cart.length }"
+  >
     <!-- Main Content -->
     <div class="p-2 pb-32" v-if="cart.length">
       <div class="mt-2 space-y-2">
@@ -124,7 +127,7 @@ onBeforeMount(() => {
         <button
           type="button"
           @click="() => $router.push({ name: ROUTES.CHECKOUT })"
-          class="btn btn-primary btn-block"
+          class="btn btn-lg btn-primary w-full"
         >
           Crear Pedido
         </button>
@@ -133,18 +136,18 @@ onBeforeMount(() => {
     <!-- / Main Content -->
 
     <!-- Empty Caret -->
-    <div v-else class="mx-auto flex max-w-xs flex-col items-center py-20">
+    <div v-else class="text-center">
       <div class="mb-8">
-        <CaretEmpty class="relative right-2 h-28 w-28 fill-gray-600" />
+        <CaretEmpty class="mx-auto h-36 w-36 fill-gray-500" />
       </div>
-      <div class="mb-5 text-center">
-        <h3 class="mb-2 text-2xl font-medium text-gray-800">Carrito vacío</h3>
-        <p class="text-lg text-gray-600">
+      <div class="mb-5">
+        <h3 class="mb-3 text-2xl font-medium text-gray-800">Carrito vacío</h3>
+        <p class="max-w-xs text-gray-500">
           Tu carrito de compras está vacío. ¡Revisa algunas de nuestras ofertas para comenzar a
           comprar!
         </p>
       </div>
-      <button type="button" @click="goToHome" class="btn-sm btn-primary rounded-2xl px-4">
+      <button type="button" @click="goToHome" class="btn btn-md btn-primary">
         Explorar ofertas
       </button>
     </div>
