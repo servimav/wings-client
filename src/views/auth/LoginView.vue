@@ -114,23 +114,17 @@ function contactWhatsapp() {
             />
           </div>
         </div>
-        <!-- / Password  -->
+        <!-- / Password -->
 
         <div class="float-right">
-          <a
-            target="_blank"
-            class="text-gray-500 transition-colors hover:text-gray-700"
-            @click="contactWhatsapp"
-          >
+          <a target="_blank" class="text-link" @click="contactWhatsapp">
             Olvidaste tu contraseña?</a
           >
         </div>
-        <button type="submit" class="btn btn-primary btn-block rounded-2xl">Entrar</button>
+        <button type="submit" class="btn btn-lg btn-primary w-full">Entrar</button>
         <p class="text-gray-500">
           Aún no tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.REGISTER }" class="font-medium text-primary"
-            >Regístrate
-          </RouterLink>
+          <RouterLink :to="{ name: ROUTES.REGISTER }" class="text-link"> Regístrate </RouterLink>
         </p>
       </form>
       <!-- / Form -->

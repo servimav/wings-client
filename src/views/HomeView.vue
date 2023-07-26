@@ -147,35 +147,37 @@ onBeforeUnmount(() => {
 
 <template>
   <PullToRefresh :on-pull="handleOnPull" />
-  <main class="container h-full min-h-screen w-full select-none p-2 pb-[4.5rem] pt-[4.8rem]">
-    <!-- Main Content -->
-    <div class="mb-2 px-2" v-if="offers.length">
-      <AnnouncementSlider />
+  <main class="container h-full min-h-screen w-full py-[4.5rem]">
+    <div class="py-2">
+      <!-- Main Content -->
+      <div class="mb-2 px-2 py-1" v-if="offers.length">
+        <AnnouncementSlider />
 
-      <template v-if="categories.length">
-        <!-- <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
-          Descubre nuestras Categorías
-        </div> -->
-        <CategorySlider :categories="categories" go-to-filter />
-      </template>
+        <template v-if="categories.length">
+          <!-- <div class="bg-white p-2 text-center text-gray-800 shadow-sm">
+            Descubre nuestras Categorías
+          </div> -->
+          <CategorySlider :categories="categories" go-to-filter />
+        </template>
 
-      <div class="mt-2 grid grid-cols-2 gap-2">
-        <OfferWidget
-          v-for="(offer, index) in offers"
-          :key="`home-view-offer-grid-${index}`"
-          :offer="offer"
-          @click="() => goToOffer(offer)"
-        />
-        <OfferSkeleton :repeat="4" v-if="loading" />
+        <div class="mt-2 grid grid-cols-2 gap-2">
+          <OfferWidget
+            v-for="(offer, index) in offers"
+            :key="`home-view-offer-grid-${index}`"
+            :offer="offer"
+            @click="() => goToOffer(offer)"
+          />
+          <OfferSkeleton :repeat="4" v-if="loading" />
+        </div>
       </div>
-    </div>
 
-    <!-- / Main Content -->
+      <!-- / Main Content -->
 
-    <!-- Loading Skeleton -->
-    <div v-else class="grid grid-cols-2 gap-2">
-      <OfferSkeleton :repeat="8" />
+      <!-- Loading Skeleton -->
+      <div v-else class="grid grid-cols-2 gap-2">
+        <OfferSkeleton :repeat="8" />
+      </div>
+      <!-- / Loading Skeleton -->
     </div>
-    <!-- / Loading Skeleton -->
   </main>
 </template>

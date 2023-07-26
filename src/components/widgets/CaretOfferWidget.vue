@@ -79,11 +79,11 @@ const offer = computed(() => $props.item.offer)
     <!-- / Image -->
 
     <!-- Offer Description -->
-    <div class="py-2 pl-4 pr-2">
+    <div class="py-1 pl-4 pr-2">
       <div class="line-clamp-2 text-gray-800">
         {{ offer.name }}
       </div>
-      <div class="text-gray-500" :class="[small ? 'mb-2' : 'mb-4']">
+      <div class="text-gray-500" :class="[small ? 'mb-2' : 'mb-3']">
         {{ toCurrency((displayPrice as number) * item.qty) }}
       </div>
 

@@ -154,14 +154,10 @@ async function submit() {
         </div>
         <!-- / Password confirm  -->
 
-        <button type="submit" class="btn btn-block btn-primary rounded-2xl">
-          Registrar cuenta
-        </button>
+        <button type="submit" class="btn btn-lg btn-primary w-full">Registrar cuenta</button>
         <p class="text-gray-500">
           Ya tienes cuenta?
-          <RouterLink :to="{ name: ROUTES.LOGIN }" class="font-medium text-primary"
-            >Inicia sesión</RouterLink
-          >
+          <RouterLink :to="{ name: ROUTES.LOGIN }" class="text-link">Inicia sesión</RouterLink>
         </p>
       </form>
       <!-- / Form -->
