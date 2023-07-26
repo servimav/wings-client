@@ -16,11 +16,17 @@
 
   /* Buttons */
   .btn {
-    @apply rounded-2xl px-5 py-2.5 text-lg font-medium focus:animate-[scaleEffect_0.2s_linear_1];
+    @apply rounded-2xl font-medium focus:animate-[scaleEffect_0.2s_linear_1];
+  }
+  .btn-sm {
+    @apply px-2 py-1.5;
+  }
+  .btn-md {
+    @apply px-3 py-2 text-base;
   }
 
-  .btn-sm {
-    @apply rounded-2xl px-2 py-1.5 focus:animate-[scaleEffect_0.2s_linear_1];
+  .btn-lg {
+    @apply px-5 py-2.5 text-lg;
   }
 
   .btn-primary {
@@ -49,9 +55,14 @@
     @apply inline-flex w-full items-center justify-center;
   }
 
+  /* Text Link */
+  .text-link {
+    @apply font-medium text-primary transition-colors hover:text-primary-dark hover:underline hover:underline-offset-2;
+  }
+
   /* Badges */
   .badge {
-    @apply inline-flex items-center justify-center px-2 py-1 text-sm font-medium;
+    @apply inline-flex items-center justify-center px-2 py-1 text-sm;
   }
 }
 
