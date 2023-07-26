@@ -18,6 +18,9 @@ const GoBackBtn = defineAsyncComponent(() => import('@/components/GoBackBtn.vue'
 const CategorySlider = defineAsyncComponent(() => import('@/components/sliders/CategorySlider.vue'))
 const OfferSlider = defineAsyncComponent(() => import('@/components/sliders/OfferSlider.vue'))
 const ShareOutline = defineAsyncComponent(() => import('@/components/icons/ShareOutline.vue'))
+const SingleOfferSkeleton = defineAsyncComponent(
+  () => import('@/components/skeletons/SingleOfferSkeleton.vue')
+)
 const ShoppingBagOutline = defineAsyncComponent(
   () => import('@/components/icons/ShoppingBagOutline.vue')
 )
@@ -83,6 +86,8 @@ const contactUrl = computed(() => {
   // return '#'
   return undefined
 })
+
+const loading = computed(() => $app.loading)
 
 const offer = ref<Offer>()
 
@@ -189,6 +194,7 @@ function goToOffer(offer: Offer) {
  */
 async function loadData(offerId: number) {
   try {
+    $app.toggleLoading(true)
     // get the offer
     await getOffer(offerId)
     // get similar offers and put title
@@ -207,6 +213,7 @@ async function loadData(offerId: number) {
   } catch (error) {
     $app.axiosError(error)
   }
+  $app.toggleLoading(false)
 }
 
 /**
@@ -426,21 +433,17 @@ onBeforeRouteUpdate(async (to) => {
         v-if="contactUrl"
         class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
       >
-        <button class="btn-sm btn-primary">Contactar al Vendedor</button>
+        <button class="btn btn-primary">Contactar al Vendedor</button>
       </a>
       <div
         v-else
         class="fixed bottom-0 flex w-full space-x-2 border-0 bg-white p-4 text-center"
         :class="{ 'justify-end': !canAdd }"
       >
-        <button @click="addOfferToCart" v-if="canAdd" class="btn-sm btn-primary flex-1">
+        <button @click="addOfferToCart" v-if="canAdd" class="btn btn-primary flex-1">
           Añadir al Carrito
         </button>
-        <button
-          v-if="cartCounter"
-          @click="goToCart"
-          class="relative rounded-lg border border-primary bg-white px-5 py-2.5 font-medium text-primary transition-colors hover:bg-primary-dark hover:text-white focus:outline-none focus:ring-4 focus:ring-primary-light"
-        >
+        <button v-if="cartCounter" @click="goToCart" class="btn btn-secondary relative">
           <ShoppingBagOutline class="h-6 w-6" />
           <div
             class="absolute -top-2 right-2 inline-flex items-center justify-center rounded-full bg-primary px-1 py-0 text-sm font-medium text-white"
@@ -451,6 +454,8 @@ onBeforeRouteUpdate(async (to) => {
       </div>
       <!-- / Button -->
     </template>
+
+    <SingleOfferSkeleton v-else-if="loading" />
   </main>
 
   <!-- Zoom Image -->
