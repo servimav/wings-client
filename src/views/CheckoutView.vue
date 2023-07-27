@@ -427,7 +427,7 @@ onBeforeMount(async () => {
         </section>
         <!-- / Final Step  -->
 
-        <div class="fixed bottom-0 z-10 w-full border-t border-gray-100 bg-white p-4">
+        <div class="fixed bottom-0 z-10 w-full border-t border-gray-100 bg-white p-2">
           <div class="flex items-center justify-center space-x-2">
             <button
               type="button"

@@ -70,23 +70,6 @@ const cartCounter = computed(() => {
 const categories = computed(() =>
   offer.value && offer.value.categories ? offer.value && offer.value.categories : []
 )
-
-const contactUrl = computed(() => {
-  // const url = location.href
-  // if (offer.value) {
-  //   // const store = offer.value.store
-  //   // const phone = store && store.contact_phone ? store.contact_phone : '173772811360'
-  //   const phone = '17372811360'
-  //   const price = offer.value.discount_price ? offer.value.discount_price : offer.value.sell_price
-  //   const message = `Hola, le escribo porque me interesa el producto:\n${
-  //     offer.value.name
-  //   } \nPrecio: ${toCurrency(price)}\nEnlace: ${url}`
-  //   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
-  // }
-  // return '#'
-  return undefined
-})
-
 const loading = computed(() => $app.loading)
 
 const offer = ref<Offer>()
@@ -315,11 +298,42 @@ onBeforeRouteUpdate(async (to) => {
       <!-- Content -->
       <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-28 pt-8">
         <div class="flex items-center justify-between gap-2">
-          <!-- Title -->
-          <h4 class="mb-1 text-xl font-semibold tracking-tight text-gray-800">
-            {{ offer.name }}
-          </h4>
-          <!-- / Title -->
+          <div>
+            <!-- Title -->
+
+            <h4 class="mb-1 text-xl font-semibold tracking-tight text-gray-800">
+              {{ offer.name }}
+            </h4>
+            <!-- / Title -->
+            <!-- Stock -->
+            <div class="text-sm">
+              <span v-if="!offer.available" class="rounded bg-red-100 px-2.5 py-0.5 text-red-600">
+                Inventario Vacío</span
+              >
+
+              <span
+                v-else-if="offer.stock_type === STOCK_TYPE.LIMITED"
+                class="rounded bg-blue-50 px-2.5 py-0.5 text-blue-600"
+              >
+                {{ realStockQty }} Disponibles</span
+              >
+
+              <span
+                v-else-if="offer.stock_type === STOCK_TYPE.OUT"
+                class="rounded bg-red-100 px-2.5 py-0.5 text-red-600"
+              >
+                No hay Disponibles</span
+              >
+
+              <span
+                v-else-if="offer.stock_type === STOCK_TYPE.INCOMMING"
+                class="rounded bg-green-100 px-2.5 py-0.5 text-green-900"
+              >
+                Por Encargo</span
+              >
+            </div>
+            <!-- / Stock -->
+          </div>
 
           <!-- Prices -->
           <div v-if="offer.discount_price" class="text-right">
@@ -337,49 +351,10 @@ onBeforeRouteUpdate(async (to) => {
           <!-- / Prices -->
         </div>
 
-        <!-- Stock -->
-        <div class="mb-2 flex justify-between gap-2">
-          <span
-            v-if="!offer.available"
-            class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
-          >
-            Inventario Vacío</span
-          >
-
-          <span
-            v-else-if="offer.stock_type === STOCK_TYPE.LIMITED"
-            class="bg-butterfly-blue-50 text-butterfly-blue-600 rounded px-2.5 py-0.5 font-medium"
-          >
-            {{ realStockQty }} Disponibles</span
-          >
-
-          <span
-            v-else-if="offer.stock_type === STOCK_TYPE.OUT"
-            class="rounded bg-red-100 px-2.5 py-0.5 font-medium text-red-600"
-          >
-            No hay Disponibles</span
-          >
-
-          <span
-            v-else-if="offer.stock_type === STOCK_TYPE.INCOMMING"
-            class="rounded bg-green-100 px-2.5 py-0.5 font-medium text-green-900"
-          >
-            Por Encargo</span
-          >
-
-          <div
-            v-if="offer.available && offer.stock_type !== STOCK_TYPE.OUT && offer.min_delivery_days"
-            class="rounded-full bg-green-200 px-2 text-gray-900"
-          >
-            Entrega en {{ offer.min_delivery_days }} días
-          </div>
-        </div>
-        <!-- / Stock -->
-
         <!-- Store Details -->
-        <span class="text-thin mt-4 rounded-full bg-gray-200 px-2 text-sm" v-if="offer.store">
-          {{ offer.store.name }}: PID-{{ offer.id }}
-        </span>
+        <!-- <span class="text-thin mt-4 rounded-full bg-gray-200 px-2 text-sm" v-if="offer.store">
+					{{ offer.store.name }}: PID-{{ offer.id }}
+				</span> -->
         <!-- / Store Details -->
 
         <!-- Description -->
@@ -431,15 +406,7 @@ onBeforeRouteUpdate(async (to) => {
       <!-- / Content -->
 
       <!-- Button -->
-      <a
-        :href="contactUrl"
-        v-if="contactUrl"
-        class="fixed bottom-0 w-full gap-2 bg-white px-2 py-4 text-center"
-      >
-        <button class="btn btn-md btn-primary">Contactar al Vendedor</button>
-      </a>
       <div
-        v-else
         class="fixed bottom-0 flex w-full space-x-2 border-0 bg-white p-4 text-center"
         :class="{ 'justify-end': !canAdd }"
       >
