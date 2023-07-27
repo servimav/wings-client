@@ -74,8 +74,8 @@ export const useShopStore = defineStore(STORE_NAME, () => {
     // if exists add qty
     if (existsIndex >= 0) {
       const stockType = item.offer?.stock_type
-      if (stockType === STOCK_TYPE.INFINITY) return true
-      else if (stockType === STOCK_TYPE.OUT || stockType === STOCK_TYPE.INCOMMING) return false
+      if (stockType === STOCK_TYPE.INFINITY || stockType === STOCK_TYPE.INCOMMING) return true
+      else if (stockType === STOCK_TYPE.OUT) return false
       else if (stockType === STOCK_TYPE.LIMITED && item.offer?.stock_qty) {
         const cartQty = cart.value[existsIndex].qty
         return cartQty < item?.offer.stock_qty
