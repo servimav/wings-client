@@ -59,24 +59,46 @@ onMounted(async () => {
   >
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-      <!-- Item 1 -->
-      <a
-        v-for="(ann, annKey) in announcements"
-        :key="`ann-${ann.id}-${annKey}`"
-        :target="ann.target"
-        :href="ann.link"
-        class="z-0 hidden duration-700 ease-in-out"
-        style="z-index: 0 !important"
-        data-carousel-item
-      >
-        <img
-          :src="ann.image"
-          :alt="ann.name"
-          :title="ann.name"
+      <!-- Items -->
+      <template v-for="(ann, annKey) in announcements" :key="`ann-${ann.id}-${annKey}`">
+        <!-- Local navigation -->
+        <RouterLink
+          v-if="ann.target === '_self'"
+          :to="ann.link"
+          class="z-0 hidden duration-700 ease-in-out"
           style="z-index: 0 !important"
-          class="absolute left-1/2 top-1/2 z-0 block w-full -translate-x-1/2 -translate-y-1/2"
-        />
-      </a>
+          data-carousel-item
+        >
+          <img
+            :src="ann.image"
+            :alt="ann.name"
+            :title="ann.name"
+            style="z-index: 0 !important"
+            class="absolute left-1/2 top-1/2 z-0 block w-full -translate-x-1/2 -translate-y-1/2"
+          />
+        </RouterLink>
+        <!-- / Local navigation -->
+
+        <!-- External navigation -->
+        <a
+          v-else
+          target="_blank"
+          :href="ann.link"
+          class="z-0 hidden duration-700 ease-in-out"
+          style="z-index: 0 !important"
+          data-carousel-item
+        >
+          <img
+            :src="ann.image"
+            :alt="ann.name"
+            :title="ann.name"
+            style="z-index: 0 !important"
+            class="absolute left-1/2 top-1/2 z-0 block w-full -translate-x-1/2 -translate-y-1/2"
+          />
+        </a>
+        <!-- / External navigation -->
+      </template>
+      <!-- / Items -->
     </div>
 
     <!-- Slider indicators -->
