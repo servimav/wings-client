@@ -70,7 +70,7 @@ async function getOrder() {
     ).data
     order.value = data
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No se pudo obtener los datos')
   }
   $app.toggleLoading(false)
 }

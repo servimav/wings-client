@@ -6,7 +6,7 @@ import type { ShopOffer, ShopOfferFilter } from '@servimav/wings-services'
 import { scrollTop, TITLE } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
-import { useShopStore } from '@/stores'
+import { useAppStore, useShopStore } from '@/stores'
 import type { Offer } from '@/types'
 
 /**
@@ -25,7 +25,7 @@ const SearchLoop = defineAsyncComponent(() => import('@/components/icons/SearchL
  *	Composables
  * -----------------------------------------
  */
-
+const $app = useAppStore()
 const $route = useRoute()
 const $router = useRouter()
 const $service = useServices()
@@ -82,7 +82,7 @@ async function filterOffers(filter: ShopOfferFilter) {
       window.removeEventListener('scroll', scrollEventHandler)
     }
   } catch (error) {
-    console.log({ error })
+    $app.axiosError(error, 'Error al filtrar datos')
     window.removeEventListener('scroll', scrollEventHandler)
   }
   loading.value = false

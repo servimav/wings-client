@@ -56,7 +56,7 @@ async function submit() {
       name: ROUTES.HOME
     })
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'Credenciales incorrectas')
   }
 }
 

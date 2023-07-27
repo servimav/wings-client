@@ -59,7 +59,7 @@ async function submit() {
       name: ROUTES.HOME
     })
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No pudimos crear su cuenta')
   }
   $app.toggleLoading(false)
 }

@@ -209,9 +209,12 @@ async function loadData(offerId: number) {
         ]
       })
       await getOfferSimilar(offerId)
+    } else {
+      $router.push({ name: ROUTES.HOME })
     }
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No encontramos la oferta')
+    $router.push({ name: ROUTES.HOME })
   }
   $app.toggleLoading(false)
 }

@@ -42,7 +42,7 @@ onBeforeMount(async () => {
       $shop.orderPagination = data.meta.current_page
     }
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No se pudo obtener los datos')
   }
   $app.toggleLoading(false)
 })

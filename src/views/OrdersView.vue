@@ -72,7 +72,7 @@ async function getOrders({ init }: { init: boolean }) {
       window.removeEventListener('scroll', scrollHandler)
     }
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No se pudo obtener los datos')
     window.removeEventListener('scroll', scrollHandler)
   }
   $app.toggleLoading(false)
@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
     <!-- / Loading -->
 
     <!-- No content -->
-    <div v-else>No content</div>
+    <div v-else class="mt-8 text-center text-xl">No hay Pedidos</div>
     <!-- / No content -->
   </main>
 </template>

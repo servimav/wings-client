@@ -54,7 +54,7 @@ async function getHelpList() {
     const resp = (await api.get<HelpItem[]>('/help')).data
     helpList.value = resp
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No pudimos obtener los datos')
   }
 }
 

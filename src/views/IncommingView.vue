@@ -6,7 +6,7 @@ import { STOCK_TYPE, type ShopOffer } from '@servimav/wings-services'
 import { scrollTop, sendWhatsappMessage, useCapacitor } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
-import { useShopStore } from '@/stores'
+import { useAppStore, useShopStore } from '@/stores'
 import type { Offer } from '@/types'
 import { initAccordions } from 'flowbite'
 
@@ -27,6 +27,7 @@ const PullToRefresh = defineAsyncComponent(() => import('@/components/PullToRefr
  * -----------------------------------------
  */
 
+const $app = useAppStore()
 const $router = useRouter()
 const $service = useServices()
 const $shop = useShopStore()
@@ -112,7 +113,7 @@ async function getOffers() {
       window.removeEventListener('scroll', eventHandler)
     }
   } catch (error) {
-    console.log({ error })
+    $app.axiosError(error, 'No se pudo obtener los datos')
     // stop event
     window.removeEventListener('scroll', eventHandler)
   }

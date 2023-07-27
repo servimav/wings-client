@@ -191,7 +191,7 @@ async function loadLocations() {
     const resp = await $service.geoLocation.list()
     locations.value = resp.data.data
   } catch (error) {
-    $app.axiosError(error)
+    $app.axiosError(error, 'No se pudo cargar las localizaciones')
   }
 }
 
