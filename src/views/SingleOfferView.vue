@@ -70,6 +70,9 @@ const cartCounter = computed(() => {
 const categories = computed(() =>
   offer.value && offer.value.categories ? offer.value && offer.value.categories : []
 )
+
+const fullImage = ref<string>()
+
 const loading = computed(() => $app.loading)
 
 const offer = ref<Offer>()
@@ -91,7 +94,7 @@ const realStockQty = computed(() => {
   return 0
 })
 const shareIsSupported = ref(false)
-const showFullImage = ref(false)
+
 /**
  * -----------------------------------------
  *	Methods
@@ -291,12 +294,23 @@ onBeforeRouteUpdate(async (to) => {
           :title="offer.name"
           class="w-full"
           @error="setDefaultImage"
-          @click="() => (showFullImage = true)"
+          @click="() => (fullImage = offer?.image)"
         />
       </div>
 
       <!-- Content -->
-      <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-28 pt-8">
+      <div class="min-h-[15rem] translate-y-96 space-y-4 rounded-t-3xl bg-white px-4 pb-28 pt-4">
+        <div class="grid grid-cols-3">
+          <div class="p-1" v-for="(img, key) in offer.gallery" :key="`gallery-${key}`">
+            <img
+              :src="img"
+              class="w-full"
+              :title="offer.name"
+              :alt="offer.name"
+              @click="() => (fullImage = img)"
+            />
+          </div>
+        </div>
         <div class="flex items-center justify-between gap-2">
           <div>
             <!-- Title -->
@@ -432,11 +446,10 @@ onBeforeRouteUpdate(async (to) => {
   <div
     class="fixed left-0 top-0 z-20 flex h-full w-screen items-center overflow-y-scroll bg-black"
     v-if="offer"
-    v-show="showFullImage"
+    v-show="fullImage"
+    @click="() => (fullImage = undefined)"
   >
-    <span class="absolute right-6 top-6 text-2xl text-white" @click="() => (showFullImage = false)"
-      >&times;</span
-    >
+    <span class="absolute right-6 top-6 text-2xl text-white">&times;</span>
     <img class="m-auto block w-[80%]" :src="offer.image ?? '/images/default.png'" />
   </div>
   <!-- / Zoom Image -->
