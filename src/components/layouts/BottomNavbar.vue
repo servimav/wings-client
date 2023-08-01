@@ -35,8 +35,8 @@ const HomeOutline = defineAsyncComponent(() => import('@/components/icons/HomeOu
 const SquaresOutline = defineAsyncComponent(
   () => import('@/components/icons/Squqres2x2Outline.vue')
 )
-const ShoppingBagOutline = defineAsyncComponent(
-  () => import('@/components/icons/ShoppingBagOutline.vue')
+const ShoppingCartOutline = defineAsyncComponent(
+  () => import('@/components/icons/ShoppingCartOutline.vue')
 )
 const UserOutline = defineAsyncComponent(() => import('@/components/icons/UserOutline.vue'))
 
@@ -75,7 +75,7 @@ const navButtons = computed<IconLabelLink[]>(() => {
       to: { name: ROUTES.INCOMMING }
     },
     {
-      icon: ShoppingBagOutline,
+      icon: ShoppingCartOutline,
       label: 'Carrito',
       to: { name: ROUTES.CARET },
       badge: cartCounter.value
