@@ -450,7 +450,7 @@ onBeforeRouteUpdate(async (to) => {
     @click="() => (fullImage = undefined)"
   >
     <span class="absolute right-6 top-6 text-2xl text-white">&times;</span>
-    <img class="m-auto block w-[80%]" :src="offer.image ?? '/images/default.png'" />
+    <img class="m-auto block w-[80%]" :src="fullImage ?? '/images/default.png'" />
   </div>
   <!-- / Zoom Image -->
 </template>
