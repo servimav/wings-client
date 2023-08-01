@@ -51,6 +51,7 @@ const showPasswordConfirm = ref(false)
  * submit
  */
 async function submit() {
+  if ($app.loading) return
   $app.toggleLoading(true)
   try {
     const resp = await $user.authRegister(form.value)

@@ -35,6 +35,7 @@ const form = ref<UserLogin>({
   password: '',
   phone: ''
 })
+const loading = computed(() => $app.loading)
 const showPassword = ref(false)
 const passwordIcon = computed(() => (showPassword.value ? EyeSlashOutline : EyeOutline))
 const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
@@ -49,6 +50,9 @@ const passwordType = computed(() => (showPassword.value ? 'text' : 'password'))
  * submit
  */
 async function submit() {
+  if (loading.value) return
+
+  $app.toggleLoading(true)
   try {
     const resp = await $user.authLogin(form.value)
     $app.success(`Bienvenido ${resp.data.name}`)
@@ -58,6 +62,7 @@ async function submit() {
   } catch (error) {
     $app.axiosError(error, 'Credenciales incorrectas')
   }
+  $app.toggleLoading(false)
 }
 
 /**

@@ -107,6 +107,7 @@ const user = computed(() => $user.user)
  * onSubmit
  */
 async function onSubmit() {
+  if ($app.loading) return
   $app.toggleLoading(true)
   try {
     const { data } = await $service.shop.order.create(form.value)
