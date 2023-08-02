@@ -3,7 +3,8 @@ export enum ELEMENT_ID {
 }
 
 export enum TITLE {
-  DEFAULT = 'Compras y Envíos | Wings'
+  MAIN = 'Compras y Envíos | Wings',
+  ORDERS = 'Pedidos | Wings'
 }
 
 export const CURRENT_VERSION = import.meta.env.VITE_APP_VERSION

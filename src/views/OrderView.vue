@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { readableStatus, STATUS, type ShopOrder } from '@servimav/wings-services'
-import { formatDate, toCurrency } from '@/helpers'
+import { TITLE, formatDate, toCurrency } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore } from '@/stores'
 /**
@@ -85,7 +85,7 @@ onBeforeMount(async () => {
   await getOrder()
 
   useHead({
-    title: order.value ? `Pedido # ${order.value.id} | Wings` : 'Pedidos | Wings'
+    title: order.value ? `Pedido # ${order.value.id} | Wings` : TITLE.ORDERS
   })
 })
 </script>

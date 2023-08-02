@@ -8,7 +8,7 @@ import type {
   ShopOrder,
   ShopOrderCreate
 } from '@servimav/wings-services'
-import { scrollTop, toCurrency, useStorage } from '@/helpers'
+import { scrollTop, toCurrency, useStorage, TITLE } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore, useUserStore } from '@/stores'
@@ -216,7 +216,7 @@ function onSetLocation(value: string | number) {
 onBeforeMount(async () => {
   // Setup title
   useHead({
-    title: 'Compras y Envíos | Wings'
+    title: TITLE.MAIN
   })
   if (!cart.value.length) $router.push({ name: ROUTES.HOME })
   form.value.items = cart.value

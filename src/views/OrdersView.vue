@@ -2,7 +2,7 @@
 import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useHead } from '@vueuse/head'
-import { scrollTop } from '@/helpers'
+import { TITLE, scrollTop } from '@/helpers'
 import { useAppStore, useShopStore } from '@/stores'
 import { useServices } from '@/services'
 import { ROUTES } from '@/router'
@@ -98,7 +98,7 @@ async function handleOnPull(done: CallableFunction) {
 onBeforeMount(async () => {
   // set default title
   useHead({
-    title: 'Pedidos | Wings'
+    title: TITLE.ORDERS
   })
   // scroll top smoothly
   scrollTop()

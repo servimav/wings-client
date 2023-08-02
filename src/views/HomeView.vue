@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, ref } f
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import type { ShopOffer } from '@servimav/wings-services'
-import { scrollTop } from '@/helpers'
+import { scrollTop, TITLE } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useServices } from '@/services'
 import { useAppStore, useShopStore } from '@/stores'
@@ -126,7 +126,7 @@ async function handleOnPull(endPull: CallableFunction) {
 onBeforeMount(async () => {
   // set default title
   useHead({
-    title: 'Compras y Envíos | Wings'
+    title: TITLE.MAIN
   })
   // scroll top smoothly
   scrollTop()

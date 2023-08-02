@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import type { OrderItem } from '@servimav/wings-services'
-import { toCurrency } from '@/helpers'
+import { toCurrency, TITLE } from '@/helpers'
 import { ROUTES } from '@/router'
 import { useShopStore } from '@/stores'
 
@@ -96,7 +96,7 @@ function goToHome() {
 
 onBeforeMount(() => {
   useHead({
-    title: 'Compras y Envíos | Wings'
+    title: TITLE.MAIN
   })
 })
 </script>
@@ -142,7 +142,7 @@ onBeforeMount(() => {
       </div>
       <div class="mb-5">
         <h3 class="mb-3 text-2xl font-medium text-gray-800">Carrito vacío</h3>
-        <p class="max-w-xs text-gray-500">
+        <p class="mx-auto max-w-xs text-gray-500">
           Tu carrito de compras está vacío. ¡Revisa algunas de nuestras ofertas para comenzar a
           comprar!
         </p>
