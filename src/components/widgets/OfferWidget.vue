@@ -48,7 +48,7 @@ const displayPrice = computed(() =>
         />
         <div
           v-if="offer.stock_type === STOCK_TYPE.INCOMMING"
-          class="absolute left-1 top-1 rounded-full bg-gray-300 p-1 text-sm"
+          class="absolute left-1 top-1 rounded-full bg-gray-300 px-2 py-1 text-sm"
         >
           Encargo
         </div>
