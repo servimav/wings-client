@@ -25,6 +25,7 @@ const SearchLoop = defineAsyncComponent(() => import('@/components/icons/SearchL
  *	Composables
  * -----------------------------------------
  */
+
 const $app = useAppStore()
 const $route = useRoute()
 const $router = useRouter()
@@ -42,6 +43,19 @@ const categories = computed(() => $shop.categories)
 const loading = ref(false)
 const offers = ref<ShopOffer[]>([])
 const offersCurrentPage = ref<number>()
+
+const searchLabel = computed(() => {
+  const urlFilter = $route.query as ShopOfferFilter
+  if (filterText.value !== '') {
+    return filterText.value
+  } else if (urlFilter.category_id) {
+    return categories.value
+      .filter((item) => item.id == urlFilter.category_id)[0]
+      .name.toLocaleUpperCase()
+  } else {
+    return ''
+  }
+})
 
 /**
  * -----------------------------------------
@@ -111,7 +125,7 @@ function goToOffer(offer: Offer) {
 onMounted(async () => {
   // set default title
   useHead({
-    title: TITLE.DEFAULT
+    title: TITLE.MAIN
   })
 
   // init offers and pagination
@@ -153,9 +167,7 @@ onBeforeUnmount(() => {
       </div>
       <!-- Loading -->
       <template v-if="loading">
-        <h2 class="mb-3 bg-white text-center text-lg text-gray-800 shadow-sm">
-          Buscando "{{ filterText }}"
-        </h2>
+        <h2 class="mb-3 text-center text-lg text-gray-800">Buscando "{{ searchLabel }}"</h2>
         <div class="mt-2 grid grid-cols-2 gap-2">
           <OfferSkeleton :repeat="8" />
         </div>
@@ -164,7 +176,7 @@ onBeforeUnmount(() => {
 
       <!-- Search Content -->
       <div v-else-if="offers.length" class="px-2">
-        <h3 class="text-center text-lg text-gray-800">Resultados de "{{ filterText }}"</h3>
+        <h3 class="text-center text-lg text-gray-800">Resultados de "{{ searchLabel }}"</h3>
 
         <div class="mt-2 grid grid-cols-2 gap-2">
           <OfferWidget
@@ -183,11 +195,11 @@ onBeforeUnmount(() => {
     <!-- Not Found -->
     <div v-else class="text-center">
       <div class="mb-8">
-        <SearchLoop class="mx-auto h-28 w-28 fill-gray-200 text-gray-500" />
+        <SearchLoop class="mx-auto h-28 w-28 text-gray-500" />
       </div>
       <div class="mb-5">
         <h3 class="mb-3 text-2xl font-medium text-gray-800">No se encuentra "{{ filterText }}"</h3>
-        <p class="max-w-xs text-gray-500">
+        <p class="mx-auto max-w-xs text-gray-500">
           No encontramos coincidencias, revisa nuestras categorías y encargos para otros productos.
         </p>
       </div>

@@ -82,7 +82,7 @@ function onSubmit() {
         >
         <div class="relative">
           <button type="submit" class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <MangifyGlass class="h-6 w-6 cursor-pointer text-gray-500" />
+            <MangifyGlass class="h-5 w-5 cursor-pointer text-gray-500" />
           </button>
           <input
             :value="search.search"
@@ -96,13 +96,13 @@ function onSubmit() {
       </form>
 
       <RouterLink :to="{ name: ROUTES.ORDERS }" class="flex cursor-pointer items-center space-x-3">
-        <div class="rounded-xl p-2 transition-colors hover:bg-gray-100">
+        <div class="relative rounded-xl p-2 transition-colors hover:bg-gray-100">
           <ShoppingBagOutline
             class="z-0 h-6 w-6 text-gray-600 transition-colors hover:text-gray-800"
           />
           <span
             v-if="showPulse"
-            class="absolute right-2 top-4 inline-flex h-5 w-5 items-center justify-center"
+            class="absolute -right-1 -top-1 inline-flex h-5 w-5 items-center justify-center"
           >
             <span
               class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"
