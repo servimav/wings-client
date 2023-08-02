@@ -70,7 +70,7 @@ const form = ref<ShopOrderCreate>({
   payment_type: 'TRANSFER_TOTAL'
 })
 
-const loading = computed(() => $app.loading)
+const loading = ref(false)
 
 const locations = ref<GeoLocation[]>([])
 
@@ -107,8 +107,8 @@ const user = computed(() => $user.user)
  * onSubmit
  */
 async function onSubmit() {
-  if ($app.loading) return
-  $app.toggleLoading(true)
+  if (loading.value) return
+  loading.value = true
   try {
     const { data } = await $service.shop.order.create(form.value)
     order.value = data
@@ -119,7 +119,7 @@ async function onSubmit() {
   } catch (error) {
     $app.axiosError(error)
   }
-  $app.toggleLoading(false)
+  loading.value = false
 }
 
 /**

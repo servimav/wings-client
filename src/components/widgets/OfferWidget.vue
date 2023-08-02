@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { type Offer } from '@/types'
 import { toCurrency, setDefaultImage } from '@/helpers'
+import { STOCK_TYPE } from '@servimav/wings-services'
 /**
  * -----------------------------------------
  *	Types
@@ -36,14 +37,22 @@ const displayPrice = computed(() =>
   <div
     class="no-select relative h-full w-full cursor-pointer rounded-lg border border-gray-100 bg-white p-1 transition-shadow hover:shadow"
   >
-    <div class="mb-2 flex items-center">
-      <img
-        class="h-48 w-full rounded-lg object-cover object-center"
-        :src="offer.image ?? '/images/default.png'"
-        :alt="offer.name"
-        :title="offer.name"
-        @error="setDefaultImage"
-      />
+    <div class="relative">
+      <div class="mb-2 flex items-center">
+        <img
+          class="h-48 w-full rounded-lg object-cover object-center"
+          :src="offer.image ?? '/images/default.png'"
+          :alt="offer.name"
+          :title="offer.name"
+          @error="setDefaultImage"
+        />
+        <div
+          v-if="offer.stock_type === STOCK_TYPE.INCOMMING"
+          class="absolute left-1 top-1 rounded-full bg-gray-300 p-1 text-sm"
+        >
+          Encargo
+        </div>
+      </div>
     </div>
     <div class="mt-2 px-1">
       <div class="truncate text-sm font-medium text-gray-800">
