@@ -14,9 +14,14 @@
     @apply rounded-lg border border-gray-300 bg-white text-gray-800 outline-none placeholder:text-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400;
   }
 
+  /* Animations */
+  .btn-scale-animation {
+    @apply transform transition-all active:scale-95;
+  }
+
   /* Buttons */
   .btn {
-    @apply rounded-2xl font-medium focus:animate-[scaleEffect_0.2s_linear_1];
+    @apply btn-scale-animation rounded-2xl font-medium;
   }
   .btn-sm {
     @apply px-2 py-1.5;
@@ -24,13 +29,11 @@
   .btn-md {
     @apply px-3 py-2 text-base;
   }
-
   .btn-lg {
     @apply px-5 py-2.5 text-lg;
   }
-
   .btn-primary {
-    @apply border border-primary bg-primary text-white transition-colors;
+    @apply border border-primary bg-primary text-white;
   }
 
   @keyframes scaleEffect {
