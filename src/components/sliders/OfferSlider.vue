@@ -20,8 +20,8 @@ export interface Props {
  * -----------------------------------------
  */
 const OfferWidget = defineAsyncComponent(() => import('@/components/widgets/OfferWidget.vue'))
-const ArrowLeft = defineAsyncComponent(() => import('@/components/icons/ArrowLeft.vue'))
-const ArrowRight = defineAsyncComponent(() => import('@/components/icons/ArrowRight.vue'))
+const ChevronLeft = defineAsyncComponent(() => import('@/components/icons/ChevronLeft.vue'))
+const ChevronRight = defineAsyncComponent(() => import('@/components/icons/ChevronRight.vue'))
 
 /**
  * -----------------------------------------
@@ -79,7 +79,7 @@ function onScroll(event: Event) {
       class="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 text-gray-900 shadow focus:outline-none"
       @click="scrollToLeft"
     >
-      <ArrowLeft class="h-5 w-5 text-gray-900" />
+      <ChevronLeft class="h-5 w-5 text-gray-900" />
 
       <span class="sr-only">Arrow left icon</span>
     </button>
@@ -91,7 +91,7 @@ function onScroll(event: Event) {
       class="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white p-1 text-gray-900 shadow focus:outline-none"
       @click="scrollToRight"
     >
-      <ArrowRight class="h-5 w-5 text-gray-900" />
+      <ChevronRight class="h-5 w-5 text-gray-900" />
 
       <span class="sr-only">Arrow right icon</span>
     </button>
