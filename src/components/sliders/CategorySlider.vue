@@ -9,11 +9,13 @@ interface CategorySliderProps {
   categoryActive?: Category
   goToFilter?: boolean
 }
+
 /**
  * -----------------------------------------
  *	Composables
  * -----------------------------------------
  */
+
 const $props = defineProps<CategorySliderProps>()
 const $emit = defineEmits<{
   (e: 'update:categoryActive', value: Category): void
@@ -22,7 +24,7 @@ const $router = useRouter()
 
 /**
  * -----------------------------------------
- *	methods
+ *	Methods
  * -----------------------------------------
  */
 
