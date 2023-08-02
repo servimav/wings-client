@@ -5,6 +5,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "run-p type-check build-only",
+		"build:android": "run-p type-check build-only && npx cap copy android && npx cap sync && npx cap open android",
 		"preview": "vite preview",
 		"build-only": "vite build",
 		"type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
