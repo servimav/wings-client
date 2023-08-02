@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from 'vue'
 import { CUP_PRICE, setDefaultImage, toCurrency } from '@/helpers'
-import type { OrderItem } from '@servimav/wings-services'
+import { STOCK_TYPE, type OrderItem } from '@servimav/wings-services'
 import { useShopStore } from '@/stores'
 
 /**
@@ -68,14 +68,23 @@ const offer = computed(() => $props.item.offer)
 <template>
   <div class="flex w-full items-center rounded-xl border border-gray-100 bg-white" v-if="offer">
     <!-- Image -->
-    <img
-      class="shrink-0 rounded-l-xl object-cover object-center"
-      :class="[small ? 'h-28 w-24' : 'h-32 w-28']"
-      :src="offer.image ?? '/images/default.png'"
-      :alt="offer.name"
-      @error="setDefaultImage"
-      @click="() => $emit('clickImage')"
-    />
+    <div class="relative">
+      <img
+        class="shrink-0 rounded-l-xl object-cover object-center"
+        :class="[small ? 'h-28 w-24' : 'h-32 w-28']"
+        :src="offer.image ?? '/images/default.png'"
+        :alt="offer.name"
+        @error="setDefaultImage"
+        @click="() => $emit('clickImage')"
+      />
+
+      <div
+        v-if="offer.stock_type === STOCK_TYPE.INCOMMING"
+        class="absolute left-1 top-1 rounded-full bg-gray-300 px-2 py-1 text-sm"
+      >
+        Encargo
+      </div>
+    </div>
     <!-- / Image -->
 
     <!-- Offer Description -->

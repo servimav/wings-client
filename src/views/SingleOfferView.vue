@@ -341,7 +341,7 @@ onBeforeRouteUpdate(async (to) => {
 
               <span
                 v-else-if="offer.stock_type === STOCK_TYPE.INCOMMING"
-                class="rounded bg-green-100 px-2.5 py-0.5 text-green-900"
+                class="rounded-full bg-gray-300 px-2 py-1"
               >
                 Por Encargo</span
               >
