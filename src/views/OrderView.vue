@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, onBeforeMount, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@vueuse/head'
 import { readableStatus, STATUS, type ShopOrder } from '@servimav/wings-services'
-import { TITLE, formatDate, toCurrency } from '@/helpers'
+import { TITLE, formatDate, toCurrency, sendWhatsappMessage, ADMIN_PHONE } from '@/helpers'
 import { useServices } from '@/services'
 import { useAppStore } from '@/stores'
 /**
@@ -14,7 +14,9 @@ import { useAppStore } from '@/stores'
 const CaretOfferWidget = defineAsyncComponent(
   () => import('@/components/widgets/CaretOfferWidget.vue')
 )
+const ChevronRight = defineAsyncComponent(() => import('@/components/icons/ChevronRight.vue'))
 const ListSkeleton = defineAsyncComponent(() => import('@/components/skeletons/ListSkeleton.vue'))
+const MessageIcon = defineAsyncComponent(() => import('@/components/icons/WhatsApp.vue'))
 /**
  * ------------------------------------------
  *	Composable
@@ -73,6 +75,16 @@ async function getOrder() {
     $app.axiosError(error, 'No se pudo obtener los datos')
   }
   $app.toggleLoading(false)
+}
+
+/**
+ * contactSupport
+ */
+function contactSupport() {
+  sendWhatsappMessage({
+    message: '',
+    phone: ADMIN_PHONE
+  })
 }
 
 /**
@@ -135,6 +147,27 @@ onBeforeMount(async () => {
           </ul>
         </div>
         <!-- / Prices -->
+        <!-- Message -->
+        <div v-if="order.message" class="flex gap-2 rounded-md border bg-white p-4">
+          <div>
+            <MessageIcon class="h-6 w-6" />
+          </div>
+          <p>
+            {{ order.message }}
+          </p>
+        </div>
+
+        <div @click="contactSupport" class="flex gap-2 rounded-md border bg-white p-2">
+          <div
+            class="btn btn-sm mx-auto flex w-full items-center justify-between rounded-xl border border-gray-100 bg-white py-2"
+          >
+            <MessageIcon class="h-6 w-6 text-green-500" />
+
+            <span>Contactar Soporte</span>
+            <ChevronRight class="h-5 w-5 text-gray-800" />
+          </div>
+        </div>
+        <!-- / Message -->
 
         <!-- Cart Items -->
         <div class="space-y-2">

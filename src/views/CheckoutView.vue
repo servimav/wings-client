@@ -135,12 +135,15 @@ async function onNext() {
         !form.value.delivery_details.address ||
         !form.value.delivery_details.contact ||
         form.value.delivery_details.location_id < 1
-      )
+      ) {
+        console.log({
+          form: form.value
+        })
         $app.notify({
           type: 'warning',
           message: 'Verifique los datos'
         })
-      else {
+      } else {
         $storage.set(form.value.delivery_details)
         stepActive.value++
       }
@@ -191,6 +194,7 @@ async function loadLocations() {
   try {
     const resp = await $service.geoLocation.list()
     locations.value = resp.data.data
+    getSavedDeliveryDetails()
   } catch (error) {
     $app.axiosError(error, 'No se pudo cargar las localizaciones')
   }
@@ -220,7 +224,6 @@ onBeforeMount(async () => {
   })
   if (!cart.value.length) $router.push({ name: ROUTES.HOME })
   form.value.items = cart.value
-  getSavedDeliveryDetails()
   loadLocations()
 })
 </script>
