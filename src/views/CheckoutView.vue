@@ -131,17 +131,20 @@ async function onNext() {
   switch (stepActive.value) {
     case 0:
       // Validate
-      if (
-        !form.value.delivery_details.address ||
-        !form.value.delivery_details.contact ||
-        form.value.delivery_details.location_id < 1
-      ) {
-        console.log({
-          form: form.value
-        })
+      if (!form.value.delivery_details.address) {
         $app.notify({
           type: 'warning',
-          message: 'Verifique los datos'
+          message: 'Verifique la dirección'
+        })
+      } else if (!form.value.delivery_details.contact) {
+        $app.notify({
+          type: 'warning',
+          message: 'Verifique sus datos de Contacto'
+        })
+      } else if (form.value.delivery_details.location_id < 1) {
+        $app.notify({
+          type: 'warning',
+          message: 'Verifique la dirección de entrega'
         })
       } else {
         $storage.set(form.value.delivery_details)
